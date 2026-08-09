@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>使用 GitHub Pages 搭建免费个人博客 - Duce-Anchovy's Blog</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 class="site-title">Duce-Anchovy's Blog</h1>
+      <p class="site-desc">记录思考，分享技术</p>
+    </div>
+  </header>
+
+  <nav class="top-nav">
+    <div class="container">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#about">关于</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <article class="post-detail">
+      <a href="../index.html" class="back-link">← 返回首页</a>
+
+      <div class="post-header">
+        <h1 class="post-title">使用 GitHub Pages 搭建免费个人博客</h1>
+        <div class="post-meta">
+          <span class="post-date">2026-08-09</span>
+          <span class="post-tags">
+            <span class="tag">GitHub</span>
+            <span class="tag">教程</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="post-content">
+        <h2>什么是 GitHub Pages</h2>
+        <p>GitHub Pages 是 GitHub 提供的一项免费静态网站托管服务。你可以用它来托管个人主页、项目文档、博客等任何静态网站。它支持自定义域名，自动提供 HTTPS，而且完全免费。</p>
+
+        <h2>搭建步骤</h2>
+
+        <h3>第一步：创建仓库</h3>
+        <p>在你的 GitHub 账号下创建一个名为 <code>username.github.io</code> 的仓库（将 username 替换为你的 GitHub 用户名）。仓库必须设置为 <strong>Public</strong>。</p>
+
+        <h3>第二步：克隆仓库到本地</h3>
+        <pre><code>git clone https://github.com/username/username.github.io.git
+cd username.github.io</code></pre>
+
+        <h3>第三步：创建首页</h3>
+        <p>在仓库根目录创建一个 <code>index.html</code> 文件作为网站的首页。这是访问者打开你的网站时看到的第一页。</p>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;My Blog&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello, World!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <h3>第四步：推送代码</h3>
+        <pre><code>git add .
+git commit -m "初始化博客"
+git push origin main</code></pre>
+
+        <h3>第五步：启用 Pages</h3>
+        <p>进入仓库的 <strong>Settings → Pages</strong>，在 Source 下拉菜单中选择 <code>main</code> 分支，点击保存。几分钟后，你的网站就可以通过 <code>https://username.github.io</code> 访问了。</p>
+
+        <h2>进阶技巧</h2>
+        <ul>
+          <li><strong>自定义域名</strong>：在 Settings → Pages 中绑定你自己的域名，并在 DNS 中添加 CNAME 记录</li>
+          <li><strong>使用 Jekyll</strong>：GitHub Pages 原生支持 Jekyll 静态站点生成器，可以写 Markdown 自动生成博客</li>
+          <li><strong>GitHub Actions</strong>：使用 Actions 可以自动构建和部署 Hugo、Hexo、VitePress 等框架</li>
+        </ul>
+
+        <blockquote>
+          <p>提示：GitHub Pages 仓库大小限制为 1GB，每月带宽限制为 100GB，对于个人博客来说完全足够。</p>
+        </blockquote>
+
+        <h2>总结</h2>
+        <p>GitHub Pages 是搭建个人博客最简单、最经济的方式。不需要购买服务器，不需要配置环境，只需要一个 GitHub 账号和基本的 HTML 知识，几分钟就能让你的博客上线。</p>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="copyright">&copy; 2026 Duce-Anchovy. Powered by GitHub Pages.</p>
+    </div>
+  </footer>
+</body>
+</html>
