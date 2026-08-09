@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown 写作入门指南 - Duce-Anchovy's Blog</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 class="site-title">Duce-Anchovy's Blog</h1>
+      <p class="site-desc">记录思考，分享技术</p>
+    </div>
+  </header>
+
+  <nav class="top-nav">
+    <div class="container">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#about">关于</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <article class="post-detail">
+      <a href="../index.html" class="back-link">← 返回首页</a>
+
+      <div class="post-header">
+        <h1 class="post-title">Markdown 写作入门指南</h1>
+        <div class="post-meta">
+          <span class="post-date">2026-08-08</span>
+          <span class="post-tags">
+            <span class="tag">Markdown</span>
+            <span class="tag">写作</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="post-content">
+        <h2>什么是 Markdown</h2>
+        <p>Markdown 是一种轻量级标记语言，由 John Gruber 于 2004 年创建。它允许人们使用易读易写的纯文本格式编写文档，然后转换成结构化的 HTML 文档。对于技术博客作者、开发者来说，Markdown 是必备的写作工具。</p>
+
+        <h2>基础语法</h2>
+
+        <h3>标题</h3>
+        <p>使用 <code>#</code> 号标记标题，一级到六级对应 <code>#</code> 到 <code>######</code>：</p>
+        <pre><code># 一级标题
+## 二级标题
+### 三级标题</code></pre>
+
+        <h3>文本样式</h3>
+        <ul>
+          <li><strong>粗体</strong>：<code>**粗体文字**</code></li>
+          <li><em>斜体</em>：<code>*斜体文字*</code></li>
+          <li><del>删除线</del>：<code>~~删除线~~</code></li>
+          <li><code>行内代码</code>：<code>`代码`</code></li>
+        </ul>
+
+        <h3>链接与图片</h3>
+        <pre><code>[链接文字](https://example.com)
+![图片描述](image.jpg)</code></pre>
+
+        <h3>列表</h3>
+        <pre><code>- 无序列表项 1
+- 无序列表项 2
+  - 嵌套列表项
+
+1. 有序列表项 1
+2. 有序列表项 2</code></pre>
+
+        <h3>代码块</h3>
+        <p>使用三个反引号包裹代码，可以指定语言获得语法高亮：</p>
+        <pre><code>```python
+def hello():
+    print("Hello, World!")
+```</code></pre>
+
+        <h3>引用</h3>
+        <p>使用 <code>&gt;</code> 符号创建引用：</p>
+        <pre><code>&gt; 这是一段引用文字
+&gt; 可以有多行</code></pre>
+
+        <h2>推荐工具</h2>
+        <ul>
+          <li><strong>VS Code</strong>：内置 Markdown 预览，配合插件体验极佳</li>
+          <li><strong>Typora</strong>：所见即所得的 Markdown 编辑器</li>
+          <li><strong>Obsidian</strong>：强大的笔记工具，支持双向链接</li>
+          <li><strong>Notion</strong>：支持 Markdown 快捷输入的协作工具</li>
+        </ul>
+
+        <blockquote>
+          <p>Markdown 的设计哲学是「易读易写」，语法简洁但功能强大。掌握 Markdown，让你的写作更加高效。</p>
+        </blockquote>
+
+        <h2>总结</h2>
+        <p>Markdown 是现代技术写作的标配。无论是写博客、写文档、写 README，还是做笔记，Markdown 都能让你专注于内容本身，而不是排版格式。花半小时学习基础语法，受用终生。</p>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="copyright">&copy; 2026 Duce-Anchovy. Powered by GitHub Pages.</p>
+    </div>
+  </footer>
+</body>
+</html>
