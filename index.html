@@ -3,388 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duce-Anchovy's Notebook | 记录思考，分享技术</title>
+    <title>Duce-Anchovy's Web</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Ma+Shan+Zheng&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <link rel="stylesheet" href="fx-animations.css">
     <style id="theme-vars">
 /* ========================================
-   Duce-Anchovy's Notebook Blog - Design Tokens
-   笔记本风格个人博客 - 温暖手账质感
+   One Dark Pro palette + Neon Glass aesthetic
    ======================================== */
-
 :root {
-  --notebook-background: #F7F2E8;
-  --notebook-foreground: #3D3528;
-  --notebook-card: #FDFAF3;
-  --notebook-card-foreground: #3D3528;
-  --notebook-popover: #FDFAF3;
-  --notebook-popover-foreground: #3D3528;
-  --notebook-primary: #8B6F4E;
-  --notebook-primary-foreground: #FDFAF3;
-  --notebook-muted: #E8E0D0;
-  --notebook-muted-foreground: #8B7E6A;
-  --notebook-border: #D4C9B5;
-  --notebook-input: #D4C9B5;
-  --notebook-ring: #8B6F4E;
-  --notebook-radius-sm: 4px;
-  --notebook-radius-md: 8px;
-  --notebook-radius-lg: 12px;
-  --notebook-paper: #FDFAF3;
-  --notebook-paper-line: #E5DDD0;
-  --notebook-margin-line: #D4A5A5;
-  --notebook-ink: #2C2416;
-  --notebook-ink-light: #6B5D4D;
-  --notebook-accent-warm: #C17F59;
-  --notebook-accent-blue: #5B7B9A;
-  --notebook-tape: rgba(212, 190, 158, 0.45);
-  --notebook-shadow: rgba(61, 53, 40, 0.08);
-  --notebook-shadow-strong: rgba(61, 53, 40, 0.15);
+  --bg:          #282c34;
+  --bg-darker:   #21252b;
+  --bg-lighter:  #2c313c;
+  --bg-hover:    #2c313a;
+  --border:      #3e4451;
+  --border-soft: rgba(62, 68, 81, 0.5);
+  --fg:          #abb2bf;
+  --fg-bright:   #e6e6e6;
+  --fg-white:    #ffffff;
+  --muted:       #5c6370;
+  --faint:       #4b5263;
+  --blue:    #61afef;
+  --purple:  #c678dd;
+  --cyan:    #56b6c2;
+  --green:   #98c379;
+  --red:     #e06c75;
+  --orange:  #d19a66;
+  --yellow:  #e5c07b;
+  --background:       var(--bg);
+  --foreground:       var(--fg);
+  --card:             rgba(255,255,255,0.03);
+  --card-foreground:  var(--fg);
+  --popover:          rgba(255,255,255,0.05);
+  --popover-foreground: var(--fg);
+  --primary:          var(--blue);
+  --primary-foreground: var(--bg-darker);
+  --muted-bg:         rgba(255,255,255,0.04);
+  --muted-foreground: var(--muted);
+  --ring:             var(--blue);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
 }
-
 @theme inline {
-  --color-background: var(--notebook-background);
-  --color-foreground: var(--notebook-foreground);
-  --color-card: var(--notebook-card);
-  --color-card-foreground: var(--notebook-card-foreground);
-  --color-popover: var(--notebook-popover);
-  --color-popover-foreground: var(--notebook-popover-foreground);
-  --color-primary: var(--notebook-primary);
-  --color-primary-foreground: var(--notebook-primary-foreground);
-  --color-muted: var(--notebook-muted);
-  --color-muted-foreground: var(--notebook-muted-foreground);
-  --color-border: var(--notebook-border);
-  --color-input: var(--notebook-input);
-  --color-ring: var(--notebook-ring);
-  --color-paper: var(--notebook-paper);
-  --color-paper-line: var(--notebook-paper-line);
-  --color-margin-line: var(--notebook-margin-line);
-  --color-ink: var(--notebook-ink);
-  --color-ink-light: var(--notebook-ink-light);
-  --color-accent-warm: var(--notebook-accent-warm);
-  --color-accent-blue: var(--notebook-accent-blue);
-  --color-tape: var(--notebook-tape);
-  --radius-sm: var(--notebook-radius-sm);
-  --radius-md: var(--notebook-radius-md);
-  --radius-lg: var(--notebook-radius-lg);
-  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
-  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
-  --font-hand: "Ma Shan Zheng", "ZCOOL KuaiLe", "Caveat", cursive;
-  --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+  --color-background:       var(--bg);
+  --color-foreground:       var(--fg);
+  --color-card:             rgba(255,255,255,0.03);
+  --color-card-foreground:  var(--fg);
+  --color-popover:          rgba(255,255,255,0.05);
+  --color-popover-foreground: var(--fg);
+  --color-primary:          var(--blue);
+  --color-primary-foreground: var(--bg-darker);
+  --color-muted:            rgba(255,255,255,0.04);
+  --color-muted-foreground: var(--muted);
+  --color-border:           var(--border);
+  --color-input:            var(--border);
+  --color-ring:             var(--blue);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", Consolas, monospace;
 }
-
+::selection { background: rgba(97,175,239,0.25); color: #fff; }
 html { scroll-behavior: smooth; }
-
-body {
-  font-family: var(--font-sans);
-  background-color: var(--notebook-background);
-  color: var(--notebook-foreground);
-  line-height: 1.8;
-  -webkit-font-smoothing: antialiased;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.4;
-  background-image:
-    radial-gradient(circle at 20% 80%, rgba(196, 175, 140, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(180, 200, 220, 0.1) 0%, transparent 50%);
-}
-
-.notebook-paper {
-  background-color: var(--notebook-paper);
-  background-image: repeating-linear-gradient(
-    transparent,
-    transparent 31px,
-    var(--notebook-paper-line) 31px,
-    var(--notebook-paper-line) 32px
-  );
-  background-position: 0 16px;
-  position: relative;
-}
-
-.notebook-paper::before {
-  content: "";
-  position: absolute;
-  left: 60px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background-color: var(--notebook-margin-line);
-  opacity: 0.5;
-}
-
-.note-card {
-  background: var(--notebook-paper);
-  border: 1px solid var(--notebook-border);
-  border-radius: var(--notebook-radius-md);
-  box-shadow: 2px 3px 8px var(--notebook-shadow);
-  position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.note-card:hover {
-  transform: translateY(-2px) rotate(0.3deg);
-  box-shadow: 4px 6px 16px var(--notebook-shadow-strong);
-}
-
-.note-card::before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-1deg);
-  width: 80px;
-  height: 22px;
-  background: var(--notebook-tape);
-  border-radius: 2px;
-}
-
-.tag-stamp {
-  display: inline-block;
-  padding: 2px 10px;
-  font-family: var(--font-hand);
-  font-size: 0.85rem;
-  border: 1.5px solid currentColor;
-  border-radius: var(--notebook-radius-sm);
-  transform: rotate(-1deg);
-}
-
-.date-stamp {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--notebook-muted-foreground);
-  letter-spacing: 0.05em;
-}
-
-a { color: var(--notebook-accent-blue); text-decoration: none; transition: color 0.15s ease; }
-a:hover { color: var(--notebook-accent-warm); text-decoration: underline; text-underline-offset: 3px; }
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  color: var(--notebook-ink);
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-::selection { background-color: rgba(193, 127, 89, 0.25); color: var(--notebook-ink); }
-
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--notebook-background); }
-::-webkit-scrollbar-thumb { background: var(--notebook-border); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--notebook-muted-foreground); }
-
-.prose-custom p { margin-bottom: 1.25rem; color: var(--notebook-ink); }
-.prose-custom h2 { margin-top: 2rem; margin-bottom: 1rem; }
-.prose-custom ul { list-style: none; padding: 0; }
-.prose-custom code { font-family: var(--font-mono); font-size: 0.875em; }
-.prose-custom pre { font-family: var(--font-mono); background-color: var(--notebook-card); border-radius: var(--notebook-radius-md); }
-.prose-custom pre code { background: none; padding: 0; border-radius: 0; color: inherit; }
-
-.font-serif { font-family: var(--font-serif); }
-.font-sans { font-family: var(--font-sans); }
-.font-hand { font-family: var(--font-hand); }
-.font-mono { font-family: var(--font-mono); }
-
-.backdrop-blur-sm { -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
-
-@media (max-width: 768px) {
-  .notebook-paper::before { left: 40px; }
-}
+a.group:hover { background: rgba(255,255,255,0.03); border-color: rgba(97,175,239,0.15) !important; box-shadow: 0 4px 24px rgba(97,175,239,0.08); }
+a.group:hover h3 { background: linear-gradient(135deg, #61afef, #c678dd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
     <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
     <style type="text/tailwindcss">
   @theme inline {
-    --color-background: var(--notebook-background);
-    --color-foreground: var(--notebook-foreground);
-    --color-card: var(--notebook-card);
-    --color-card-foreground: var(--notebook-card-foreground);
-    --color-popover: var(--notebook-popover);
-    --color-popover-foreground: var(--notebook-popover-foreground);
-    --color-primary: var(--notebook-primary);
-    --color-primary-foreground: var(--notebook-primary-foreground);
-    --color-muted: var(--notebook-muted);
-    --color-muted-foreground: var(--notebook-muted-foreground);
-    --color-border: var(--notebook-border);
-    --color-input: var(--notebook-input);
-    --color-ring: var(--notebook-ring);
-    --color-paper: var(--notebook-paper);
-    --color-paper-line: var(--notebook-paper-line);
-    --color-margin-line: var(--notebook-margin-line);
-    --color-ink: var(--notebook-ink);
-    --color-ink-light: var(--notebook-ink-light);
-    --color-accent-warm: var(--notebook-accent-warm);
-    --color-accent-blue: var(--notebook-accent-blue);
-    --color-tape: var(--notebook-tape);
-    --radius-sm: var(--notebook-radius-sm);
-    --radius-md: var(--notebook-radius-md);
-    --radius-lg: var(--notebook-radius-lg);
+    --color-background: var(--bg);
+    --color-foreground: var(--fg);
+    --color-card-foreground: var(--fg);
+    --color-popover-foreground: var(--fg);
+    --color-primary: var(--blue);
+    --color-primary-foreground: var(--bg-darker);
+    --color-muted-foreground: var(--muted);
+    --color-border: var(--border);
+    --color-input: var(--border);
+    --color-ring: var(--blue);
+    --color-card: var(--card);
+    --color-popover: var(--popover);
+    --color-muted: var(--muted);
+    --radius-sm: var(--radius-sm);
+    --radius-md: var(--radius-md);
+    --radius-lg: var(--radius-lg);
   }
   @layer base {
-    body { background: var(--notebook-background); color: var(--notebook-foreground); }
+    body { background: var(--background); color: var(--foreground); }
     td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
     th { @apply whitespace-nowrap; }
   }
     </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--bg); }
+      .text-background { color: var(--bg); }
+      .border-background { border-color: var(--bg); }
+      .ring-background { --tw-ring-color: var(--bg); }
+      .bg-foreground { background-color: var(--fg); }
+      .text-foreground { color: var(--fg); }
+      .border-foreground { border-color: var(--fg); }
+      .ring-foreground { --tw-ring-color: var(--fg); }
+      .bg-card-foreground { background-color: var(--fg); }
+      .text-card-foreground { color: var(--fg); }
+      .border-card-foreground { border-color: var(--fg); }
+      .ring-card-foreground { --tw-ring-color: var(--fg); }
+      .bg-popover-foreground { background-color: var(--fg); }
+      .text-popover-foreground { color: var(--fg); }
+      .border-popover-foreground { border-color: var(--fg); }
+      .ring-popover-foreground { --tw-ring-color: var(--fg); }
+      .bg-primary { background-color: var(--blue); }
+      .text-primary { color: var(--blue); }
+      .border-primary { border-color: var(--blue); }
+      .ring-primary { --tw-ring-color: var(--blue); }
+      .bg-primary-foreground { background-color: var(--bg-darker); }
+      .text-primary-foreground { color: var(--bg-darker); }
+      .border-primary-foreground { border-color: var(--bg-darker); }
+      .ring-primary-foreground { --tw-ring-color: var(--bg-darker); }
+      .bg-muted-foreground { background-color: var(--muted); }
+      .text-muted-foreground { color: var(--muted); }
+      .border-muted-foreground { border-color: var(--muted); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--border); }
+      .text-input { color: var(--border); }
+      .border-input { border-color: var(--border); }
+      .ring-input { --tw-ring-color: var(--border); }
+      .bg-ring { background-color: var(--blue); }
+      .text-ring { color: var(--blue); }
+      .border-ring { border-color: var(--blue); }
+      .ring-ring { --tw-ring-color: var(--blue); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+    </style>
     <style>
       .no-scrollbar::-webkit-scrollbar { display: none; }
       .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
     </style>
 </head>
 <body class="min-h-screen font-sans antialiased">
-    <main class="relative z-10 min-h-screen">
-      <nav class="sticky top-0 z-50 backdrop-blur-sm bg-[var(--notebook-background)]/80 border-b border-border/50">
-        <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="index.html" class="font-serif text-xl font-semibold text-ink tracking-wide hover:no-underline">
-            <span class="text-accent-warm">Duce-Anchovy</span>
-            <span class="text-ink-light font-normal">'s Notebook</span>
-          </a>
-          <div class="flex items-center gap-6 text-sm">
-            <a href="index.html" class="text-ink hover:text-accent-warm transition-colors font-medium border-b-2 border-accent-warm pb-0.5">首页</a>
-            <a href="#about" class="text-ink-light hover:text-accent-warm transition-colors">关于</a>
-            <a href="https://github.com/Duce-Anchovy" target="_blank" rel="noopener" class="text-ink-light hover:text-accent-warm transition-colors inline-flex items-center gap-1">
-              <i data-lucide="github" class="w-4 h-4"></i>
-            </a>
-          </div>
-        </div>
-      </nav>
+    <canvas id="fx-particles"></canvas>
+    <main class="min-h-screen relative overflow-hidden font-sans" style="background: #282c34;">
+  <!-- 背景弥散光团 -->
+  <div class="fixed inset-0 pointer-events-none" style="z-index:0;">
+    <div class="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full opacity-[0.12] blur-[130px]" style="background: radial-gradient(circle, #c678dd 0%, transparent 70%);"></div>
+    <div class="absolute top-[20%] right-[-10%] w-[600px] h-[600px] rounded-full opacity-[0.10] blur-[140px]" style="background: radial-gradient(circle, #61afef 0%, transparent 70%);"></div>
+    <div class="absolute bottom-[-10%] left-[30%] w-[400px] h-[400px] rounded-full opacity-[0.08] blur-[120px]" style="background: radial-gradient(circle, #56b6c2 0%, transparent 70%);"></div>
+  </div>
 
-      <header class="max-w-3xl mx-auto px-6 pt-16 pb-12 text-center">
-        <div class="inline-block mb-6">
-          <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-accent-warm/20 to-accent-blue/20 border-2 border-dashed border-accent-warm/40 flex items-center justify-center mb-4 rotate-[-2deg]">
-            <i data-lucide="book-open" class="w-8 h-8 text-accent-warm"></i>
-          </div>
-        </div>
-        <h1 class="font-serif text-4xl md:text-5xl font-bold text-ink mb-3 leading-tight">
-          Duce-Anchovy's<br/>Notebook
-        </h1>
-        <p class="font-hand text-xl text-ink-light mb-2">记录思考，分享技术</p>
-        <p class="text-sm text-muted-foreground max-w-md mx-auto mt-4 leading-relaxed">
-          一个自用的数字笔记本，在这里记下学习路上的点滴。<br/>
-          翻开来，随便看看吧。
-        </p>
-        <div class="flex items-center justify-center gap-3 mt-8 text-xs text-muted-foreground">
-          <span class="inline-flex items-center gap-1"><i data-lucide="feather" class="w-3.5 h-3.5"></i> 3 篇笔记</span>
-          <span class="text-border">·</span>
-          <span class="inline-flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> 始于 2026.08</span>
-        </div>
-      </header>
+  <!-- 玻璃导航 -->
+  <nav class="fx-navbar">
+    <div class="max-w-[680px] mx-auto px-6 h-16 flex items-center justify-between relative z-10">
+      <a href="#" class="flex items-center gap-2.5 font-bold text-[16px] tracking-tight text-white">
+        <span class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm" style="background: linear-gradient(135deg, #61afef, #c678dd); color: #21252b; box-shadow: 0 0 20px rgba(97,175,239,0.2);">D</span>
+        <span>duce-anchovy</span>
+      </a>
+      <div class="flex items-center gap-3">
+        <a href="#posts" class="fx-nav-link px-3 py-1.5 text-[13px] font-medium rounded-md transition-colors hover:text-white" style="color: #5c6370;">文章</a>
+        <a href="https://github.com/Duce-Anchovy" target="_blank" rel="noopener" class="w-9 h-9 rounded-lg flex items-center justify-center transition-all hover:bg-white/[0.06]" style="color: rgba(255,255,255,0.5);">
+          <i data-lucide="github" class="w-[18px] h-[18px]"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
 
-      <section class="max-w-3xl mx-auto px-6 pb-16">
-        <div class="flex items-center gap-3 mb-8">
-          <div class="w-8 h-[2px] bg-accent-warm/60"></div>
-          <h2 class="font-serif text-lg font-semibold text-ink">最近的笔记</h2>
-          <div class="flex-1 h-[1px] bg-border"></div>
+  <!-- Hero区：sticky，内容区从下方覆盖 -->
+  <header class="fx-hero">
+    <div class="max-w-[680px] mx-auto px-6 w-full">
+      <div class="fx-bounce-in fx-bounce-in-1 inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-7" style="background: rgba(97,175,239,0.1); border: 1px solid rgba(97,175,239,0.2); color: #61afef;">
+        <span class="w-1.5 h-1.5 rounded-full" style="background: #98c379;"></span>
+        3 篇笔记
+      </div>
+      <h1 class="fx-bounce-in fx-bounce-in-2 text-[44px] md:text-[56px] font-extrabold leading-[1.05] tracking-tight text-white mb-5">
+        Duce-Anchovy's<br/>
+        <span style="background: linear-gradient(135deg, #61afef 0%, #c678dd 50%, #56b6c2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          Web
+        </span>
+      </h1>
+      <p class="fx-bounce-in fx-bounce-in-3 text-[17px] leading-relaxed mb-8" style="color: rgba(171,178,191,0.9);">
+        3A大作——AI Work、AI Code、AI Design
+      </p>
+      <div class="fx-bounce-in fx-bounce-in-4 flex items-center gap-3 mb-4">
+        <div class="w-14 h-px rounded-full" style="background: linear-gradient(to right, transparent, #61afef);"></div>
+        <i data-lucide="sparkles" class="w-3.5 h-3.5" style="color: #c678dd;"></i>
+        <div class="flex-1 h-px" style="background: rgba(62,68,81,0.6);"></div>
+      </div>
+      <div class="fx-bounce-in fx-bounce-in-4 flex items-center gap-8 pt-5">
+        <div>
+          <p class="text-[28px] font-bold leading-none text-white" style="letter-spacing: -0.02em;">3</p>
+          <p class="text-[11px] mt-2 uppercase tracking-[0.12em]" style="color: #5c6370;">篇笔记</p>
         </div>
+        <div class="w-px h-10" style="background: #3e4451;"></div>
+        <div>
+          <p class="text-[28px] font-bold leading-none" style="letter-spacing: -0.02em; color: #c678dd;">2026</p>
+          <p class="text-[11px] mt-2 uppercase tracking-[0.12em]" style="color: #5c6370;">始于此</p>
+        </div>
+        <div class="w-px h-10" style="background: #3e4451;"></div>
+        <div>
+          <p class="text-[28px] font-bold leading-none" style="letter-spacing: -0.02em; color: #56b6c2;">∞</p>
+          <p class="text-[11px] mt-2 uppercase tracking-[0.12em]" style="color: #5c6370;">书写中</p>
+        </div>
+      </div>
+    </div>
+  </header>
 
-        <div class="space-y-8">
-          <article class="note-card p-7 pl-16">
-            <div class="flex items-start justify-between mb-3 flex-wrap gap-2">
-              <span class="tag-stamp text-accent-warm">GitHub教程</span>
-              <time class="date-stamp">2026-08-09</time>
-            </div>
-            <h3 class="font-serif text-xl font-semibold text-ink mb-2 hover:text-accent-warm transition-colors">
-              <a href="posts/post1.html" class="hover:no-underline">使用 GitHub Pages 搭建免费个人博客</a>
+  <!-- 文章列表区：覆盖 Hero -->
+  <section id="posts" class="fx-content">
+    <div class="max-w-[680px] mx-auto px-6 pb-20">
+      <div class="flex items-center gap-4 mb-6" data-aos="fade-up">
+        <p class="text-[12px] uppercase tracking-[0.15em] font-semibold" style="color: #5c6370;">最近文章</p>
+        <div class="flex-1 h-px" style="background: linear-gradient(to right, #3e4451, transparent);"></div>
+      </div>
+
+      <div class="space-y-1">
+        <!-- 文章1 -->
+        <a href="posts/post1.html" class="fx-card-3d fx-card-glow group block p-5 -mx-2 rounded-xl transition-all duration-300" style="border: 1px solid transparent;" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex items-baseline justify-between gap-4 mb-2">
+            <h3 class="text-[18px] font-semibold leading-snug transition-all" style="color: #e6e6e6;">
+              使用 GitHub Pages 搭建免费个人博客
             </h3>
-            <p class="text-ink-light text-sm leading-relaxed mb-4">
-              GitHub Pages 是 GitHub 提供的免费静态网站托管服务，你可以用它来搭建个人博客、项目文档等。只需要一个仓库，几行代码，就能让你的网站上线。本文将详细介绍如何从零开始搭建一个 GitHub Pages 博客。
-            </p>
-            <a href="posts/post1.html" class="inline-flex items-center gap-1 text-sm text-accent-blue hover:text-accent-warm transition-colors group">
-              阅读全文
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
-            </a>
-          </article>
-
-          <article class="note-card p-7 pl-16" style="transform: rotate(0.3deg);">
-            <div class="flex items-start justify-between mb-3 flex-wrap gap-2">
-              <span class="tag-stamp text-accent-blue">Markdown写作</span>
-              <time class="date-stamp">2026-08-08</time>
-            </div>
-            <h3 class="font-serif text-xl font-semibold text-ink mb-2 hover:text-accent-warm transition-colors">
-              <a href="posts/post2.html" class="hover:no-underline">Markdown 写作入门指南</a>
-            </h3>
-            <p class="text-ink-light text-sm leading-relaxed mb-4">
-              Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档，然后转换成有效的 HTML 文档。对于技术博客作者来说，掌握 Markdown 是必备技能。
-            </p>
-            <a href="posts/post2.html" class="inline-flex items-center gap-1 text-sm text-accent-blue hover:text-accent-warm transition-colors group">
-              阅读全文
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
-            </a>
-          </article>
-
-          <article class="note-card p-7 pl-16" style="transform: rotate(-0.2deg);">
-            <div class="flex items-start justify-between mb-3 flex-wrap gap-2">
-              <span class="tag-stamp" style="color: #6B8E6B;">Web前端</span>
-              <time class="date-stamp">2026-08-06</time>
-            </div>
-            <h3 class="font-serif text-xl font-semibold text-ink mb-2 hover:text-accent-warm transition-colors">
-              <a href="posts/post3.html" class="hover:no-underline">初学者的 Web 开发学习路线</a>
-            </h3>
-            <p class="text-ink-light text-sm leading-relaxed mb-4">
-              Web 开发是一个广阔而有趣的领域。从 HTML、CSS、JavaScript 基础开始，到现代框架如 React、Vue，再到后端技术，本文为你梳理一条清晰的学习路线。
-            </p>
-            <a href="posts/post3.html" class="inline-flex items-center gap-1 text-sm text-accent-blue hover:text-accent-warm transition-colors group">
-              阅读全文
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
-            </a>
-          </article>
-        </div>
-      </section>
-
-      <section id="about" class="max-w-3xl mx-auto px-6 pb-20">
-        <div class="flex items-center gap-3 mb-8">
-          <div class="w-8 h-[2px] bg-accent-warm/60"></div>
-          <h2 class="font-serif text-lg font-semibold text-ink">关于笔者</h2>
-          <div class="flex-1 h-[1px] bg-border"></div>
-        </div>
-
-        <div class="notebook-paper rounded-lg p-8 pl-20 border border-border shadow-sm relative">
-          <div class="absolute -top-3 -right-3 bg-yellow-100/80 border border-yellow-200/60 px-3 py-1.5 rounded shadow-sm rotate-3 text-xs font-hand text-yellow-800/80">
-            Hello!
+            <time class="text-[13px] shrink-0" style="color: #5c6370;">8月9日</time>
           </div>
-
-          <div class="flex items-start gap-5 mb-5">
-            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-accent-warm/30 to-accent-blue/20 border-2 border-dashed border-accent-warm/30 flex items-center justify-center shrink-0">
-              <i data-lucide="user" class="w-6 h-6 text-accent-warm/70"></i>
-            </div>
-            <div>
-              <h3 class="font-serif text-xl font-semibold text-ink mb-1">Duce-Anchovy</h3>
-              <p class="text-sm text-ink-light leading-relaxed">
-                热爱技术和写作的开发者。这个博客用于记录我的学习心得和技术分享。
-              </p>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap gap-3 pt-4 border-t border-paper-line/60">
-            <a href="https://github.com/Duce-Anchovy" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded border border-border hover:border-accent-warm/50 hover:bg-accent-warm/5 transition-all text-ink-light hover:text-accent-warm">
-              <i data-lucide="github" class="w-4 h-4"></i> GitHub
-            </a>
-            <a href="#" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded border border-border hover:border-accent-warm/50 hover:bg-accent-warm/5 transition-all text-ink-light hover:text-accent-warm">
-              <i data-lucide="mail" class="w-4 h-4"></i> 联系我
-            </a>
-            <a href="#" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded border border-border hover:border-accent-warm/50 hover:bg-accent-warm/5 transition-all text-ink-light hover:text-accent-warm">
-              <i data-lucide="rss" class="w-4 h-4"></i> RSS
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <footer class="border-t border-border/50 py-8">
-        <div class="max-w-3xl mx-auto px-6 text-center">
-          <p class="text-xs text-muted-foreground font-mono">
-            &copy; 2026 Duce-Anchovy &middot; Written with <i data-lucide="heart" class="w-3 h-3 inline text-accent-warm fill-accent-warm"></i> &amp; Markdown
+          <p class="text-[14px] leading-[1.8] mb-3" style="color: #abb2bf;">
+            GitHub Pages 是 GitHub 提供的免费静态网站托管服务，只需一个仓库即可上线你的个人网站。
           </p>
-          <p class="text-xs text-muted-foreground/60 mt-1 font-hand text-base">
-            纸短情长，下回再叙 ~
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(152,195,121,0.12); color: #98c379;">技术教程</span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(97,175,239,0.10); color: #61afef;">GitHub</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-all" style="color: #56b6c2;"></i>
+          </div>
+        </a>
+
+        <!-- 文章2 -->
+        <a href="posts/post2.html" class="fx-card-3d fx-card-glow group block p-5 -mx-2 rounded-xl transition-all duration-300" style="border: 1px solid transparent;" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex items-baseline justify-between gap-4 mb-2">
+            <h3 class="text-[18px] font-semibold leading-snug" style="color: #e6e6e6;">
+              Markdown 写作入门指南
+            </h3>
+            <time class="text-[13px] shrink-0" style="color: #5c6370;">8月8日</time>
+          </div>
+          <p class="text-[14px] leading-[1.8] mb-3" style="color: #abb2bf;">
+            Markdown 是一种轻量级标记语言，使用纯文本即可编写格式丰富的文档，是写作爱好者的必备工具。
           </p>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(198,120,221,0.12); color: #c678dd;">写作方法</span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(86,182,194,0.10); color: #56b6c2;">Markdown</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-all" style="color: #56b6c2;"></i>
+          </div>
+        </a>
+
+        <!-- 文章3 -->
+        <a href="posts/post3.html" class="fx-card-3d fx-card-glow group block p-5 -mx-2 rounded-xl transition-all duration-300" style="border: 1px solid transparent;" data-aos="fade-up" data-aos-delay="300">
+          <div class="flex items-baseline justify-between gap-4 mb-2">
+            <h3 class="text-[18px] font-semibold leading-snug" style="color: #e6e6e6;">
+              初学者的 Web 开发学习路线
+            </h3>
+            <time class="text-[13px] shrink-0" style="color: #5c6370;">8月6日</time>
+          </div>
+          <p class="text-[14px] leading-[1.8] mb-3" style="color: #abb2bf;">
+            从 HTML、CSS、JavaScript 到现代框架，再到后端技术，为你梳理一条清晰的 Web 开发学习路径。
+          </p>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(209,154,102,0.12); color: #d19a66;">学习路线</span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(224,108,117,0.10); color: #e06c75;">Web</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-all" style="color: #56b6c2;"></i>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="border-t" style="border-color: rgba(62,68,81,0.5);" data-aos="fade-up">
+      <div class="max-w-[680px] mx-auto px-6 py-10 text-center">
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <div class="w-8 h-px" style="background: linear-gradient(to right, transparent, rgba(97,175,239,0.4));"></div>
+          <i data-lucide="feather" class="w-3.5 h-3.5" style="color: rgba(198,120,221,0.5);"></i>
+          <div class="w-8 h-px" style="background: linear-gradient(to left, transparent, rgba(97,175,239,0.4));"></div>
         </div>
-      </footer>
-    </main>
+        <p class="text-[12px] mb-1" style="color: #5c6370;">&copy; 2026 Duce-Anchovy</p>
+        <p class="text-[12px]" style="color: #4b5263;">书写，思考，生长</p>
+      </div>
+    </footer>
+  </section>
+</main>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="fx-animations.js"></script>
     <script>lucide.createIcons();</script>
 </body>
 </html>

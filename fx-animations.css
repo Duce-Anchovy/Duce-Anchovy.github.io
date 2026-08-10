@@ -1,0 +1,214 @@
+/* ========================================
+   FX Animations - 科技感动画效果模块
+   集成方式：在 HTML <head> 中引用此 CSS
+   依赖：AOS (通过 CDN 引入)
+   ======================================== */
+
+/* ---------- 1. 粒子背景 ---------- */
+#fx-particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ---------- 2. 首屏 Hero 区 ---------- */
+.fx-hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* ---------- 3. 内容区（覆盖标题区） ---------- */
+.fx-content {
+  position: relative;
+  z-index: 2;
+  background: var(--bg, #0a0a0f);
+  border-radius: 24px 24px 0 0;
+  margin-top: -40px;
+  padding-top: 48px;
+  min-height: 100vh;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- 4. PPT 弹入动画 ---------- */
+.fx-bounce-in {
+  opacity: 0;
+  animation: fxBounceIn 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.fx-bounce-in-1 { animation-delay: 0s; }
+.fx-bounce-in-2 { animation-delay: 0.12s; }
+.fx-bounce-in-3 { animation-delay: 0.24s; }
+.fx-bounce-in-4 { animation-delay: 0.36s; }
+.fx-bounce-in-5 { animation-delay: 0.48s; }
+.fx-bounce-in-6 { animation-delay: 0.60s; }
+.fx-bounce-in-7 { animation-delay: 0.72s; }
+.fx-bounce-in-8 { animation-delay: 0.84s; }
+
+@keyframes fxBounceIn {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.02);
+  }
+  80% {
+    transform: translateY(3px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 文章页专用：从右侧弹入的变体 */
+.fx-bounce-in-right {
+  opacity: 0;
+  animation: fxBounceInRight 0.65s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes fxBounceInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-6px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ---------- 5. 3D 倾斜卡片 + 发光边框 ---------- */
+.fx-card-3d {
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  perspective: 800px;
+  will-change: transform;
+}
+
+.fx-card-3d:hover {
+  box-shadow:
+    0 0 20px rgba(0, 170, 255, 0.15),
+    0 0 40px rgba(0, 170, 255, 0.08),
+    0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.fx-card-glow {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.fx-card-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 170, 255, 0.3),
+    rgba(120, 80, 255, 0.3),
+    rgba(0, 200, 200, 0.3)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.fx-card-glow:hover::before {
+  opacity: 1;
+}
+
+/* ---------- 6. 毛玻璃导航栏 ---------- */
+.fx-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 12px 24px;
+  background: rgba(10, 10, 15, 0.75);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.fx-navbar.scrolled {
+  background: rgba(10, 10, 15, 0.92);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- 7. 辅助：页面淡入 ---------- */
+.fx-page-enter {
+  animation: fxPageEnter 0.5s ease-out;
+}
+
+@keyframes fxPageEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- 8. 导航链接下划线动画 ---------- */
+.fx-nav-link {
+  position: relative;
+  text-decoration: none;
+  padding: 4px 0;
+}
+
+.fx-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00aaff, #7850ff);
+  border-radius: 1px;
+  transition: width 0.3s ease;
+}
+
+.fx-nav-link:hover::after {
+  width: 100%;
+}
+
+/* ---------- 9. 响应式 ---------- */
+@media (max-width: 768px) {
+  .fx-hero {
+    min-height: 80vh;
+    padding: 1rem;
+  }
+
+  .fx-content {
+    border-radius: 20px 20px 0 0;
+    margin-top: -30px;
+    padding-top: 36px;
+  }
+
+  .fx-navbar {
+    padding: 10px 16px;
+  }
+}
