@@ -170,26 +170,30 @@
 
     var triggered = false;
 
+    // 回到顶部时重置，允许再次触发
     window.addEventListener('scroll', function () {
-      // 回到顶部时重置，允许再次触发
       if (window.scrollY <= 5) {
         triggered = false;
-        return;
-      }
-      if (triggered) return;
-
-      triggered = true;
-      var contentTop = content.getBoundingClientRect().top;
-      var heroTop = hero.getBoundingClientRect().top;
-      var scrollBy = contentTop - heroTop;
-
-      if (scrollBy > 0) {
-        window.scrollBy({
-          top: scrollBy,
-          behavior: 'smooth'
-        });
       }
     }, { passive: true });
+
+    // 拦截滚轮事件：向下滚动时阻止默认行为，改为一次性平滑弹起覆盖
+    window.addEventListener('wheel', function (e) {
+      if (triggered) return;
+      if (e.deltaY > 0) {
+        e.preventDefault();
+        triggered = true;
+        var contentTop = content.getBoundingClientRect().top;
+        var heroTop = hero.getBoundingClientRect().top;
+        var scrollBy = contentTop - heroTop;
+        if (scrollBy > 0) {
+          window.scrollBy({
+            top: scrollBy,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }, { passive: false });
   }
 
   /* ========================================
