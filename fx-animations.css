@@ -24,9 +24,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 18vh;
   text-align: center;
-  padding: 2rem;
 }
 
 /* ---------- 3. 内容区（覆盖标题区） ---------- */
@@ -214,7 +214,7 @@
 @media (max-width: 768px) {
   .fx-hero {
     height: 80vh;
-    padding: 1rem;
+    padding-top: 12vh;
     top: 56px;
   }
 
