@@ -160,7 +160,44 @@
   }
 
   /* ========================================
-     4. AOS 初始化
+     4. Hero 覆盖：内容区主动上滑效果
+     ======================================== */
+  function initHeroCover() {
+    var hero = document.querySelector('.fx-hero');
+    var content = document.querySelector('.fx-content');
+    if (!hero || !content) return;
+
+    var heroHeight;
+    function updateSizes() {
+      if (hero) heroHeight = hero.offsetHeight;
+    }
+    updateSizes();
+    window.addEventListener('resize', updateSizes);
+
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(function () {
+          var scrollY = window.scrollY;
+          if (scrollY > 0 && scrollY <= heroHeight) {
+            var progress = scrollY / heroHeight;
+            // 正弦曲线：0 → 峰值 → 0，平滑过渡，不产生跳变
+            var extraShift = heroHeight * 0.18 * Math.sin(progress * Math.PI);
+            content.style.transform = 'translateY(-' + extraShift + 'px)';
+            content.style.transition = 'none';
+          } else {
+            content.style.transform = '';
+            content.style.transition = '';
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  /* ========================================
+     5. AOS 初始化
      ======================================== */
   function initAOS() {
     if (typeof AOS !== 'undefined') {
@@ -174,12 +211,13 @@
   }
 
   /* ========================================
-     5. 启动
+     6. 启动
      ======================================== */
   document.addEventListener('DOMContentLoaded', function () {
     initParticles();
     init3DCards();
     initNavbar();
+    initHeroCover();
     initAOS();
   });
 })();
