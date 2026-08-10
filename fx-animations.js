@@ -160,48 +160,34 @@
   }
 
   /* ========================================
-     4. Hero 覆盖：内容区主动上滑效果
-        内容区以比自然滚动更快的速度向上移动，形成主动覆盖 Hero 的视觉动感
+     4. Hero 覆盖：检测到下滑后内容区快速弹起覆盖全屏
+        只需动一下鼠标滚轮，内容区即平滑滑上覆盖 Hero
      ======================================== */
   function initHeroCover() {
     var hero = document.querySelector('.fx-hero');
     var content = document.querySelector('.fx-content');
     if (!hero || !content) return;
 
-    var heroHeight;
-    function updateSizes() {
-      heroHeight = (hero && hero.offsetHeight) || window.innerHeight;
-    }
-    updateSizes();
-    window.addEventListener('resize', updateSizes);
+    var triggered = false;
 
-    var ticking = false;
     window.addEventListener('scroll', function () {
-      if (!ticking) {
-        requestAnimationFrame(function () {
-          var scrollY = window.scrollY;
-          if (scrollY <= 0) {
-            content.style.transform = '';
-            content.style.transition = '';
-          } else if (scrollY < heroHeight * 0.8) {
-            // 主动阶段：内容区以 40% 额外速度向上追赶
-            var extraShift = scrollY * 0.4;
-            content.style.transform = 'translateY(-' + extraShift + 'px)';
-            content.style.transition = 'none';
-          } else if (scrollY < heroHeight) {
-            // 衰减阶段：平滑回归自然位置
-            var decay = (scrollY - heroHeight * 0.8) / (heroHeight * 0.2);
-            var peakShift = heroHeight * 0.8 * 0.4;
-            var extraShift = peakShift * (1 - decay);
-            content.style.transform = 'translateY(-' + extraShift + 'px)';
-            content.style.transition = 'none';
-          } else {
-            content.style.transform = '';
-            content.style.transition = '';
-          }
-          ticking = false;
+      // 回到顶部时重置，允许再次触发
+      if (window.scrollY <= 5) {
+        triggered = false;
+        return;
+      }
+      if (triggered) return;
+
+      triggered = true;
+      var contentTop = content.getBoundingClientRect().top;
+      var heroTop = hero.getBoundingClientRect().top;
+      var scrollBy = contentTop - heroTop;
+
+      if (scrollBy > 0) {
+        window.scrollBy({
+          top: scrollBy,
+          behavior: 'smooth'
         });
-        ticking = true;
       }
     }, { passive: true });
   }
