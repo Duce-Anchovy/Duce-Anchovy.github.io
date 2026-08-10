@@ -20,7 +20,7 @@
   left: 0;
   right: 0;
   z-index: 1;
-  height: 75vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,7 +35,7 @@
   z-index: 2;
   background: var(--bg, #282c34);
   border-radius: 24px 24px 0 0;
-  margin-top: calc(75vh - 80px);
+  margin-top: calc(100vh - 120px);
   padding-top: 48px;
   min-height: 100vh;
   box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.6);
@@ -213,14 +213,14 @@
 /* ---------- 9. 响应式 ---------- */
 @media (max-width: 768px) {
   .fx-hero {
-    height: 60vh;
+    height: 80vh;
     padding: 1rem;
     top: 56px;
   }
 
   .fx-content {
     border-radius: 20px 20px 0 0;
-    margin-top: calc(60vh - 60px);
+    margin-top: calc(80vh - 80px);
     padding-top: 36px;
   }
 
