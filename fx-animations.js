@@ -197,7 +197,50 @@
   }
 
   /* ========================================
-     5. AOS 初始化
+     5. Hero 标题回顶重触发 + 下滑提示显隐
+     ======================================== */
+  function initHeroReveal() {
+    var heroItems = document.querySelectorAll('.fx-float-up');
+    var scrollHint = document.querySelector('.fx-scroll-hint');
+    if (!heroItems.length) return;
+
+    var wasAtTop = true;
+    var ticking = false;
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(function () {
+          var isAtTop = window.scrollY <= 5;
+
+          // 下滑提示：滚动后淡出，回顶后淡入
+          if (scrollHint) {
+            if (isAtTop) {
+              scrollHint.classList.remove('hidden');
+            } else {
+              scrollHint.classList.add('hidden');
+            }
+          }
+
+          // 回顶时重新触发标题浮现动画
+          if (isAtTop && !wasAtTop) {
+            for (var i = 0; i < heroItems.length; i++) {
+              var el = heroItems[i];
+              el.style.animation = 'none';
+              el.offsetHeight; // 强制回流，重置动画
+              el.style.animation = '';
+            }
+          }
+
+          wasAtTop = isAtTop;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  /* ========================================
+     6. AOS 初始化
      ======================================== */
   function initAOS() {
     if (typeof AOS !== 'undefined') {
@@ -211,13 +254,14 @@
   }
 
   /* ========================================
-     6. 启动
+     7. 启动
      ======================================== */
   document.addEventListener('DOMContentLoaded', function () {
     initParticles();
     init3DCards();
     initNavbar();
     initHeroCover();
+    initHeroReveal();
     initAOS();
   });
 })();
