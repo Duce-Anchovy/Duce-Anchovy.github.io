@@ -1,96 +1,610 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>使用 GitHub Pages 搭建免费个人博客 - Duce-Anchovy's Blog</title>
-  <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-  <header>
-    <div class="container">
-      <h1 class="site-title">Duce-Anchovy's Blog</h1>
-      <p class="site-desc">记录思考，分享技术</p>
-    </div>
-  </header>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用 GitHub Pages 搭建免费个人博客 | Duce-Anchovy's Notebook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Ma+Shan+Zheng&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style id="theme-vars">
+/* ========================================
+   Duce-Anchovy's Notebook Blog - Design Tokens
+   笔记本风格个人博客 - 温暖手账质感
+   ======================================== */
 
-  <nav class="top-nav">
-    <div class="container">
-      <a href="../index.html">首页</a>
-      <a href="../index.html#about">关于</a>
+:root {
+  /* Brand prefix: notebook */
+  --notebook-background: #F7F2E8;
+  --notebook-foreground: #3D3528;
+  --notebook-card: #FDFAF3;
+  --notebook-card-foreground: #3D3528;
+  --notebook-popover: #FDFAF3;
+  --notebook-popover-foreground: #3D3528;
+  --notebook-primary: #8B6F4E;
+  --notebook-primary-foreground: #FDFAF3;
+  --notebook-muted: #E8E0D0;
+  --notebook-muted-foreground: #8B7E6A;
+  --notebook-border: #D4C9B5;
+  --notebook-input: #D4C9B5;
+  --notebook-ring: #8B6F4E;
+
+  /* Radius scale - 柔和圆角 */
+  --notebook-radius-sm: 4px;
+  --notebook-radius-md: 8px;
+  --notebook-radius-lg: 12px;
+
+  /* Notebook-specific tokens */
+  --notebook-paper: #FDFAF3;
+  --notebook-paper-line: #E5DDD0;
+  --notebook-margin-line: #D4A5A5;
+  --notebook-ink: #2C2416;
+  --notebook-ink-light: #6B5D4D;
+  --notebook-accent-warm: #C17F59;
+  --notebook-accent-blue: #5B7B9A;
+  --notebook-tape: rgba(212, 190, 158, 0.45);
+  --notebook-shadow: rgba(61, 53, 40, 0.08);
+  --notebook-shadow-strong: rgba(61, 53, 40, 0.15);
+}
+
+/* ========================================
+   @theme inline for Tailwind v4
+   ======================================== */
+@theme inline {
+  --color-background: var(--notebook-background);
+  --color-foreground: var(--notebook-foreground);
+  --color-card: var(--notebook-card);
+  --color-card-foreground: var(--notebook-card-foreground);
+  --color-popover: var(--notebook-popover);
+  --color-popover-foreground: var(--notebook-popover-foreground);
+  --color-primary: var(--notebook-primary);
+  --color-primary-foreground: var(--notebook-primary-foreground);
+  --color-muted: var(--notebook-muted);
+  --color-muted-foreground: var(--notebook-muted-foreground);
+  --color-border: var(--notebook-border);
+  --color-input: var(--notebook-input);
+  --color-ring: var(--notebook-ring);
+
+  --color-paper: var(--notebook-paper);
+  --color-paper-line: var(--notebook-paper-line);
+  --color-margin-line: var(--notebook-margin-line);
+  --color-ink: var(--notebook-ink);
+  --color-ink-light: var(--notebook-ink-light);
+  --color-accent-warm: var(--notebook-accent-warm);
+  --color-accent-blue: var(--notebook-accent-blue);
+  --color-tape: var(--notebook-tape);
+
+  --radius-sm: var(--notebook-radius-sm);
+  --radius-md: var(--notebook-radius-md);
+  --radius-lg: var(--notebook-radius-lg);
+
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --font-hand: "Ma Shan Zheng", "ZCOOL KuaiLe", "Caveat", cursive;
+  --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, monospace;
+}
+
+/* ========================================
+   Global Base Styles
+   ======================================== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--notebook-background);
+  color: var(--notebook-foreground);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Paper texture overlay - subtle */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(196, 175, 140, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(180, 200, 220, 0.1) 0%, transparent 50%);
+}
+
+/* Notebook lined paper effect */
+.notebook-paper {
+  background-color: var(--notebook-paper);
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    var(--notebook-paper-line) 31px,
+    var(--notebook-paper-line) 32px
+  );
+  background-position: 0 16px;
+  position: relative;
+}
+
+.notebook-paper::before {
+  content: "";
+  position: absolute;
+  left: 60px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--notebook-margin-line);
+  opacity: 0.5;
+}
+
+/* Note card with tape effect */
+.note-card {
+  background: var(--notebook-paper);
+  border: 1px solid var(--notebook-border);
+  border-radius: var(--notebook-radius-md);
+  box-shadow: 2px 3px 8px var(--notebook-shadow);
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.note-card:hover {
+  transform: translateY(-2px) rotate(0.3deg);
+  box-shadow: 4px 6px 16px var(--notebook-shadow-strong);
+}
+
+.note-card::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1deg);
+  width: 80px;
+  height: 22px;
+  background: var(--notebook-tape);
+  border-radius: 2px;
+}
+
+/* Handwritten-style tag */
+.tag-stamp {
+  display: inline-block;
+  padding: 2px 10px;
+  font-family: var(--font-hand);
+  font-size: 0.85rem;
+  border: 1.5px solid currentColor;
+  border-radius: var(--notebook-radius-sm);
+  transform: rotate(-1deg);
+}
+
+/* Date stamp style */
+.date-stamp {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--notebook-muted-foreground);
+  letter-spacing: 0.05em;
+}
+
+/* Link styles - ink pen feel */
+a {
+  color: var(--notebook-accent-blue);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--notebook-accent-warm);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  color: var(--notebook-ink);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Selection color */
+::selection {
+  background-color: rgba(193, 127, 89, 0.25);
+  color: var(--notebook-ink);
+}
+
+/* Scrollbar - subtle */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--notebook-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--notebook-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--notebook-muted-foreground);
+}
+
+/* Prose custom for article content */
+.prose-custom p {
+  margin-bottom: 1.25rem;
+  color: var(--notebook-ink);
+}
+
+.prose-custom h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose-custom ul {
+  list-style: none;
+  padding: 0;
+}
+
+.prose-custom code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+.prose-custom pre {
+  font-family: var(--font-mono);
+  background-color: var(--notebook-card);
+  border-radius: var(--notebook-radius-md);
+}
+
+.prose-custom pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Font utility classes */
+.font-serif { font-family: var(--font-serif); }
+.font-sans { font-family: var(--font-sans); }
+.font-hand { font-family: var(--font-hand); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Backdrop blur fallback */
+.backdrop-blur-sm {
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+/* Responsive padding for notebook paper on mobile */
+@media (max-width: 768px) {
+  .notebook-paper::before {
+    left: 40px;
+  }
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--notebook-background);
+    --color-foreground: var(--notebook-foreground);
+    --color-card: var(--notebook-card);
+    --color-card-foreground: var(--notebook-card-foreground);
+    --color-popover: var(--notebook-popover);
+    --color-popover-foreground: var(--notebook-popover-foreground);
+    --color-primary: var(--notebook-primary);
+    --color-primary-foreground: var(--notebook-primary-foreground);
+    --color-muted: var(--notebook-muted);
+    --color-muted-foreground: var(--notebook-muted-foreground);
+    --color-border: var(--notebook-border);
+    --color-input: var(--notebook-input);
+    --color-ring: var(--notebook-ring);
+    --color-paper: var(--notebook-paper);
+    --color-paper-line: var(--notebook-paper-line);
+    --color-margin-line: var(--notebook-margin-line);
+    --color-ink: var(--notebook-ink);
+    --color-ink-light: var(--notebook-ink-light);
+    --color-accent-warm: var(--notebook-accent-warm);
+    --color-accent-blue: var(--notebook-accent-blue);
+    --color-tape: var(--notebook-tape);
+    --radius-sm: var(--notebook-radius-sm);
+    --radius-md: var(--notebook-radius-md);
+    --radius-lg: var(--notebook-radius-lg);
+  }
+  @layer base {
+    body { background: var(--notebook-background); color: var(--notebook-foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--notebook-background); }
+      .text-background { color: var(--notebook-background); }
+      .border-background { border-color: var(--notebook-background); }
+      .ring-background { --tw-ring-color: var(--notebook-background); }
+      .bg-foreground { background-color: var(--notebook-foreground); }
+      .text-foreground { color: var(--notebook-foreground); }
+      .border-foreground { border-color: var(--notebook-foreground); }
+      .ring-foreground { --tw-ring-color: var(--notebook-foreground); }
+      .bg-card { background-color: var(--notebook-card); }
+      .text-card { color: var(--notebook-card); }
+      .border-card { border-color: var(--notebook-card); }
+      .ring-card { --tw-ring-color: var(--notebook-card); }
+      .bg-card-foreground { background-color: var(--notebook-card-foreground); }
+      .text-card-foreground { color: var(--notebook-card-foreground); }
+      .border-card-foreground { border-color: var(--notebook-card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--notebook-card-foreground); }
+      .bg-popover { background-color: var(--notebook-popover); }
+      .text-popover { color: var(--notebook-popover); }
+      .border-popover { border-color: var(--notebook-popover); }
+      .ring-popover { --tw-ring-color: var(--notebook-popover); }
+      .bg-popover-foreground { background-color: var(--notebook-popover-foreground); }
+      .text-popover-foreground { color: var(--notebook-popover-foreground); }
+      .border-popover-foreground { border-color: var(--notebook-popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--notebook-popover-foreground); }
+      .bg-primary { background-color: var(--notebook-primary); }
+      .text-primary { color: var(--notebook-primary); }
+      .border-primary { border-color: var(--notebook-primary); }
+      .ring-primary { --tw-ring-color: var(--notebook-primary); }
+      .bg-primary-foreground { background-color: var(--notebook-primary-foreground); }
+      .text-primary-foreground { color: var(--notebook-primary-foreground); }
+      .border-primary-foreground { border-color: var(--notebook-primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--notebook-primary-foreground); }
+      .bg-muted { background-color: var(--notebook-muted); }
+      .text-muted { color: var(--notebook-muted); }
+      .border-muted { border-color: var(--notebook-muted); }
+      .ring-muted { --tw-ring-color: var(--notebook-muted); }
+      .bg-muted-foreground { background-color: var(--notebook-muted-foreground); }
+      .text-muted-foreground { color: var(--notebook-muted-foreground); }
+      .border-muted-foreground { border-color: var(--notebook-muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--notebook-muted-foreground); }
+      .bg-border { background-color: var(--notebook-border); }
+      .text-border { color: var(--notebook-border); }
+      .border-border { border-color: var(--notebook-border); }
+      .ring-border { --tw-ring-color: var(--notebook-border); }
+      .bg-input { background-color: var(--notebook-input); }
+      .text-input { color: var(--notebook-input); }
+      .border-input { border-color: var(--notebook-input); }
+      .ring-input { --tw-ring-color: var(--notebook-input); }
+      .bg-ring { background-color: var(--notebook-ring); }
+      .text-ring { color: var(--notebook-ring); }
+      .border-ring { border-color: var(--notebook-ring); }
+      .ring-ring { --tw-ring-color: var(--notebook-ring); }
+      .bg-paper { background-color: var(--notebook-paper); }
+      .text-paper { color: var(--notebook-paper); }
+      .border-paper { border-color: var(--notebook-paper); }
+      .ring-paper { --tw-ring-color: var(--notebook-paper); }
+      .bg-paper-line { background-color: var(--notebook-paper-line); }
+      .text-paper-line { color: var(--notebook-paper-line); }
+      .border-paper-line { border-color: var(--notebook-paper-line); }
+      .ring-paper-line { --tw-ring-color: var(--notebook-paper-line); }
+      .bg-margin-line { background-color: var(--notebook-margin-line); }
+      .text-margin-line { color: var(--notebook-margin-line); }
+      .border-margin-line { border-color: var(--notebook-margin-line); }
+      .ring-margin-line { --tw-ring-color: var(--notebook-margin-line); }
+      .bg-ink { background-color: var(--notebook-ink); }
+      .text-ink { color: var(--notebook-ink); }
+      .border-ink { border-color: var(--notebook-ink); }
+      .ring-ink { --tw-ring-color: var(--notebook-ink); }
+      .bg-ink-light { background-color: var(--notebook-ink-light); }
+      .text-ink-light { color: var(--notebook-ink-light); }
+      .border-ink-light { border-color: var(--notebook-ink-light); }
+      .ring-ink-light { --tw-ring-color: var(--notebook-ink-light); }
+      .bg-accent-warm { background-color: var(--notebook-accent-warm); }
+      .text-accent-warm { color: var(--notebook-accent-warm); }
+      .border-accent-warm { border-color: var(--notebook-accent-warm); }
+      .ring-accent-warm { --tw-ring-color: var(--notebook-accent-warm); }
+      .bg-accent-blue { background-color: var(--notebook-accent-blue); }
+      .text-accent-blue { color: var(--notebook-accent-blue); }
+      .border-accent-blue { border-color: var(--notebook-accent-blue); }
+      .ring-accent-blue { --tw-ring-color: var(--notebook-accent-blue); }
+      .bg-tape { background-color: var(--notebook-tape); }
+      .text-tape { color: var(--notebook-tape); }
+      .border-tape { border-color: var(--notebook-tape); }
+      .ring-tape { --tw-ring-color: var(--notebook-tape); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+    <!-- Password Gate -->
+    <div id="password-gate" style="position:fixed;inset:0;z-index:9999;background:var(--notebook-background);display:flex;align-items:center;justify-content:center;font-family:var(--font-sans)">
+      <div style="text-align:center;max-width:360px;padding:40px">
+        <div style="font-size:3rem;margin-bottom:12px">&#x1f512;</div>
+        <h2 style="font-family:var(--font-serif);color:var(--notebook-ink);margin-bottom:6px;font-size:1.5rem">Duce-Anchovy's Notebook</h2>
+        <p style="color:var(--notebook-ink-light);font-size:0.9rem;margin-bottom:20px">&#x79c1;&#x4eba;&#x7b14;&#x8bb0;&#xff0c;&#x8bf7;&#x8f93;&#x5165;&#x5bc6;&#x7801;</p>
+        <input id="pwd-input" type="password" placeholder="&#x8bf7;&#x8f93;&#x5165;&#x5bc6;&#x7801;..." style="width:100%;padding:12px 16px;border:2px solid var(--notebook-border);border-radius:8px;background:var(--notebook-paper);font-size:1rem;text-align:center;outline:none;color:var(--notebook-ink);transition:border-color .2s" onfocus="this.style.borderColor='var(--notebook-accent-warm)'" onblur="this.style.borderColor='var(--notebook-border)'" onkeydown="if(event.key==='Enter')checkPassword()">
+        <p id="pwd-error" style="color:#c0392b;font-size:0.85rem;margin-top:12px;display:none">&#x5bc6;&#x7801;&#x9519;&#x8bef;&#xff0c;&#x8bf7;&#x91cd;&#x8bd5;</p>
+      </div>
+    </div>
+    <script>
+    async function checkPassword(){const i=document.getElementById('pwd-input');const e=document.getElementById('pwd-error');const d=new TextEncoder().encode(i.value);const h=await crypto.subtle.digest('SHA-256',d);const hash=Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('');if(hash==='5871055dcab90dd7c901b9fbe1d50c43f7be7c1cf9a06883540a3bb01bcac660'){sessionStorage.setItem('auth','1');document.getElementById('password-gate').remove()}else{e.style.display='block';i.value='';i.focus()}}
+    if(sessionStorage.getItem('auth')){document.getElementById('password-gate').remove()}else{document.getElementById('pwd-input').focus()}
+    </script>
+    <main class="relative z-10 min-h-screen">
+  <!-- 顶部导航栏 -->
+  <nav class="sticky top-0 z-50 backdrop-blur-sm bg-[var(--notebook-background)]/80 border-b border-border/50">
+    <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="../index.html" class="font-serif text-xl font-semibold text-ink tracking-wide hover:no-underline">
+        <span class="text-accent-warm">Duce-Anchovy</span>
+        <span class="text-ink-light font-normal">'s Notebook</span>
+      </a>
+      <div class="flex items-center gap-6 text-sm">
+        <a href="../index.html" class="text-ink-light hover:text-accent-warm transition-colors inline-flex items-center gap-1">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> 返回首页
+        </a>
+      </div>
     </div>
   </nav>
 
-  <main class="container">
-    <article class="post-detail">
-      <a href="../index.html" class="back-link">← 返回首页</a>
-
-      <div class="post-header">
-        <h1 class="post-title">使用 GitHub Pages 搭建免费个人博客</h1>
-        <div class="post-meta">
-          <span class="post-date">2026-08-09</span>
-          <span class="post-tags">
-            <span class="tag">GitHub</span>
-            <span class="tag">教程</span>
-          </span>
-        </div>
+  <!-- 文章主体：横线笔记本纸张效果 -->
+  <article class="max-w-3xl mx-auto px-6 py-10">
+    <!-- 文章头部 -->
+    <header class="mb-10 pb-6 border-b-2 border-dashed border-border">
+      <div class="flex items-center gap-3 mb-4 flex-wrap">
+        <a href="../index.html" class="text-xs text-muted-foreground hover:text-accent-warm transition-colors inline-flex items-center gap-1">
+          <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> 所有笔记
+        </a>
       </div>
+      <h1 class="font-serif text-3xl md:text-4xl font-bold text-ink mb-4 leading-tight">
+        使用 GitHub Pages 搭建免费个人博客
+      </h1>
+      <div class="flex items-center gap-4 flex-wrap text-sm">
+        <time class="date-stamp inline-flex items-center gap-1">
+          <i data-lucide="calendar-days" class="w-3.5 h-3.5"></i> 2026-08-09
+        </time>
+        <span class="tag-stamp text-accent-warm">GitHub教程</span>
+        <span class="text-muted-foreground inline-flex items-center gap-1 text-xs">
+          <i data-lucide="clock" class="w-3.5 h-3.5"></i> 约 8 分钟读完
+        </span>
+      </div>
+    </header>
 
-      <div class="post-content">
-        <h2>什么是 GitHub Pages</h2>
-        <p>GitHub Pages 是 GitHub 提供的一项免费静态网站托管服务。你可以用它来托管个人主页、项目文档、博客等任何静态网站。它支持自定义域名，自动提供 HTTPS，而且完全免费。</p>
+    <!-- 文章正文：横线纸张效果 -->
+    <div class="notebook-paper rounded-lg p-8 md:p-12 pl-16 md:pl-20 border border-border shadow-sm relative">
+      <!-- 胶带装饰 -->
+      <div class="absolute -top-3 left-12 w-16 h-6 bg-tape rounded-sm -rotate-2"></div>
+      <div class="absolute -top-3 right-12 w-16 h-6 bg-tape rounded-sm rotate-1"></div>
 
-        <h2>搭建步骤</h2>
+      <div class="prose-custom text-ink leading-[2] text-[15px]">
+        <p class="mb-6 text-ink-light italic border-l-2 border-margin-line/50 pl-4">
+          GitHub Pages 是 GitHub 提供的免费静态网站托管服务，你可以用它来搭建个人博客、项目文档等。只需要一个仓库，几行代码，就能让你的网站上线。
+        </p>
 
-        <h3>第一步：创建仓库</h3>
-        <p>在你的 GitHub 账号下创建一个名为 <code>username.github.io</code> 的仓库（将 username 替换为你的 GitHub 用户名）。仓库必须设置为 <strong>Public</strong>。</p>
-
-        <h3>第二步：克隆仓库到本地</h3>
-        <pre><code>git clone https://github.com/username/username.github.io.git
-cd username.github.io</code></pre>
-
-        <h3>第三步：创建首页</h3>
-        <p>在仓库根目录创建一个 <code>index.html</code> 文件作为网站的首页。这是访问者打开你的网站时看到的第一页。</p>
-        <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;meta charset="UTF-8"&gt;
-  &lt;title&gt;My Blog&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;h1&gt;Hello, World!&lt;/h1&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-
-        <h3>第四步：推送代码</h3>
-        <pre><code>git add .
-git commit -m "初始化博客"
-git push origin main</code></pre>
-
-        <h3>第五步：启用 Pages</h3>
-        <p>进入仓库的 <strong>Settings → Pages</strong>，在 Source 下拉菜单中选择 <code>main</code> 分支，点击保存。几分钟后，你的网站就可以通过 <code>https://username.github.io</code> 访问了。</p>
-
-        <h2>进阶技巧</h2>
-        <ul>
-          <li><strong>自定义域名</strong>：在 Settings → Pages 中绑定你自己的域名，并在 DNS 中添加 CNAME 记录</li>
-          <li><strong>使用 Jekyll</strong>：GitHub Pages 原生支持 Jekyll 静态站点生成器，可以写 Markdown 自动生成博客</li>
-          <li><strong>GitHub Actions</strong>：使用 Actions 可以自动构建和部署 Hugo、Hexo、VitePress 等框架</li>
+        <h2 class="font-serif text-xl font-semibold text-ink mt-8 mb-4 flex items-center gap-2">
+          <span class="text-accent-warm font-hand text-2xl">01</span> 什么是 GitHub Pages？
+        </h2>
+        <p class="mb-5">
+          GitHub Pages 是 GitHub 提供的一项静态网站托管服务。它允许你直接从 GitHub 仓库托管个人、组织或项目页面。你可以使用 HTML、CSS、JavaScript 等前端技术编写网站，然后通过 GitHub Pages 免费发布到互联网上。
+        </p>
+        <p class="mb-5">
+          对于想要搭建个人博客的开发者来说，GitHub Pages 是一个绝佳的选择：
+        </p>
+        <ul class="mb-6 space-y-2 pl-1">
+          <li class="flex items-start gap-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-accent-warm mt-1 shrink-0"></i>
+            <span>完全免费，无需购买服务器</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-accent-warm mt-1 shrink-0"></i>
+            <span>与 Git 工作流无缝集成，写作即提交</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-accent-warm mt-1 shrink-0"></i>
+            <span>支持自定义域名</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-accent-warm mt-1 shrink-0"></i>
+            <span>自带 HTTPS，安全可靠</span>
+          </li>
         </ul>
 
-        <blockquote>
-          <p>提示：GitHub Pages 仓库大小限制为 1GB，每月带宽限制为 100GB，对于个人博客来说完全足够。</p>
-        </blockquote>
+        <h2 class="font-serif text-xl font-semibold text-ink mt-8 mb-4 flex items-center gap-2">
+          <span class="text-accent-warm font-hand text-2xl">02</span> 创建仓库
+        </h2>
+        <p class="mb-5">
+          首先，你需要在 GitHub 上创建一个特殊命名的仓库。仓库名必须是 <code class="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-accent-warm">你的用户名.github.io</code>。例如，如果你的用户名是 Duce-Anchovy，那么仓库名就是 <code class="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-accent-warm">Duce-Anchovy.github.io</code>。
+        </p>
 
-        <h2>总结</h2>
-        <p>GitHub Pages 是搭建个人博客最简单、最经济的方式。不需要购买服务器，不需要配置环境，只需要一个 GitHub 账号和基本的 HTML 知识，几分钟就能让你的博客上线。</p>
+        <div class="my-6 bg-muted/50 rounded-lg p-4 border-l-4 border-accent-warm/40">
+          <div class="flex items-start gap-2">
+            <i data-lucide="lightbulb" class="w-5 h-5 text-accent-warm shrink-0 mt-0.5"></i>
+            <div>
+              <p class="text-sm font-medium text-ink mb-1">小贴士</p>
+              <p class="text-sm text-ink-light">仓库名必须严格遵循 <code class="bg-background px-1 rounded text-xs font-mono">username.github.io</code> 的格式，否则 GitHub Pages 不会自动启用。</p>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="font-serif text-xl font-semibold text-ink mt-8 mb-4 flex items-center gap-2">
+          <span class="text-accent-warm font-hand text-2xl">03</span> 编写你的第一个页面
+        </h2>
+        <p class="mb-5">
+          创建仓库后，你可以直接在 GitHub 网页端添加一个 <code class="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-accent-warm">index.html</code> 文件，这将是你博客的首页。
+        </p>
+
+        <div class="my-6 rounded-lg overflow-hidden border border-border bg-paper">
+          <div class="flex items-center gap-2 px-4 py-2 bg-muted/50 border-b border-border">
+            <span class="w-3 h-3 rounded-full bg-red-300/60"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-300/60"></span>
+            <span class="w-3 h-3 rounded-full bg-green-300/60"></span>
+            <span class="text-xs text-muted-foreground ml-2 font-mono">index.html</span>
+          </div>
+          <pre class="p-4 text-sm font-mono text-ink overflow-x-auto leading-relaxed"><code><span class="text-ink-light">&lt;!DOCTYPE html&gt;</span>
+<span class="text-accent-blue">&lt;html&gt;</span>
+<span class="text-accent-blue">&lt;head&gt;</span>
+  <span class="text-accent-blue">&lt;title&gt;</span>我的博客<span class="text-accent-blue">&lt;/title&gt;</span>
+<span class="text-accent-blue">&lt;/head&gt;</span>
+<span class="text-accent-blue">&lt;body&gt;</span>
+  <span class="text-accent-blue">&lt;h1&gt;</span>Hello, World!<span class="text-accent-blue">&lt;/h1&gt;</span>
+  <span class="text-accent-blue">&lt;p&gt;</span>欢迎来到我的博客<span class="text-accent-blue">&lt;/p&gt;</span>
+<span class="text-accent-blue">&lt;/body&gt;</span>
+<span class="text-accent-blue">&lt;/html&gt;</span></code></pre>
+        </div>
+
+        <h2 class="font-serif text-xl font-semibold text-ink mt-8 mb-4 flex items-center gap-2">
+          <span class="text-accent-warm font-hand text-2xl">04</span> 访问你的博客
+        </h2>
+        <p class="mb-5">
+          提交代码后，等待一两分钟让 GitHub 部署完成，你就可以通过浏览器访问 <code class="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-accent-warm">https://你的用户名.github.io</code> 来查看你的博客了！
+        </p>
+        <p class="mb-5">
+          后续你可以继续探索更多功能，比如使用 Jekyll、Hugo 等静态站点生成器，或者绑定自定义域名。你的数字花园，从此开始生长。
+        </p>
+
+        <!-- 文章结尾装饰 -->
+        <div class="mt-12 pt-6 border-t border-dashed border-border text-center">
+          <p class="font-hand text-lg text-ink-light/70 mb-2">~ 笔记完 ~</p>
+          <p class="text-xs text-muted-foreground">感谢阅读，如有疑问欢迎留言交流</p>
+        </div>
       </div>
-    </article>
-  </main>
+    </div>
 
-  <footer>
-    <div class="container">
-      <p class="copyright">&copy; 2026 Duce-Anchovy. Powered by GitHub Pages.</p>
+    <!-- 文章导航：上一篇/下一篇 -->
+    <nav class="mt-10 pt-6 border-t border-border">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="post3.html" class="group block p-4 rounded-lg border border-border hover:border-accent-warm/40 hover:bg-accent-warm/5 transition-all">
+          <div class="flex items-center gap-1 text-xs text-muted-foreground mb-1">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> 上一篇
+          </div>
+          <p class="font-serif text-ink group-hover:text-accent-warm transition-colors">初学者的 Web 开发学习路线</p>
+        </a>
+        <a href="post2.html" class="group block p-4 rounded-lg border border-border hover:border-accent-warm/40 hover:bg-accent-warm/5 transition-all text-right md:text-right">
+          <div class="flex items-center justify-end gap-1 text-xs text-muted-foreground mb-1">
+            下一篇 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </div>
+          <p class="font-serif text-ink group-hover:text-accent-warm transition-colors">Markdown 写作入门指南</p>
+        </a>
+      </div>
+    </nav>
+
+    <!-- 回到首页 -->
+    <div class="mt-10 text-center">
+      <a href="../index.html" class="inline-flex items-center gap-2 text-sm text-ink-light hover:text-accent-warm transition-colors">
+        <i data-lucide="home" class="w-4 h-4"></i> 回到笔记本首页
+      </a>
+    </div>
+  </article>
+
+  <!-- 页脚 -->
+  <footer class="border-t border-border/50 py-8 mt-8">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="text-xs text-muted-foreground font-mono">
+        &copy; 2026 Duce-Anchovy &middot; Written with <i data-lucide="heart" class="w-3 h-3 inline text-accent-warm fill-accent-warm"></i> &amp; Markdown
+      </p>
     </div>
   </footer>
+</main>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
