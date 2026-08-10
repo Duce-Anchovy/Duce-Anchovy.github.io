@@ -161,6 +161,7 @@
 
   /* ========================================
      4. Hero 覆盖：内容区主动上滑效果
+        内容区以比自然滚动更快的速度向上移动，形成主动覆盖 Hero 的视觉动感
      ======================================== */
   function initHeroCover() {
     var hero = document.querySelector('.fx-hero');
@@ -169,7 +170,7 @@
 
     var heroHeight;
     function updateSizes() {
-      if (hero) heroHeight = hero.offsetHeight;
+      heroHeight = (hero && hero.offsetHeight) || window.innerHeight;
     }
     updateSizes();
     window.addEventListener('resize', updateSizes);
@@ -179,10 +180,19 @@
       if (!ticking) {
         requestAnimationFrame(function () {
           var scrollY = window.scrollY;
-          if (scrollY > 0 && scrollY <= heroHeight) {
-            var progress = scrollY / heroHeight;
-            // 正弦曲线：0 → 峰值 → 0，平滑过渡，不产生跳变
-            var extraShift = heroHeight * 0.18 * Math.sin(progress * Math.PI);
+          if (scrollY <= 0) {
+            content.style.transform = '';
+            content.style.transition = '';
+          } else if (scrollY < heroHeight * 0.8) {
+            // 主动阶段：内容区以 40% 额外速度向上追赶
+            var extraShift = scrollY * 0.4;
+            content.style.transform = 'translateY(-' + extraShift + 'px)';
+            content.style.transition = 'none';
+          } else if (scrollY < heroHeight) {
+            // 衰减阶段：平滑回归自然位置
+            var decay = (scrollY - heroHeight * 0.8) / (heroHeight * 0.2);
+            var peakShift = heroHeight * 0.8 * 0.4;
+            var extraShift = peakShift * (1 - decay);
             content.style.transform = 'translateY(-' + extraShift + 'px)';
             content.style.transition = 'none';
           } else {
