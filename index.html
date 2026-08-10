@@ -237,20 +237,6 @@ h1, h2, h3, h4, h5, h6 {
     </style>
 </head>
 <body class="min-h-screen font-sans antialiased">
-    <!-- Password Gate -->
-    <div id="password-gate" style="position:fixed;inset:0;z-index:9999;background:var(--notebook-background);display:flex;align-items:center;justify-content:center;font-family:var(--font-sans)">
-      <div style="text-align:center;max-width:360px;padding:40px">
-        <div style="font-size:3rem;margin-bottom:12px">&#x1f512;</div>
-        <h2 style="font-family:var(--font-serif);color:var(--notebook-ink);margin-bottom:6px;font-size:1.5rem">Duce-Anchovy's Notebook</h2>
-        <p style="color:var(--notebook-ink-light);font-size:0.9rem;margin-bottom:20px">&#x79c1;&#x4eba;&#x7b14;&#x8bb0;&#xff0c;&#x8bf7;&#x8f93;&#x5165;&#x5bc6;&#x7801;</p>
-        <input id="pwd-input" type="password" placeholder="&#x8bf7;&#x8f93;&#x5165;&#x5bc6;&#x7801;..." style="width:100%;padding:12px 16px;border:2px solid var(--notebook-border);border-radius:8px;background:var(--notebook-paper);font-size:1rem;text-align:center;outline:none;color:var(--notebook-ink);transition:border-color .2s" onfocus="this.style.borderColor='var(--notebook-accent-warm)'" onblur="this.style.borderColor='var(--notebook-border)'" onkeydown="if(event.key==='Enter')checkPassword()">
-        <p id="pwd-error" style="color:#c0392b;font-size:0.85rem;margin-top:12px;display:none">&#x5bc6;&#x7801;&#x9519;&#x8bef;&#xff0c;&#x8bf7;&#x91cd;&#x8bd5;</p>
-      </div>
-    </div>
-    <script>
-    async function checkPassword(){const i=document.getElementById('pwd-input');const e=document.getElementById('pwd-error');const d=new TextEncoder().encode(i.value);const h=await crypto.subtle.digest('SHA-256',d);const hash=Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('');if(hash==='5871055dcab90dd7c901b9fbe1d50c43f7be7c1cf9a06883540a3bb01bcac660'){sessionStorage.setItem('auth','1');document.getElementById('password-gate').remove()}else{e.style.display='block';i.value='';i.focus()}}
-    if(sessionStorage.getItem('auth')){document.getElementById('password-gate').remove()}else{document.getElementById('pwd-input').focus()}
-    </script>
     <main class="relative z-10 min-h-screen">
       <nav class="sticky top-0 z-50 backdrop-blur-sm bg-[var(--notebook-background)]/80 border-b border-border/50">
         <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
