@@ -1,16 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
-    <linearGradient id="oa-grad" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="oa-bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#10A37F"/>
       <stop offset="100%" stop-color="#0D8B6F"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#oa-grad)"/>
-  <path d="M32 12l-6 3.5v7L32 26l6-3.5v-7L32 12z" fill="white" opacity="0.9"/>
-  <path d="M32 26l-6 3.5v7L32 40l6-3.5v-7L32 26z" fill="white" opacity="0.7"/>
-  <path d="M32 40l-6 3.5v7L32 54l6-3.5v-7L32 40z" fill="white" opacity="0.5"/>
-  <path d="M20 22.5l-6 3.5v7L20 36.5l6-3.5v-7l-6-3.5z" fill="white" opacity="0.7"/>
-  <path d="M20 36.5l-6 3.5v7L20 50.5l6-3.5v-7l-6-3.5z" fill="white" opacity="0.5"/>
-  <path d="M44 22.5l-6 3.5v7L44 36.5l6-3.5v-7l-6-3.5z" fill="white" opacity="0.7"/>
-  <path d="M44 36.5l-6 3.5v7L44 50.5l6-3.5v-7l-6-3.5z" fill="white" opacity="0.5"/>
+  <rect width="64" height="64" rx="14" fill="url(#oa-bg)"/>
+  <!-- ChatGPT hexagonal knot / blossom -->
+  <g transform="translate(32,32)" fill="none" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Outer hexagon -->
+    <polygon points="0,-18 15.6,-9 15.6,9 0,18 -15.6,9 -15.6,-9" opacity="0.9"/>
+    <!-- Inner knot lines -->
+    <path d="M0,-18 L-15.6,9" opacity="0.7"/>
+    <path d="M0,-18 L15.6,9" opacity="0.7"/>
+    <path d="M15.6,-9 L-15.6,-9" opacity="0.7"/>
+    <path d="M15.6,-9 L0,18" opacity="0.7"/>
+    <path d="M-15.6,-9 L15.6,9" opacity="0.7"/>
+    <path d="M-15.6,-9 L0,18" opacity="0.7"/>
+  </g>
+  <!-- Center dot -->
+  <circle cx="32" cy="32" r="3" fill="white" opacity="0.9"/>
 </svg>

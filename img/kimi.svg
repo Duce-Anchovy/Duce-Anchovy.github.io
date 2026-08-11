@@ -1,12 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <defs>
-    <linearGradient id="km-grad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#8B5CF6"/>
-      <stop offset="100%" stop-color="#7C3AED"/>
+    <linearGradient id="km-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1E90FF"/>
+      <stop offset="100%" stop-color="#1873CC"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#km-grad)"/>
-  <circle cx="32" cy="32" r="18" fill="none" stroke="white" stroke-width="3" opacity="0.9"/>
-  <circle cx="32" cy="32" r="8" fill="white" opacity="0.9"/>
-  <path d="M32 14v8M32 42v8M14 32h8M42 32h8" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  <rect width="64" height="64" rx="14" fill="url(#km-bg)"/>
+  <!-- Kimi official K mark -->
+  <g transform="translate(32,32)">
+    <path d="M-14,-20 L-14,20" stroke="white" stroke-width="4.5" stroke-linecap="round" opacity="0.9"/>
+    <path d="M-14,-3 L12,-20" stroke="white" stroke-width="4.5" stroke-linecap="round" opacity="0.9"/>
+    <path d="M-3,3 L12,20" stroke="white" stroke-width="4.5" stroke-linecap="round" opacity="0.9"/>
+  </g>
 </svg>
