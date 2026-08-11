@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="light">
+<html lang="zh-CN" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <link rel="stylesheet" href="../fx-animations.css">
     <style id="theme-vars">
-:root {
+:root, [data-theme="dark"] {
   --bg:          #282c34;
   --bg-darker:   #21252b;
   --bg-lighter:  #2c313c;
@@ -20,6 +20,7 @@
   --fg:          #abb2bf;
   --fg-bright:   #e6e6e6;
   --fg-white:    #ffffff;
+  --fg-subtle:   rgba(171,178,191,0.9);
   --muted:       #5c6370;
   --faint:       #4b5263;
   --blue:    #61afef;
@@ -32,6 +33,7 @@
   --background:       var(--bg);
   --foreground:       var(--fg);
   --card:             rgba(255,255,255,0.03);
+  --card-solid:       rgba(255,255,255,0.02);
   --card-foreground:  var(--fg);
   --popover:          rgba(255,255,255,0.05);
   --popover-foreground: var(--fg);
@@ -40,9 +42,121 @@
   --muted-bg:         rgba(255,255,255,0.04);
   --muted-foreground: var(--muted);
   --ring:             var(--blue);
+  --ring-offset:      #282c34;
+  --tag-green-bg:  rgba(152,195,121,0.12);
+  --tag-blue-bg:   rgba(97,175,239,0.10);
+  --tag-purple-bg: rgba(198,120,221,0.12);
+  --tag-cyan-bg:   rgba(86,182,194,0.10);
+  --tag-orange-bg: rgba(209,154,102,0.12);
+  --tag-red-bg:    rgba(224,108,117,0.10);
+  --golden:        #e2b04a;
+  --golden-bg:     rgba(226,176,74,0.1);
+  --golden-border: rgba(226,176,74,0.4);
+  --golden-shadow: 0 0 16px rgba(226,176,74,0.2);
+  --golden-glow:   0 0 10px rgba(226,176,74,0.5);
+  --golden-inset:  inset 0 0 8px rgba(226,176,74,0.08);
+  --hover-bg:        rgba(255,255,255,0.03);
+  --hover-border:    rgba(97,175,239,0.15);
+  --hover-shadow:    0 4px 24px rgba(97,175,239,0.08);
+  --hover-gradient:  linear-gradient(135deg, #61afef, #c678dd);
+  --ai-card-bg:       rgba(255,255,255,0.02);
+  --ai-card-hover-bg: rgba(255,255,255,0.06);
+  --ai-card-hover-border: rgba(97,175,239,0.3);
+  --divider-color: #3e4451;
+  --badge-gradient: linear-gradient(135deg, #61afef, #c678dd);
+  --badge-shadow:   0 0 16px rgba(97,175,239,0.25);
+  --title-gradient: linear-gradient(135deg, #61afef 0%, #c678dd 50%, #56b6c2 100%);
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
+  --selection-bg: rgba(97,175,239,0.25);
+  --selection-fg: #fff;
+  --navbar-bg: rgba(10,10,15,0.75);
+  --navbar-bg-scrolled: rgba(10,10,15,0.92);
+  --navbar-border: rgba(255,255,255,0.06);
+  --navbar-border-scrolled: rgba(255,255,255,0.1);
+  --content-shadow: 0 -20px 60px rgba(0,0,0,0.6);
+  --content-glow-line: linear-gradient(90deg, transparent, rgba(97,175,239,0.5), rgba(198,120,221,0.5), rgba(97,175,239,0.5), transparent);
+  --scroll-hint-color: rgba(171,178,191,0.6);
+  --scroll-arrow-color: rgba(171,178,191,0.5);
+  --card-glow-border: rgba(255,255,255,0.08);
+  --card-glow-gradient: linear-gradient(135deg, rgba(0,170,255,0.3), rgba(120,80,255,0.3), rgba(0,200,200,0.3));
+  --card-3d-shadow: 0 0 20px rgba(0,170,255,0.15), 0 0 40px rgba(0,170,255,0.08), 0 20px 40px rgba(0,0,0,0.3);
+  --nav-link-underline: linear-gradient(90deg, #00aaff, #7850ff);
+  --avatar-glow: 0 0 20px rgba(97,175,239,0.2);
+}
+
+[data-theme="light"] {
+  --bg:          #f0f2f5;
+  --bg-darker:   #e4e7ec;
+  --bg-lighter:  #ffffff;
+  --bg-hover:    #e8ebf0;
+  --border:      #d0d5dd;
+  --border-soft: rgba(0, 0, 0, 0.08);
+  --fg:          #4a5060;
+  --fg-bright:   #1d2333;
+  --fg-white:    #0d1219;
+  --fg-subtle:   rgba(74,80,96,0.9);
+  --muted:       #7b8194;
+  --faint:       #9aa0b0;
+  --blue:    #4080d0;
+  --purple:  #9b5ec0;
+  --cyan:    #3a90a0;
+  --green:   #5ea038;
+  --red:     #c84858;
+  --orange:  #b87438;
+  --yellow:  #b89040;
+  --background:       var(--bg);
+  --foreground:       var(--fg);
+  --card:             rgba(0,0,0,0.025);
+  --card-solid:       rgba(0,0,0,0.02);
+  --card-foreground:  var(--fg);
+  --popover:          rgba(0,0,0,0.04);
+  --popover-foreground: var(--fg);
+  --primary:          var(--blue);
+  --primary-foreground: #ffffff;
+  --muted-bg:         rgba(0,0,0,0.035);
+  --muted-foreground: var(--muted);
+  --ring:             var(--blue);
+  --ring-offset:      #f0f2f5;
+  --tag-green-bg:  rgba(94,160,56,0.12);
+  --tag-blue-bg:   rgba(64,128,208,0.10);
+  --tag-purple-bg: rgba(155,94,192,0.12);
+  --tag-cyan-bg:   rgba(58,144,160,0.10);
+  --tag-orange-bg: rgba(184,116,56,0.12);
+  --tag-red-bg:    rgba(200,72,88,0.10);
+  --golden:        #b8862c;
+  --golden-bg:     rgba(184,134,44,0.08);
+  --golden-border: rgba(184,134,44,0.35);
+  --golden-shadow: 0 0 12px rgba(184,134,44,0.12);
+  --golden-glow:   0 0 8px rgba(184,134,44,0.3);
+  --golden-inset:  inset 0 0 6px rgba(184,134,44,0.05);
+  --hover-bg:        rgba(0,0,0,0.025);
+  --hover-border:    rgba(64,128,208,0.2);
+  --hover-shadow:    0 4px 20px rgba(64,128,208,0.1);
+  --hover-gradient:  linear-gradient(135deg, #4080d0, #9b5ec0);
+  --ai-card-bg:       rgba(0,0,0,0.02);
+  --ai-card-hover-bg: rgba(0,0,0,0.05);
+  --ai-card-hover-border: rgba(64,128,208,0.3);
+  --divider-color: #d0d5dd;
+  --badge-gradient: linear-gradient(135deg, #4080d0, #9b5ec0);
+  --badge-shadow:   0 4px 14px rgba(64,128,208,0.25);
+  --title-gradient: linear-gradient(135deg, #4080d0 0%, #9b5ec0 50%, #3a90a0 100%);
+  --selection-bg: rgba(64,128,208,0.2);
+  --selection-fg: #1d2333;
+  --navbar-bg: rgba(240,242,245,0.75);
+  --navbar-bg-scrolled: rgba(240,242,245,0.95);
+  --navbar-border: rgba(0,0,0,0.08);
+  --navbar-border-scrolled: rgba(0,0,0,0.1);
+  --content-shadow: 0 -10px 40px rgba(0,0,0,0.08);
+  --content-glow-line: linear-gradient(90deg, transparent, rgba(64,128,208,0.4), rgba(155,94,192,0.4), rgba(64,128,208,0.4), transparent);
+  --scroll-hint-color: rgba(123,129,148,0.5);
+  --scroll-arrow-color: rgba(123,129,148,0.4);
+  --card-glow-border: rgba(0,0,0,0.08);
+  --card-glow-gradient: linear-gradient(135deg, rgba(64,128,208,0.15), rgba(155,94,192,0.15));
+  --card-3d-shadow: 0 0 20px rgba(64,128,208,0.1), 0 0 40px rgba(64,128,208,0.05), 0 20px 40px rgba(0,0,0,0.08);
+  --nav-link-underline: linear-gradient(90deg, #4080d0, #9b5ec0);
+  --avatar-glow: 0 0 16px rgba(64,128,208,0.2);
 }
 @theme inline {
   --color-background:       var(--bg);
@@ -64,7 +178,7 @@
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", Consolas, monospace;
 }
-::selection { background: rgba(97,175,239,0.25); color: #fff; }
+::selection { background: var(--selection-bg); color: var(--selection-fg); }
 html { scroll-behavior: smooth; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
@@ -167,7 +281,7 @@ html { scroll-behavior: smooth; }
 </head>
 <body class="min-h-screen font-sans antialiased">
     <canvas id="fx-particles"></canvas>
-    <main class="min-h-screen relative overflow-hidden font-sans" style="background: #282c34;">
+    <main class="min-h-screen relative overflow-hidden font-sans" style="background: var(--bg);">
   <!-- 背景弥散光团 -->
   <div class="fixed inset-0 pointer-events-none" style="z-index:0;">
     <div class="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full opacity-[0.10] blur-[130px]" style="background: radial-gradient(circle, #c678dd 0%, transparent 70%);"></div>
@@ -175,16 +289,20 @@ html { scroll-behavior: smooth; }
   </div>
 
   <!-- 玻璃导航 -->
-  <nav class="fx-navbar">
-    <div class="max-w-[700px] mx-auto px-6 h-16 flex items-center justify-between relative z-10">
+  <nav class="fx-navbar relative">
+    <div class="max-w-[700px] mx-auto px-6 h-16 flex items-center justify-between">
       <a href="../index.html" class="flex items-center gap-2.5 font-bold text-[16px] tracking-tight text-white group">
-        <span class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm transition-transform group-hover:scale-105" style="background: linear-gradient(135deg, #61afef, #c678dd); color: #21252b; box-shadow: 0 0 20px rgba(97,175,239,0.2);">D</span>
+        <img src="https://github.com/Duce-Anchovy.png" alt="avatar" class="w-8 h-8 rounded-lg" style="box-shadow: var(--avatar-glow);">
         <span>duce-anchovy</span>
       </a>
       <a href="../index.html" class="text-[13px] font-medium transition-colors hover:text-white inline-flex items-center gap-1.5" style="color: #5c6370;">
         <i data-lucide="arrow-left" class="w-4 h-4"></i> 返回首页
       </a>
     </div>
+  <button id="theme-toggle" class="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-300 hover:bg-white/[0.08]" style="color: var(--muted);" title="切换主题">
+  <i data-lucide="sun" class="w-6 h-6 hidden" id="theme-icon-sun"></i>
+  <i data-lucide="moon" class="w-6 h-6" id="theme-icon-moon"></i>
+</button>
   </nav>
 
   <div class="relative z-10">
@@ -453,10 +571,9 @@ html { scroll-behavior: smooth; }
     </nav>
 
     <!-- 页脚 -->
-    <footer class="border-t" style="border-color: rgba(62,68,81,0.5);" data-aos="fade-up">
-      <div class="max-w-[700px] mx-auto px-6 py-8 flex items-center justify-between">
-        <p class="text-[12px]" style="color: #5c6370;">&copy; 2026 Duce-Anchovy</p>
-        <p class="text-[12px]" style="color: #4b5263;">书写，思考，生长</p>
+    <footer class="border-t" style="border-color: var(--border-soft);" data-aos="fade-up">
+      <div class="max-w-[700px] mx-auto px-6 py-8 text-center">
+        <p class="text-[12px]" style="color: var(--muted);">&copy; Duce Agent</p>
       </div>
     </footer>
   </div>
