@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="light">
+<html lang="zh-CN" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,20 +11,26 @@
     <link rel="stylesheet" href="fx-animations.css">
     <style id="theme-vars">
 /* ========================================
-   One Dark Pro palette + Neon Glass aesthetic
+   Theme System - 暗色 / 白天 双主题
+   data-theme="dark" | data-theme="light"
    ======================================== */
-:root {
+:root, [data-theme="dark"] {
+  /* 背景 */
   --bg:          #282c34;
   --bg-darker:   #21252b;
   --bg-lighter:  #2c313c;
   --bg-hover:    #2c313a;
+  /* 边框 */
   --border:      #3e4451;
   --border-soft: rgba(62, 68, 81, 0.5);
+  /* 文字 */
   --fg:          #abb2bf;
   --fg-bright:   #e6e6e6;
   --fg-white:    #ffffff;
+  --fg-subtle:   rgba(171,178,191,0.9);
   --muted:       #5c6370;
   --faint:       #4b5263;
+  /* 主题色 */
   --blue:    #61afef;
   --purple:  #c678dd;
   --cyan:    #56b6c2;
@@ -32,9 +38,11 @@
   --red:     #e06c75;
   --orange:  #d19a66;
   --yellow:  #e5c07b;
+  /* 语义化 */
   --background:       var(--bg);
   --foreground:       var(--fg);
   --card:             rgba(255,255,255,0.03);
+  --card-solid:       rgba(255,255,255,0.02);
   --card-foreground:  var(--fg);
   --popover:          rgba(255,255,255,0.05);
   --popover-foreground: var(--fg);
@@ -43,20 +51,152 @@
   --muted-bg:         rgba(255,255,255,0.04);
   --muted-foreground: var(--muted);
   --ring:             var(--blue);
+  --ring-offset:      #282c34;
+  /* 标签背景 */
+  --tag-green-bg:  rgba(152,195,121,0.12);
+  --tag-blue-bg:   rgba(97,175,239,0.10);
+  --tag-purple-bg: rgba(198,120,221,0.12);
+  --tag-cyan-bg:   rgba(86,182,194,0.10);
+  --tag-orange-bg: rgba(209,154,102,0.12);
+  --tag-red-bg:    rgba(224,108,117,0.10);
+  /* 金色霓虹标签 */
+  --golden:        #e2b04a;
+  --golden-bg:     rgba(226,176,74,0.1);
+  --golden-border: rgba(226,176,74,0.4);
+  --golden-shadow: 0 0 16px rgba(226,176,74,0.2);
+  --golden-glow:   0 0 10px rgba(226,176,74,0.5);
+  --golden-inset:  inset 0 0 8px rgba(226,176,74,0.08);
+  /* 卡片 hover */
+  --hover-bg:        rgba(255,255,255,0.03);
+  --hover-border:    rgba(97,175,239,0.15);
+  --hover-shadow:    0 4px 24px rgba(97,175,239,0.08);
+  --hover-gradient:  linear-gradient(135deg, #61afef, #c678dd);
+  /* AI 卡片 */
+  --ai-card-bg:       rgba(255,255,255,0.02);
+  --ai-card-hover-bg: rgba(255,255,255,0.06);
+  --ai-card-hover-border: rgba(97,175,239,0.3);
+  /* 分隔线 */
+  --divider-color: #3e4451;
+  /* 3A 徽章 */
+  --badge-gradient: linear-gradient(135deg, #61afef, #c678dd);
+  --badge-shadow:   0 0 16px rgba(97,175,239,0.25);
+  /* 标题渐变 */
+  --title-gradient: linear-gradient(135deg, #61afef 0%, #c678dd 50%, #56b6c2 100%);
+  /* 圆角 */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
+  /* 选中 */
+  --selection-bg: rgba(97,175,239,0.25);
+  --selection-fg: #fff;
+  /* 导航栏 */
+  --navbar-bg: rgba(10,10,15,0.75);
+  --navbar-bg-scrolled: rgba(10,10,15,0.92);
+  --navbar-border: rgba(255,255,255,0.06);
+  --navbar-border-scrolled: rgba(255,255,255,0.1);
+  /* 内容区 */
+  --content-shadow: 0 -20px 60px rgba(0,0,0,0.6);
+  --content-glow-line: linear-gradient(90deg, transparent, rgba(97,175,239,0.5), rgba(198,120,221,0.5), rgba(97,175,239,0.5), transparent);
+  /* 下滑提示 */
+  --scroll-hint-color: rgba(171,178,191,0.6);
+  --scroll-arrow-color: rgba(171,178,191,0.5);
+  /* 卡片发光 */
+  --card-glow-border: rgba(255,255,255,0.08);
+  --card-glow-gradient: linear-gradient(135deg, rgba(0,170,255,0.3), rgba(120,80,255,0.3), rgba(0,200,200,0.3));
+  --card-3d-shadow: 0 0 20px rgba(0,170,255,0.15), 0 0 40px rgba(0,170,255,0.08), 0 20px 40px rgba(0,0,0,0.3);
+  /* 导航链接下划线 */
+  --nav-link-underline: linear-gradient(90deg, #00aaff, #7850ff);
+  /* 头像光晕 */
+  --avatar-glow: 0 0 20px rgba(97,175,239,0.2);
 }
+
+/* ========================================
+   ☀️ 白天主题（Design 输出）
+   来源：design-light.html
+   ======================================== */
+[data-theme="light"] {
+  --bg:          #f0f2f5;
+  --bg-darker:   #e4e7ec;
+  --bg-lighter:  #ffffff;
+  --bg-hover:    #e8ebf0;
+  --border:      #d0d5dd;
+  --border-soft: rgba(0, 0, 0, 0.08);
+  --fg:          #4a5060;
+  --fg-bright:   #1d2333;
+  --fg-white:    #0d1219;
+  --fg-subtle:   rgba(74,80,96,0.9);
+  --muted:       #7b8194;
+  --faint:       #9aa0b0;
+  --blue:    #4080d0;
+  --purple:  #9b5ec0;
+  --cyan:    #3a90a0;
+  --green:   #5ea038;
+  --red:     #c84858;
+  --orange:  #b87438;
+  --yellow:  #b89040;
+  --background:       var(--bg);
+  --foreground:       var(--fg);
+  --card:             rgba(0,0,0,0.025);
+  --card-solid:       rgba(0,0,0,0.02);
+  --card-foreground:  var(--fg);
+  --popover:          rgba(0,0,0,0.04);
+  --popover-foreground: var(--fg);
+  --primary:          var(--blue);
+  --primary-foreground: #ffffff;
+  --muted-bg:         rgba(0,0,0,0.035);
+  --muted-foreground: var(--muted);
+  --ring:             var(--blue);
+  --ring-offset:      #f0f2f5;
+  --tag-green-bg:  rgba(94,160,56,0.12);
+  --tag-blue-bg:   rgba(64,128,208,0.10);
+  --tag-purple-bg: rgba(155,94,192,0.12);
+  --tag-cyan-bg:   rgba(58,144,160,0.10);
+  --tag-orange-bg: rgba(184,116,56,0.12);
+  --tag-red-bg:    rgba(200,72,88,0.10);
+  --golden:        #b8862c;
+  --golden-bg:     rgba(184,134,44,0.08);
+  --golden-border: rgba(184,134,44,0.35);
+  --golden-shadow: 0 0 12px rgba(184,134,44,0.12);
+  --golden-glow:   0 0 8px rgba(184,134,44,0.3);
+  --golden-inset:  inset 0 0 6px rgba(184,134,44,0.05);
+  --hover-bg:        rgba(0,0,0,0.025);
+  --hover-border:    rgba(64,128,208,0.2);
+  --hover-shadow:    0 4px 20px rgba(64,128,208,0.1);
+  --hover-gradient:  linear-gradient(135deg, #4080d0, #9b5ec0);
+  --ai-card-bg:       rgba(0,0,0,0.02);
+  --ai-card-hover-bg: rgba(0,0,0,0.05);
+  --ai-card-hover-border: rgba(64,128,208,0.3);
+  --divider-color: #d0d5dd;
+  --badge-gradient: linear-gradient(135deg, #4080d0, #9b5ec0);
+  --badge-shadow:   0 4px 14px rgba(64,128,208,0.25);
+  --title-gradient: linear-gradient(135deg, #4080d0 0%, #9b5ec0 50%, #3a90a0 100%);
+  --selection-bg: rgba(64,128,208,0.2);
+  --selection-fg: #1d2333;
+  --navbar-bg: rgba(240,242,245,0.75);
+  --navbar-bg-scrolled: rgba(240,242,245,0.95);
+  --navbar-border: rgba(0,0,0,0.08);
+  --navbar-border-scrolled: rgba(0,0,0,0.1);
+  --content-shadow: 0 -10px 40px rgba(0,0,0,0.08);
+  --content-glow-line: linear-gradient(90deg, transparent, rgba(64,128,208,0.4), rgba(155,94,192,0.4), rgba(64,128,208,0.4), transparent);
+  --scroll-hint-color: rgba(123,129,148,0.5);
+  --scroll-arrow-color: rgba(123,129,148,0.4);
+  --card-glow-border: rgba(0,0,0,0.08);
+  --card-glow-gradient: linear-gradient(135deg, rgba(64,128,208,0.15), rgba(155,94,192,0.15));
+  --card-3d-shadow: 0 0 20px rgba(64,128,208,0.1), 0 0 40px rgba(64,128,208,0.05), 0 20px 40px rgba(0,0,0,0.08);
+  --nav-link-underline: linear-gradient(90deg, #4080d0, #9b5ec0);
+  --avatar-glow: 0 0 16px rgba(64,128,208,0.2);
+}
+
 @theme inline {
   --color-background:       var(--bg);
   --color-foreground:       var(--fg);
-  --color-card:             rgba(255,255,255,0.03);
+  --color-card:             var(--card);
   --color-card-foreground:  var(--fg);
-  --color-popover:          rgba(255,255,255,0.05);
+  --color-popover:          var(--popover);
   --color-popover-foreground: var(--fg);
   --color-primary:          var(--blue);
   --color-primary-foreground: var(--bg-darker);
-  --color-muted:            rgba(255,255,255,0.04);
+  --color-muted:            var(--muted-bg);
   --color-muted-foreground: var(--muted);
   --color-border:           var(--border);
   --color-input:            var(--border);
@@ -67,10 +207,10 @@
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", Consolas, monospace;
 }
-::selection { background: rgba(97,175,239,0.25); color: #fff; }
+::selection { background: var(--selection-bg); color: var(--selection-fg); }
 html { scroll-behavior: smooth; }
-a.group:hover { background: rgba(255,255,255,0.03); border-color: rgba(97,175,239,0.15) !important; box-shadow: 0 4px 24px rgba(97,175,239,0.08); }
-a.group:hover h3 { background: linear-gradient(135deg, #61afef, #c678dd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+a.group:hover { background: var(--hover-bg); border-color: var(--hover-border) !important; box-shadow: var(--hover-shadow); }
+a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
     <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
@@ -172,23 +312,27 @@ a.group:hover h3 { background: linear-gradient(135deg, #61afef, #c678dd); -webki
 </head>
 <body class="min-h-screen font-sans antialiased">
     <canvas id="fx-particles"></canvas>
-    <main class="min-h-screen relative font-sans" style="background: #282c34;">
+    <main class="min-h-screen relative font-sans" style="background: var(--bg);">
   <!-- 背景弥散光团 -->
   <div class="fixed inset-0 pointer-events-none" style="z-index:0;">
-    <div class="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full opacity-[0.12] blur-[130px]" style="background: radial-gradient(circle, #c678dd 0%, transparent 70%);"></div>
-    <div class="absolute top-[20%] right-[-10%] w-[600px] h-[600px] rounded-full opacity-[0.10] blur-[140px]" style="background: radial-gradient(circle, #61afef 0%, transparent 70%);"></div>
-    <div class="absolute bottom-[-10%] left-[30%] w-[400px] h-[400px] rounded-full opacity-[0.08] blur-[120px]" style="background: radial-gradient(circle, #56b6c2 0%, transparent 70%);"></div>
+    <div class="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full opacity-[0.12] blur-[130px]" style="background: radial-gradient(circle, var(--purple) 0%, transparent 70%);"></div>
+    <div class="absolute top-[20%] right-[-10%] w-[600px] h-[600px] rounded-full opacity-[0.10] blur-[140px]" style="background: radial-gradient(circle, var(--blue) 0%, transparent 70%);"></div>
+    <div class="absolute bottom-[-10%] left-[30%] w-[400px] h-[400px] rounded-full opacity-[0.08] blur-[120px]" style="background: radial-gradient(circle, var(--cyan) 0%, transparent 70%);"></div>
   </div>
 
   <!-- 玻璃导航 -->
   <nav class="fx-navbar">
     <div class="max-w-[680px] mx-auto px-6 h-16 flex items-center justify-between relative z-10">
-      <a href="#about" class="flex items-center gap-2.5 font-bold text-[16px] tracking-tight text-white">
-        <img src="https://github.com/Duce-Anchovy.png" alt="avatar" class="w-8 h-8 rounded-lg" style="box-shadow: 0 0 20px rgba(97,175,239,0.2);">
+      <a href="#about" class="flex items-center gap-2.5 font-bold text-[16px] tracking-tight text-[var(--fg-white)]">
+        <img src="https://github.com/Duce-Anchovy.png" alt="avatar" class="w-8 h-8 rounded-lg" style="box-shadow: var(--avatar-glow);">
         <span>duce-anchovy</span>
       </a>
       <div class="flex items-center gap-3">
-        <a href="#posts" class="fx-nav-link px-3 py-1.5 text-[13px] font-medium rounded-md transition-colors hover:text-white" style="color: #5c6370;">文章</a>
+        <a href="#posts" class="fx-nav-link px-3 py-1.5 text-[13px] font-medium rounded-md transition-colors hover:text-[var(--fg-white)]" style="color: var(--muted);">文章</a>
+        <button id="theme-toggle" class="w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-300 hover:bg-white/[0.08]" style="color: var(--muted);" title="切换主题">
+          <i data-lucide="sun" class="w-4 h-4 hidden" id="theme-icon-sun"></i>
+          <i data-lucide="moon" class="w-4 h-4" id="theme-icon-moon"></i>
+        </button>
       </div>
     </div>
   </nav>
@@ -196,13 +340,13 @@ a.group:hover h3 { background: linear-gradient(135deg, #61afef, #c678dd); -webki
   <!-- Hero区：sticky，内容区从下方覆盖 -->
   <header class="fx-hero">
     <div class="max-w-[680px] mx-auto px-6 w-full">
-      <h1 class="fx-float-up fx-float-up-1 text-[52px] md:text-[68px] font-extrabold leading-[1.05] tracking-tight text-white mb-6">
-        <span style="background: linear-gradient(135deg, #61afef 0%, #c678dd 50%, #56b6c2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+      <h1 class="fx-float-up fx-float-up-1 text-[52px] md:text-[68px] font-extrabold leading-[1.05] tracking-tight text-[var(--fg-white)] mb-6">
+        <span style="background: var(--title-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
           Duce-Anchovy's Web
         </span>
       </h1>
-      <p class="fx-float-up fx-float-up-2 text-[17px] leading-relaxed flex items-center justify-center gap-3" style="color: rgba(171,178,191,0.9);">
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-[13px] font-semibold tracking-wide" style="background: linear-gradient(135deg, #61afef, #c678dd); color: #ffffff; box-shadow: 0 0 16px rgba(97,175,239,0.25);">3A大作</span>
+      <p class="fx-float-up fx-float-up-2 text-[17px] leading-relaxed flex items-center justify-center gap-3" style="color: var(--fg-subtle);">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-[13px] font-semibold tracking-wide" style="background: var(--badge-gradient); color: var(--fg-white); box-shadow: var(--badge-shadow);">3A大作</span>
         AI Work、AI Code、AI Design
       </p>
     </div>
@@ -217,63 +361,63 @@ a.group:hover h3 { background: linear-gradient(135deg, #61afef, #c678dd); -webki
   <section id="posts" class="fx-content">
     <div class="max-w-[680px] mx-auto px-6 pb-20">
       <div class="flex items-center justify-center gap-4 mb-6" data-aos="fade-up">
-        <div class="flex-1 h-px" style="background: linear-gradient(to left, #3e4451, transparent);"></div>
-        <p class="text-[14px] uppercase tracking-[0.15em] font-bold" style="color: #abb2bf;">文章</p>
-        <div class="flex-1 h-px" style="background: linear-gradient(to right, #3e4451, transparent);"></div>
+        <div class="flex-1 h-px" style="background: linear-gradient(to left, var(--divider-color), transparent);"></div>
+        <p class="text-[14px] uppercase tracking-[0.15em] font-bold" style="color: var(--fg);">文章</p>
+        <div class="flex-1 h-px" style="background: linear-gradient(to right, var(--divider-color), transparent);"></div>
       </div>
 
       <div class="space-y-1">
         <!-- 文章1 -->
         <a href="posts/post1.html" class="fx-card-3d fx-card-glow group block p-5 -mx-2 rounded-xl transition-all duration-300" style="border: 1px solid transparent;" data-aos="fade-up" data-aos-delay="100">
           <div class="flex items-baseline justify-between gap-4 mb-2">
-            <h3 class="text-[18px] font-semibold leading-snug transition-all" style="color: #e6e6e6;">
+            <h3 class="text-[18px] font-semibold leading-snug transition-all" style="color: var(--fg-bright);">
               使用 GitHub Pages 搭建免费个人博客
             </h3>
-            <time class="text-[13px] shrink-0" style="color: #5c6370;">8月9日</time>
+            <time class="text-[13px] shrink-0" style="color: var(--muted);">8月9日</time>
           </div>
-          <p class="text-[14px] leading-[1.8] mb-3" style="color: #abb2bf;">
+          <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--fg);">
             GitHub Pages 是 GitHub 提供的免费静态网站托管服务，只需一个仓库即可上线你的个人网站。
           </p>
           <div class="flex items-center gap-2">
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(152,195,121,0.12); color: #98c379;">技术教程</span>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(97,175,239,0.10); color: #61afef;">GitHub</span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-all" style="color: #56b6c2;"></i>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: var(--tag-green-bg); color: var(--green);">技术教程</span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: var(--tag-blue-bg); color: var(--blue);">GitHub</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-all" style="color: var(--cyan);"></i>
           </div>
         </a>
 
         <!-- 文章2 -->
         <a href="posts/post2.html" class="fx-card-3d fx-card-glow group block p-5 -mx-2 rounded-xl transition-all duration-300" style="border: 1px solid transparent;" data-aos="fade-up" data-aos-delay="200">
           <div class="flex items-baseline justify-between gap-4 mb-2">
-            <h3 class="text-[18px] font-semibold leading-snug" style="color: #e6e6e6;">
+            <h3 class="text-[18px] font-semibold leading-snug" style="color: var(--fg-bright);">
               Markdown 写作入门指南
             </h3>
-            <time class="text-[13px] shrink-0" style="color: #5c6370;">8月8日</time>
+            <time class="text-[13px] shrink-0" style="color: var(--muted);">8月8日</time>
           </div>
-          <p class="text-[14px] leading-[1.8] mb-3" style="color: #abb2bf;">
+          <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--fg);">
             Markdown 是一种轻量级标记语言，使用纯文本即可编写格式丰富的文档，是写作爱好者的必备工具。
           </p>
           <div class="flex items-center gap-2">
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(198,120,221,0.12); color: #c678dd;">写作方法</span>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(86,182,194,0.10); color: #56b6c2;">Markdown</span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-all" style="color: #56b6c2;"></i>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: var(--tag-purple-bg); color: var(--purple);">写作方法</span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: var(--tag-cyan-bg); color: var(--cyan);">Markdown</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-all" style="color: var(--cyan);"></i>
           </div>
         </a>
 
         <!-- 文章3 -->
         <a href="posts/post3.html" class="fx-card-3d fx-card-glow group block p-5 -mx-2 rounded-xl transition-all duration-300" style="border: 1px solid transparent;" data-aos="fade-up" data-aos-delay="300">
           <div class="flex items-baseline justify-between gap-4 mb-2">
-            <h3 class="text-[18px] font-semibold leading-snug" style="color: #e6e6e6;">
+            <h3 class="text-[18px] font-semibold leading-snug" style="color: var(--fg-bright);">
               初学者的 Web 开发学习路线
             </h3>
-            <time class="text-[13px] shrink-0" style="color: #5c6370;">8月6日</time>
+            <time class="text-[13px] shrink-0" style="color: var(--muted);">8月6日</time>
           </div>
-          <p class="text-[14px] leading-[1.8] mb-3" style="color: #abb2bf;">
+          <p class="text-[14px] leading-[1.8] mb-3" style="color: var(--fg);">
             从 HTML、CSS、JavaScript 到现代框架，再到后端技术，为你梳理一条清晰的 Web 开发学习路径。
           </p>
           <div class="flex items-center gap-2">
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(209,154,102,0.12); color: #d19a66;">学习路线</span>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: rgba(224,108,117,0.10); color: #e06c75;">Web</span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-all" style="color: #56b6c2;"></i>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: var(--tag-orange-bg); color: var(--orange);">学习路线</span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium" style="background: var(--tag-red-bg); color: var(--red);">Web</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-all" style="color: var(--cyan);"></i>
           </div>
         </a>
       </div>
@@ -282,20 +426,20 @@ a.group:hover h3 { background: linear-gradient(135deg, #61afef, #c678dd); -webki
     <!-- duce-anchovy 详情 -->
     <div id="about" class="max-w-[680px] mx-auto px-6 pb-12" data-aos="fade-up">
       <div class="flex items-center justify-center gap-4 mb-5">
-        <div class="flex-1 h-px" style="background: linear-gradient(to left, #3e4451, transparent);"></div>
-        <p class="text-[14px] uppercase tracking-[0.15em] font-bold" style="color: #abb2bf;">创作者</p>
-        <div class="flex-1 h-px" style="background: linear-gradient(to right, #3e4451, transparent);"></div>
+        <div class="flex-1 h-px" style="background: linear-gradient(to left, var(--divider-color), transparent);"></div>
+        <p class="text-[14px] uppercase tracking-[0.15em] font-bold" style="color: var(--fg);">创作者</p>
+        <div class="flex-1 h-px" style="background: linear-gradient(to right, var(--divider-color), transparent);"></div>
       </div>
-      <span class="inline-flex items-center px-2.5 py-1 rounded text-[10px] font-bold tracking-wider mb-2" style="background: rgba(226,176,74,0.1); backdrop-filter: blur(8px); border: 1px solid rgba(226,176,74,0.4); color: #e2b04a; text-shadow: 0 0 10px rgba(226,176,74,0.5); box-shadow: 0 0 16px rgba(226,176,74,0.2), inset 0 0 8px rgba(226,176,74,0.08);">通讯作者</span>
-      <div class="flex items-center gap-4 p-5 rounded-xl" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(62,68,81,0.5);">
-        <img src="https://github.com/Duce-Anchovy.png" alt="duce-anchovy" class="w-12 h-12 rounded-full ring-2 ring-offset-2 ring-offset-[#282c34]" style="--tw-ring-color: rgba(97,175,239,0.3);">
+      <span class="inline-flex items-center px-2.5 py-1 rounded text-[10px] font-bold tracking-wider mb-2" style="background: var(--golden-bg); backdrop-filter: blur(8px); border: 1px solid var(--golden-border); color: var(--golden); text-shadow: var(--golden-glow); box-shadow: var(--golden-shadow), var(--golden-inset);">通讯作者</span>
+      <div class="flex items-center gap-4 p-5 rounded-xl" style="background: var(--card-solid); border: 1px solid var(--border-soft);">
+        <img src="https://github.com/Duce-Anchovy.png" alt="duce-anchovy" class="w-12 h-12 rounded-full ring-2 ring-offset-2 ring-offset-[var(--ring-offset)]" style="--tw-ring-color: var(--blue); --tw-ring-opacity: 0.3;">
         <div class="flex-1">
-          <p class="text-[15px] font-semibold text-white mb-1.5">duce-anchovy</p>
+          <p class="text-[15px] font-semibold text-[var(--fg-white)] mb-1.5">duce-anchovy</p>
           <div class="flex flex-wrap items-center gap-x-5 gap-y-1.5">
-            <a href="https://github.com/Duce-Anchovy" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[13px] hover:text-white transition-colors" style="color: #61afef;">
+            <a href="https://github.com/Duce-Anchovy" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[13px] hover:text-[var(--fg-white)] transition-colors" style="color: var(--blue);">
               <i data-lucide="github" class="w-3.5 h-3.5"></i> GitHub
             </a>
-            <span class="inline-flex items-center gap-1.5 text-[13px]" style="color: #5c6370;">
+            <span class="inline-flex items-center gap-1.5 text-[13px]" style="color: var(--muted);">
               <i data-lucide="mail" class="w-3.5 h-3.5" style="pointer-events: none;"></i> Duce_Anchovy@outlook.com
             </span>
           </div>
@@ -303,45 +447,45 @@ a.group:hover h3 { background: linear-gradient(135deg, #61afef, #c678dd); -webki
       </div>
 
       <!-- AI 共创者 -->
-      <span class="inline-flex items-center px-2.5 py-1 rounded text-[10px] font-bold tracking-wider mb-2 mt-5" style="background: rgba(226,176,74,0.1); backdrop-filter: blur(8px); border: 1px solid rgba(226,176,74,0.4); color: #e2b04a; text-shadow: 0 0 10px rgba(226,176,74,0.5); box-shadow: 0 0 16px rgba(226,176,74,0.2), inset 0 0 8px rgba(226,176,74,0.08);">专家团队</span>
+      <span class="inline-flex items-center px-2.5 py-1 rounded text-[10px] font-bold tracking-wider mb-2 mt-5" style="background: var(--golden-bg); backdrop-filter: blur(8px); border: 1px solid var(--golden-border); color: var(--golden); text-shadow: var(--golden-glow); box-shadow: var(--golden-shadow), var(--golden-inset);">专家团队</span>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-        <a href="https://www.deepseek.com/" target="_blank" rel="noopener" class="group flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 hover:bg-white/[0.06] hover:border-[#61afef]/30" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(62,68,81,0.5);">
+        <a href="https://www.deepseek.com/" target="_blank" rel="noopener" class="group flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 hover:bg-[var(--ai-card-hover-bg)] hover:border-[var(--ai-card-hover-border)]" style="background: var(--card-solid); border: 1px solid var(--border-soft);">
           <img src="img/deepseek.svg" alt="DeepSeek" class="w-10 h-10 rounded-lg">
-          <span class="text-[13px] font-semibold text-white group-hover:text-[#61afef] transition-colors">DeepSeek</span>
-          <span class="text-[11px] opacity-0 group-hover:opacity-100 transition-opacity" style="color: #61afef;">deepseek.com →</span>
+          <span class="text-[13px] font-semibold text-[var(--fg-white)] group-hover:text-[var(--blue)] transition-colors">DeepSeek</span>
+          <span class="text-[11px] opacity-0 group-hover:opacity-100 transition-opacity" style="color: var(--blue);">deepseek.com →</span>
         </a>
-        <a href="https://chat.openai.com/" target="_blank" rel="noopener" class="group flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 hover:bg-white/[0.06] hover:border-[#61afef]/30" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(62,68,81,0.5);">
+        <a href="https://chat.openai.com/" target="_blank" rel="noopener" class="group flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 hover:bg-[var(--ai-card-hover-bg)] hover:border-[var(--ai-card-hover-border)]" style="background: var(--card-solid); border: 1px solid var(--border-soft);">
           <img src="img/openai.svg" alt="GPT" class="w-10 h-10 rounded-lg">
-          <span class="text-[13px] font-semibold text-white group-hover:text-[#61afef] transition-colors">GPT</span>
-          <span class="text-[11px] opacity-0 group-hover:opacity-100 transition-opacity" style="color: #61afef;">chat.openai.com →</span>
+          <span class="text-[13px] font-semibold text-[var(--fg-white)] group-hover:text-[var(--blue)] transition-colors">GPT</span>
+          <span class="text-[11px] opacity-0 group-hover:opacity-100 transition-opacity" style="color: var(--blue);">chat.openai.com →</span>
         </a>
-        <a href="https://claude.ai/" target="_blank" rel="noopener" class="group flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 hover:bg-white/[0.06] hover:border-[#61afef]/30" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(62,68,81,0.5);">
+        <a href="https://claude.ai/" target="_blank" rel="noopener" class="group flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 hover:bg-[var(--ai-card-hover-bg)] hover:border-[var(--ai-card-hover-border)]" style="background: var(--card-solid); border: 1px solid var(--border-soft);">
           <img src="img/claude.svg" alt="Claude" class="w-10 h-10 rounded-lg">
-          <span class="text-[13px] font-semibold text-white group-hover:text-[#61afef] transition-colors">Claude</span>
-          <span class="text-[11px] opacity-0 group-hover:opacity-100 transition-opacity" style="color: #61afef;">claude.ai →</span>
+          <span class="text-[13px] font-semibold text-[var(--fg-white)] group-hover:text-[var(--blue)] transition-colors">Claude</span>
+          <span class="text-[11px] opacity-0 group-hover:opacity-100 transition-opacity" style="color: var(--blue);">claude.ai →</span>
         </a>
-        <a href="https://kimi.moonshot.cn/" target="_blank" rel="noopener" class="group flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 hover:bg-white/[0.06] hover:border-[#61afef]/30" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(62,68,81,0.5);">
+        <a href="https://kimi.moonshot.cn/" target="_blank" rel="noopener" class="group flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 hover:bg-[var(--ai-card-hover-bg)] hover:border-[var(--ai-card-hover-border)]" style="background: var(--card-solid); border: 1px solid var(--border-soft);">
           <img src="img/kimi.svg" alt="Kimi" class="w-10 h-10 rounded-lg">
-          <span class="text-[13px] font-semibold text-white group-hover:text-[#61afef] transition-colors">Kimi</span>
-          <span class="text-[11px] opacity-0 group-hover:opacity-100 transition-opacity" style="color: #61afef;">kimi.moonshot.cn →</span>
+          <span class="text-[13px] font-semibold text-[var(--fg-white)] group-hover:text-[var(--blue)] transition-colors">Kimi</span>
+          <span class="text-[11px] opacity-0 group-hover:opacity-100 transition-opacity" style="color: var(--blue);">kimi.moonshot.cn →</span>
         </a>
-        <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="group flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 hover:bg-white/[0.06] hover:border-[#61afef]/30" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(62,68,81,0.5);">
+        <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="group flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 hover:bg-[var(--ai-card-hover-bg)] hover:border-[var(--ai-card-hover-border)]" style="background: var(--card-solid); border: 1px solid var(--border-soft);">
           <img src="img/gemini.svg" alt="Gemini" class="w-10 h-10 rounded-lg">
-          <span class="text-[13px] font-semibold text-white group-hover:text-[#61afef] transition-colors">Gemini</span>
-          <span class="text-[11px] opacity-0 group-hover:opacity-100 transition-opacity" style="color: #61afef;">gemini.google.com →</span>
+          <span class="text-[13px] font-semibold text-[var(--fg-white)] group-hover:text-[var(--blue)] transition-colors">Gemini</span>
+          <span class="text-[11px] opacity-0 group-hover:opacity-100 transition-opacity" style="color: var(--blue);">gemini.google.com →</span>
         </a>
         </div>
     </div>
 
     <!-- 页脚 -->
-    <footer class="border-t" style="border-color: rgba(62,68,81,0.5);" data-aos="fade-up">
+    <footer class="border-t" style="border-color: var(--border-soft);" data-aos="fade-up">
       <div class="max-w-[680px] mx-auto px-6 py-10 text-center">
         <div class="flex items-center justify-center gap-3 mb-4">
-          <div class="w-8 h-px" style="background: linear-gradient(to right, transparent, rgba(97,175,239,0.4));"></div>
-          <i data-lucide="feather" class="w-3.5 h-3.5" style="color: rgba(198,120,221,0.5);"></i>
-          <div class="w-8 h-px" style="background: linear-gradient(to left, transparent, rgba(97,175,239,0.4));"></div>
+          <div class="w-8 h-px" style="background: linear-gradient(to right, transparent, var(--blue)); opacity: 0.4;"></div>
+          <i data-lucide="feather" class="w-3.5 h-3.5" style="color: var(--purple); opacity: 0.5;"></i>
+          <div class="w-8 h-px" style="background: linear-gradient(to left, transparent, var(--blue)); opacity: 0.4;"></div>
         </div>
-        <p class="text-[12px]" style="color: #5c6370;">&copy; Duce Agent</p>
+        <p class="text-[12px]" style="color: var(--muted);">&copy; Duce Agent</p>
       </div>
     </footer>
   </section>

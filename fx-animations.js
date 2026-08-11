@@ -7,7 +7,44 @@
   'use strict';
 
   /* ========================================
-     1. 粒子背景系统
+     0. 主题切换系统
+     ======================================== */
+  function initTheme() {
+    var html = document.documentElement;
+    var toggleBtn = document.getElementById('theme-toggle');
+    var iconSun = document.getElementById('theme-icon-sun');
+    var iconMoon = document.getElementById('theme-icon-moon');
+
+    // 从 localStorage 读取主题偏好，默认 dark
+    var saved = localStorage.getItem('theme');
+    var current = saved || 'dark';
+    html.setAttribute('data-theme', current);
+    updateThemeIcons(current);
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', function () {
+        var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateThemeIcons(next);
+      });
+    }
+
+    function updateThemeIcons(theme) {
+      if (iconSun && iconMoon) {
+        if (theme === 'dark') {
+          iconSun.classList.add('hidden');
+          iconMoon.classList.remove('hidden');
+        } else {
+          iconSun.classList.remove('hidden');
+          iconMoon.classList.add('hidden');
+        }
+      }
+    }
+  }
+
+  /* ========================================
+     1. 粒子背景系统（主题感知）
      ======================================== */
   function initParticles() {
     var canvas = document.getElementById('fx-particles');
@@ -40,6 +77,17 @@
       particles.push(createParticle());
     }
 
+    // 获取当前主题的粒子颜色
+    function getParticleColor(alpha) {
+      var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      var r = 0, g = 170, b = 255; // 默认蓝色
+      if (!isDark) {
+        // 白天主题：使用更深的蓝色
+        r = 74; g = 144; b = 217;
+      }
+      return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+    }
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -66,12 +114,12 @@
         // 绘制粒子
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 170, 255, ' + p.alpha + ')';
+        ctx.fillStyle = getParticleColor(p.alpha);
         ctx.fill();
         // 光晕
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 170, 255, ' + (p.alpha * 0.15) + ')';
+        ctx.fillStyle = getParticleColor(p.alpha * 0.15);
         ctx.fill();
 
         // 连线
@@ -86,7 +134,7 @@
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = 'rgba(0, 170, 255, ' + opacity + ')';
+            ctx.strokeStyle = getParticleColor(opacity);
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -257,6 +305,7 @@
      7. 启动
      ======================================== */
   document.addEventListener('DOMContentLoaded', function () {
+    initTheme();
     initParticles();
     init3DCards();
     initNavbar();

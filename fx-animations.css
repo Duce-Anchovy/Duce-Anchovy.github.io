@@ -39,7 +39,7 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  color: rgba(171, 178, 191, 0.6);
+  color: var(--scroll-hint-color);
   font-size: 13px;
   letter-spacing: 0.08em;
   transition: opacity 0.4s ease;
@@ -57,7 +57,7 @@
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 10px solid rgba(171, 178, 191, 0.5);
+  border-top: 10px solid var(--scroll-arrow-color);
   animation: fxArrowPulse 1.5s ease-in-out infinite;
 }
 
@@ -80,7 +80,7 @@
   margin-top: calc(100vh - 120px);
   padding-top: 48px;
   min-height: 100vh;
-  box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: var(--content-shadow);
 }
 
 /* 内容区顶部发光边线 */
@@ -91,7 +91,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(97,175,239,0.5), rgba(198,120,221,0.5), rgba(97,175,239,0.5), transparent);
+  background: var(--content-glow-line);
   border-radius: 24px 24px 0 0;
 }
 
@@ -185,15 +185,12 @@
 }
 
 .fx-card-3d:hover {
-  box-shadow:
-    0 0 20px rgba(0, 170, 255, 0.15),
-    0 0 40px rgba(0, 170, 255, 0.08),
-    0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--card-3d-shadow);
 }
 
 .fx-card-glow {
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--card-glow-border);
   border-radius: 16px;
   overflow: hidden;
 }
@@ -204,12 +201,7 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 170, 255, 0.3),
-    rgba(120, 80, 255, 0.3),
-    rgba(0, 200, 200, 0.3)
-  );
+  background: var(--card-glow-gradient);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -227,16 +219,16 @@
   top: 0;
   z-index: 100;
   padding: 12px 24px;
-  background: rgba(10, 10, 15, 0.75);
+  background: var(--navbar-bg);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--navbar-border);
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .fx-navbar.scrolled {
-  background: rgba(10, 10, 15, 0.92);
-  border-bottom-color: rgba(255, 255, 255, 0.1);
+  background: var(--navbar-bg-scrolled);
+  border-bottom-color: var(--navbar-border-scrolled);
 }
 
 /* ---------- 7. 辅助：页面淡入 ---------- */
@@ -267,7 +259,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #00aaff, #7850ff);
+  background: var(--nav-link-underline);
   border-radius: 1px;
   transition: width 0.3s ease;
 }
