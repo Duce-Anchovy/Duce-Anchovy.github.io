@@ -1,10 +1,10 @@
 /* ========================================
-   CSS 流动渐变背景
+   CSS 动态背景
    品牌色：蓝(#60a5fa)、紫(#a78bfa)、青(#22d3ee)
-   深色调，不影响内容可读性
+   深色调（暗色）/ 浅色调（亮色）双模式
    ======================================== */
 
-/* 暗色主题：深色底 + 品牌色微光 */
+/* 暗色主题：深色底 + 品牌色微光流动渐变 */
 [data-theme="dark"] body {
   background: linear-gradient(135deg,
     rgba(96, 165, 250, 0.06) 0%,
@@ -16,16 +16,16 @@
   animation: gradientFlow 18s ease-in-out infinite;
 }
 
-/* 白天主题：浅色底 + 品牌色微光 */
+/* 亮色主题：mesh gradient 极淡网格渐变 */
 [data-theme="light"] body {
-  background: linear-gradient(135deg,
-    rgba(64, 128, 208, 0.05) 0%,
-    rgba(240, 242, 245, 0.98) 25%,
-    rgba(155, 94, 192, 0.05) 50%,
-    rgba(240, 242, 245, 0.98) 75%,
-    rgba(58, 144, 160, 0.05) 100%);
-  background-size: 400% 400%;
-  animation: gradientFlow 18s ease-in-out infinite;
+  background:
+    radial-gradient(at 15% 25%, rgba(219, 234, 254, 0.45) 0%, transparent 55%),
+    radial-gradient(at 80% 15%, rgba(237, 233, 254, 0.45) 0%, transparent 55%),
+    radial-gradient(at 45% 70%, rgba(207, 250, 254, 0.40) 0%, transparent 55%),
+    radial-gradient(at 75% 80%, rgba(219, 234, 254, 0.35) 0%, transparent 55%),
+    #f0f2f5;
+  background-size: 200% 200%;
+  animation: gradientFlow 20s ease-in-out infinite;
 }
 
 @keyframes gradientFlow {
@@ -34,4 +34,25 @@
   50%  { background-position: 100% 100%; }
   75%  { background-position: 0% 100%; }
   100% { background-position: 0% 50%; }
+}
+
+/* ========================================
+   亮色模式：CSS 点阵图案
+   间距 35px，点直径 1.5px，颜色 #cbd5e1
+   ======================================== */
+#fx-dot-pattern {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+[data-theme="light"] #fx-dot-pattern {
+  display: block;
+  opacity: 0.2;
+  background-image: radial-gradient(circle, #cbd5e1 1.5px, transparent 1.5px);
+  background-size: 35px 35px;
 }

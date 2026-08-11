@@ -313,6 +313,7 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
 </head>
 <body class="min-h-screen font-sans antialiased">
     <canvas id="fx-particles"></canvas>
+    <div id="fx-dot-pattern"></div>
     <main class="min-h-screen relative font-sans" style="background: var(--bg);">
   <!-- 背景弥散光团 -->
   <div class="fixed inset-0 pointer-events-none" style="z-index:0;">
@@ -328,7 +329,7 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
         <img src="https://github.com/Duce-Anchovy.png" alt="avatar" class="w-8 h-8 rounded-lg" style="box-shadow: var(--avatar-glow);">
         <span>duce-anchovy</span>
       </a>
-      <a href="#posts" class="fx-nav-link px-3 py-1.5 text-[13px] font-medium rounded-md transition-colors hover:text-[var(--fg-white)]" style="color: var(--muted);">文章</a>
+      <a href="#posts" class="fx-nav-link px-3 py-1.5 text-[13px] font-medium rounded-md transition-colors">文章</a>
     </div>
     <button id="theme-toggle" class="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg transition-all duration-300 hover:bg-white/[0.08]" style="color: var(--muted);" title="切换主题">
       <i data-lucide="sun" class="w-6 h-6 hidden" id="theme-icon-sun"></i>
@@ -349,11 +350,8 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
         AI Work、AI Code、AI Design
       </p>
     </div>
-    <!-- 下滑提示 -->
-    <div class="fx-scroll-hint">
-      <span>下滑进入内容页</span>
-      <span class="fx-scroll-arrow"></span>
-    </div>
+    <!-- 下滑箭头 -->
+    <div class="fx-scroll-arrow" title="向下滚动"></div>
   </header>
 
   <!-- 文章列表区：覆盖 Hero -->

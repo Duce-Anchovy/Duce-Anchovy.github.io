@@ -134,11 +134,11 @@
   }
 
   /* ========================================
-     4. Hero 标题回顶重触发 + 下滑提示显隐
+     4. Hero 标题回顶重触发 + 下滑箭头显隐
      ======================================== */
   function initHeroReveal() {
     var heroItems = document.querySelectorAll('.fx-float-up');
-    var scrollHint = document.querySelector('.fx-scroll-hint');
+    var scrollArrow = document.querySelector('.fx-scroll-arrow');
     if (!heroItems.length) return;
 
     var wasAtTop = true;
@@ -149,12 +149,12 @@
         requestAnimationFrame(function () {
           var isAtTop = window.scrollY <= 5;
 
-          // 下滑提示：滚动后淡出，回顶后淡入
-          if (scrollHint) {
+          // 下滑箭头：滚动后淡出，回顶后淡入
+          if (scrollArrow) {
             if (isAtTop) {
-              scrollHint.classList.remove('hidden');
+              scrollArrow.classList.remove('hidden');
             } else {
-              scrollHint.classList.add('hidden');
+              scrollArrow.classList.add('hidden');
             }
           }
 
@@ -177,7 +177,49 @@
   }
 
   /* ========================================
-     5. AOS 初始化
+     5. 下滑箭头点击：平滑滚动到内容区
+     ======================================== */
+  function initScrollArrow() {
+    var arrow = document.querySelector('.fx-scroll-arrow');
+    var content = document.querySelector('.fx-content');
+    if (!arrow || !content) return;
+
+    arrow.addEventListener('click', function () {
+      var top = content.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  }
+
+  /* ========================================
+     6. 亮色模式点阵视差（轻微鼠标跟随）
+     ======================================== */
+  function initDotParallax() {
+    var dotPattern = document.getElementById('fx-dot-pattern');
+    if (!dotPattern) return;
+
+    var ticking = false;
+    document.addEventListener('mousemove', function (e) {
+      if (!ticking) {
+        requestAnimationFrame(function () {
+          var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+          if (!isLight) {
+            dotPattern.style.transform = '';
+            ticking = false;
+            return;
+          }
+          // 轻微偏移，范围 ±5px
+          var x = (e.clientX / window.innerWidth - 0.5) * 10;
+          var y = (e.clientY / window.innerHeight - 0.5) * 10;
+          dotPattern.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  /* ========================================
+     7. AOS 初始化
      ======================================== */
   function initAOS() {
     if (typeof AOS !== 'undefined') {
@@ -191,7 +233,7 @@
   }
 
   /* ========================================
-     6. 启动
+     8. 启动
      ======================================== */
   document.addEventListener('DOMContentLoaded', function () {
     initTheme();
@@ -199,6 +241,8 @@
     initNavbar();
     initHeroCover();
     initHeroReveal();
+    initScrollArrow();
+    initDotParallax();
     initAOS();
   });
 })();

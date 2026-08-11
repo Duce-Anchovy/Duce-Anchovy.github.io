@@ -29,49 +29,67 @@
   text-align: center;
 }
 
-/* 下滑提示 */
-.fx-scroll-hint {
+/* ---------- 3. 首屏滚动指示箭头 ---------- */
+/* 纯 CSS 绘制 chevron 箭头，双模式适配 */
+.fx-scroll-arrow {
   position: absolute;
-  bottom: 2rem;
+  bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  color: var(--scroll-hint-color);
-  font-size: 13px;
-  letter-spacing: 0.08em;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  z-index: 10;
+  animation: fxArrowFloat 2.5s ease-in-out infinite;
   transition: opacity 0.4s ease;
-  animation: fxHintFloat 2.5s ease-in-out infinite;
+}
+
+.fx-scroll-arrow.hidden {
+  opacity: 0;
   pointer-events: none;
 }
 
-.fx-scroll-hint.hidden {
-  opacity: 0;
+/* 箭头线条：两条边组成 chevron */
+.fx-scroll-arrow::before,
+.fx-scroll-arrow::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
 }
 
-/* 倒三角 */
-.fx-scroll-arrow {
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 10px solid var(--scroll-arrow-color);
-  animation: fxArrowPulse 1.5s ease-in-out infinite;
+/* 暗色模式：蓝色 #60a5fa，带光晕，2px 线条 */
+[data-theme="dark"] .fx-scroll-arrow::before,
+[data-theme="dark"] .fx-scroll-arrow::after {
+  border-right: 2px solid #60a5fa;
+  border-bottom: 2px solid #60a5fa;
+  filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.5));
 }
 
-@keyframes fxHintFloat {
+/* 亮色模式：品牌蓝 #6366F1，无光晕，2.5px 线条 */
+[data-theme="light"] .fx-scroll-arrow::before,
+[data-theme="light"] .fx-scroll-arrow::after {
+  border-right: 2.5px solid #6366F1;
+  border-bottom: 2.5px solid #6366F1;
+}
+
+.fx-scroll-arrow::before {
+  left: 0;
+  transform: translateY(-30%) rotate(45deg);
+}
+
+.fx-scroll-arrow::after {
+  right: 0;
+  transform: translateY(-30%) rotate(45deg);
+}
+
+@keyframes fxArrowFloat {
   0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-8px); }
+  50% { transform: translateX(-50%) translateY(-10px); }
 }
 
-@keyframes fxArrowPulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-
-/* ---------- 3. 内容区（覆盖标题区） ---------- */
+/* ---------- 4. 内容区（覆盖标题区） ---------- */
 .fx-content {
   position: relative;
   z-index: 2;
@@ -95,7 +113,7 @@
   border-radius: 24px 24px 0 0;
 }
 
-/* ---------- 4. 标题浮现动画（从下方浮出，慢速） ---------- */
+/* ---------- 5. 标题浮现动画（从下方浮出，慢速） ---------- */
 .fx-float-up {
   opacity: 0;
   animation: fxFloatUp 1.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
@@ -176,7 +194,7 @@
   }
 }
 
-/* ---------- 5. 3D 倾斜卡片 + 发光边框 ---------- */
+/* ---------- 6. 3D 倾斜卡片 + 发光边框 ---------- */
 .fx-card-3d {
   transition: transform 0.1s ease-out, box-shadow 0.3s ease;
   transform-style: preserve-3d;
@@ -213,7 +231,7 @@
   opacity: 1;
 }
 
-/* ---------- 6. 毛玻璃导航栏 ---------- */
+/* ---------- 7. 毛玻璃导航栏 ---------- */
 .fx-navbar {
   position: sticky;
   top: 0;
@@ -231,7 +249,7 @@
   border-bottom-color: var(--navbar-border-scrolled);
 }
 
-/* ---------- 7. 辅助：页面淡入 ---------- */
+/* ---------- 8. 辅助：页面淡入 ---------- */
 .fx-page-enter {
   animation: fxPageEnter 0.5s ease-out;
 }
@@ -245,13 +263,36 @@
   }
 }
 
-/* ---------- 8. 导航链接下划线动画 ---------- */
+/* ---------- 9. 导航链接样式（双模式） ---------- */
 .fx-nav-link {
   position: relative;
   text-decoration: none;
   padding: 4px 0;
+  transition: color 0.3s ease;
 }
 
+/* 暗色模式：默认 #e2e8f0，hover 渐变文字 */
+[data-theme="dark"] .fx-nav-link {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .fx-nav-link:hover {
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 亮色模式：默认 #374151，hover 品牌蓝 #6366F1 */
+[data-theme="light"] .fx-nav-link {
+  color: #374151;
+}
+
+[data-theme="light"] .fx-nav-link:hover {
+  color: #6366F1;
+}
+
+/* 下划线：hover 时展开 */
 .fx-nav-link::after {
   content: '';
   position: absolute;
@@ -259,16 +300,28 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--nav-link-underline);
   border-radius: 1px;
   transition: width 0.3s ease;
+}
+
+[data-theme="dark"] .fx-nav-link::after {
+  background: linear-gradient(90deg, #60a5fa, #a78bfa);
+}
+
+[data-theme="light"] .fx-nav-link::after {
+  background: #6366F1;
 }
 
 .fx-nav-link:hover::after {
   width: 100%;
 }
 
-/* ---------- 9. 响应式 ---------- */
+/* active 状态：始终显示下划线 */
+.fx-nav-link.active::after {
+  width: 100%;
+}
+
+/* ---------- 10. 响应式 ---------- */
 @media (max-width: 768px) {
   .fx-hero {
     height: 80vh;

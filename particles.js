@@ -1,6 +1,7 @@
 /**
- * Canvas 粒子系统
+ * Canvas 粒子系统（仅暗色模式运行）
  * 品牌色：蓝(#60a5fa)、紫(#a78bfa)、青(#22d3ee)
+ * 亮色模式下自动隐藏，使用 CSS dot pattern 替代
  * 零外部依赖，纯原生 JS
  */
 (function () {
@@ -24,7 +25,7 @@
   var mouseX = -1000;
   var mouseY = -1000;
   var animFrameId = null;
-  var isRunning = true;
+  var isRunning = false;
 
   /* 品牌色系 */
   var BRAND_COLORS = [
@@ -32,6 +33,30 @@
     { r: 167, g: 139, b: 250 },  // 紫 #a78bfa
     { r: 34,  g: 211, b: 238 },  // 青 #22d3ee
   ];
+
+  /* ========================================
+     主题检测
+     ======================================== */
+  function isDarkMode() {
+    return document.documentElement.getAttribute('data-theme') !== 'light';
+  }
+
+  function updateVisibility() {
+    if (isDarkMode()) {
+      canvas.style.display = '';
+      if (!isRunning) {
+        isRunning = true;
+        draw();
+      }
+    } else {
+      canvas.style.display = 'none';
+      isRunning = false;
+      if (animFrameId) {
+        cancelAnimationFrame(animFrameId);
+        animFrameId = null;
+      }
+    }
+  }
 
   /* ========================================
      初始化
@@ -43,7 +68,6 @@
     canvas.style.width = window.innerWidth + 'px';
     canvas.style.height = window.innerHeight + 'px';
     ctx.scale(dpr, dpr);
-    // 更新移动端检测
     isMobile = window.innerWidth < 768;
   }
 
@@ -131,7 +155,6 @@
 
         if (dist < CONNECT_DISTANCE) {
           var lineOpacity = (1 - dist / CONNECT_DISTANCE) * 0.25;
-          // 取两个粒子颜色的中间值
           var midColor = {
             r: Math.round((p.color.r + p2.color.r) / 2),
             g: Math.round((p.color.g + p2.color.g) / 2),
@@ -177,7 +200,6 @@
 
   function onResize() {
     resize();
-    // 移动端切换时调整粒子数量
     var newIsMobile = window.innerWidth < 768;
     if (newIsMobile !== isMobile) {
       isMobile = newIsMobile;
@@ -197,7 +219,7 @@
         animFrameId = null;
       }
     } else {
-      if (!isRunning) {
+      if (!isRunning && isDarkMode()) {
         isRunning = true;
         draw();
       }
@@ -212,7 +234,18 @@
   window.addEventListener('resize', onResize);
   document.addEventListener('visibilitychange', onVisibilityChange);
 
+  // 监听主题切换
+  var themeObserver = new MutationObserver(function (mutations) {
+    for (var i = 0; i < mutations.length; i++) {
+      if (mutations[i].attributeName === 'data-theme') {
+        updateVisibility();
+        break;
+      }
+    }
+  });
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
   resize();
   populateParticles(PARTICLE_COUNT);
-  draw();
+  updateVisibility();
 })();
