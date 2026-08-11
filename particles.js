@@ -85,7 +85,7 @@
       vy: (Math.random() - 0.5) * 0.4,
       radius: Math.random() * 2 + 2,
       color: c,
-      alpha: Math.random() * 0.4 + 0.3,
+      alpha: Math.random() * 0.45 + 0.4,
     };
   }
 

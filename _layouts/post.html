@@ -228,9 +228,8 @@ html { scroll-behavior: smooth; }
     </style>
 </head>
 <body class="min-h-screen font-sans antialiased">
-    <canvas id="fx-particles"></canvas>
     <div id="fx-dot-pattern"></div>
-    <main class="min-h-screen relative overflow-hidden font-sans" style="background: var(--bg);">
+    <main class="min-h-screen relative overflow-hidden font-sans">
   <div class="fixed inset-0 pointer-events-none" style="z-index:0;">
     <div class="absolute top-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full opacity-[0.10] blur-[130px]" style="background: radial-gradient(circle, var(--purple) 0%, transparent 70%);"></div>
     <div class="absolute top-[30%] right-[-10%] w-[500px] h-[500px] rounded-full opacity-[0.08] blur-[140px]" style="background: radial-gradient(circle, var(--blue) 0%, transparent 70%);"></div>
@@ -314,6 +313,7 @@ html { scroll-behavior: smooth; }
     </footer>
   </div>
 </main>
+    <canvas id="fx-particles"></canvas>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="/fx-animations.js"></script>
     <script src="/particles.js"></script>
