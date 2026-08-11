@@ -7,11 +7,11 @@
 /* 暗色主题：深色底 + 品牌色微光流动渐变 */
 [data-theme="dark"] body {
   background: linear-gradient(135deg,
-    rgba(96, 165, 250, 0.06) 0%,
+    rgba(96, 165, 250, 0.10) 0%,
     rgba(10, 15, 24, 0.98) 25%,
-    rgba(167, 139, 250, 0.06) 50%,
+    rgba(167, 139, 250, 0.10) 50%,
     rgba(10, 15, 24, 0.98) 75%,
-    rgba(34, 211, 238, 0.06) 100%);
+    rgba(34, 211, 238, 0.10) 100%);
   background-size: 400% 400%;
   animation: gradientFlow 18s ease-in-out infinite;
 }

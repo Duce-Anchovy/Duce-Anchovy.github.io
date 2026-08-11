@@ -312,7 +312,6 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
     </style>
 </head>
 <body class="min-h-screen font-sans antialiased">
-    <div id="fx-dot-pattern"></div>
     <main class="min-h-screen relative font-sans">
   <!-- 背景弥散光团 -->
   <div class="fixed inset-0 pointer-events-none" style="z-index:0;">
@@ -349,9 +348,9 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
         AI Work、AI Code、AI Design
       </p>
     </div>
-    <!-- 下滑箭头 -->
-    <div class="fx-scroll-arrow" title="向下滚动"></div>
   </header>
+  <!-- 下滑箭头（移出 Hero，避免被内容区 z-index 遮挡） -->
+  <div class="fx-scroll-arrow" title="向下滚动"></div>
 
   <!-- 文章列表区：覆盖 Hero -->
   <section id="posts" class="fx-content">
@@ -504,6 +503,7 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
     </footer>
   </section>
 </main>
+    <div id="fx-dot-pattern"></div>
     <canvas id="fx-particles"></canvas>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="fx-animations.js"></script>
