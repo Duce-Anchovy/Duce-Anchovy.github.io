@@ -1,0 +1,37 @@
+/* ========================================
+   CSS 流动渐变背景
+   品牌色：蓝(#60a5fa)、紫(#a78bfa)、青(#22d3ee)
+   深色调，不影响内容可读性
+   ======================================== */
+
+/* 暗色主题：深色底 + 品牌色微光 */
+[data-theme="dark"] body {
+  background: linear-gradient(135deg,
+    rgba(96, 165, 250, 0.06) 0%,
+    rgba(10, 15, 24, 0.98) 25%,
+    rgba(167, 139, 250, 0.06) 50%,
+    rgba(10, 15, 24, 0.98) 75%,
+    rgba(34, 211, 238, 0.06) 100%);
+  background-size: 400% 400%;
+  animation: gradientFlow 18s ease-in-out infinite;
+}
+
+/* 白天主题：浅色底 + 品牌色微光 */
+[data-theme="light"] body {
+  background: linear-gradient(135deg,
+    rgba(64, 128, 208, 0.05) 0%,
+    rgba(240, 242, 245, 0.98) 25%,
+    rgba(155, 94, 192, 0.05) 50%,
+    rgba(240, 242, 245, 0.98) 75%,
+    rgba(58, 144, 160, 0.05) 100%);
+  background-size: 400% 400%;
+  animation: gradientFlow 18s ease-in-out infinite;
+}
+
+@keyframes gradientFlow {
+  0%   { background-position: 0% 50%; }
+  25%  { background-position: 100% 0%; }
+  50%  { background-position: 100% 100%; }
+  75%  { background-position: 0% 100%; }
+  100% { background-position: 0% 50%; }
+}
