@@ -98,9 +98,6 @@
   /* 内容区 */
   --content-shadow: 0 -20px 60px rgba(0,0,0,0.6);
   --content-glow-line: linear-gradient(90deg, transparent, rgba(97,175,239,0.5), rgba(198,120,221,0.5), rgba(97,175,239,0.5), transparent);
-  /* 下滑提示 */
-  --scroll-hint-color: rgba(171,178,191,0.6);
-  --scroll-arrow-color: rgba(171,178,191,0.5);
   /* 卡片发光 */
   --card-glow-border: rgba(255,255,255,0.08);
   --card-glow-gradient: linear-gradient(135deg, rgba(0,170,255,0.3), rgba(120,80,255,0.3), rgba(0,200,200,0.3));
@@ -179,8 +176,6 @@
   --navbar-border-scrolled: rgba(0,0,0,0.1);
   --content-shadow: 0 -10px 40px rgba(0,0,0,0.08);
   --content-glow-line: linear-gradient(90deg, transparent, rgba(64,128,208,0.4), rgba(155,94,192,0.4), rgba(64,128,208,0.4), transparent);
-  --scroll-hint-color: rgba(123,129,148,0.5);
-  --scroll-arrow-color: rgba(123,129,148,0.4);
   --card-glow-border: rgba(0,0,0,0.08);
   --card-glow-gradient: linear-gradient(135deg, rgba(64,128,208,0.15), rgba(155,94,192,0.15));
   --card-3d-shadow: 0 0 20px rgba(64,128,208,0.1), 0 0 40px rgba(64,128,208,0.05), 0 20px 40px rgba(0,0,0,0.08);
@@ -350,7 +345,10 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
     </div>
   </header>
   <!-- 下滑箭头（移出 Hero，避免被内容区 z-index 遮挡） -->
-  <div class="fx-scroll-arrow" title="向下滚动"></div>
+  <div class="fx-scroll-arrow">
+    <span class="fx-scroll-text">向下滚动</span>
+    <span class="fx-scroll-chevron"></span>
+  </div>
 
   <!-- 文章列表区：覆盖 Hero -->
   <section id="posts" class="fx-content">

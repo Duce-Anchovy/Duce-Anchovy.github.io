@@ -35,10 +35,12 @@
   bottom: 140px;
   left: 50%;
   transform: translateX(-50%);
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
   z-index: 5;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   animation: fxArrowFloat 2.5s ease-in-out infinite;
   transition: opacity 0.4s ease;
 }
@@ -48,9 +50,32 @@
   pointer-events: none;
 }
 
+/* 滚动提示文字 */
+.fx-scroll-text {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  white-space: nowrap;
+  user-select: none;
+}
+
+[data-theme="dark"] .fx-scroll-text {
+  color: rgba(191, 219, 254, 0.7);
+}
+
+[data-theme="light"] .fx-scroll-text {
+  color: rgba(99, 102, 241, 0.7);
+}
+
+/* chevron 箭头容器 */
+.fx-scroll-chevron {
+  position: relative;
+  width: 28px;
+  height: 28px;
+}
+
 /* 箭头线条：两条边组成 chevron */
-.fx-scroll-arrow::before,
-.fx-scroll-arrow::after {
+.fx-scroll-chevron::before,
+.fx-scroll-chevron::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -59,26 +84,26 @@
 }
 
 /* 暗色模式：亮蓝 #bfdbfe，带光晕，2.5px 线条 */
-[data-theme="dark"] .fx-scroll-arrow::before,
-[data-theme="dark"] .fx-scroll-arrow::after {
+[data-theme="dark"] .fx-scroll-chevron::before,
+[data-theme="dark"] .fx-scroll-chevron::after {
   border-right: 2.5px solid #bfdbfe;
   border-bottom: 2.5px solid #bfdbfe;
   filter: drop-shadow(0 0 8px rgba(191, 219, 254, 0.9));
 }
 
 /* 亮色模式：品牌蓝 #6366F1，无光晕，2.5px 线条 */
-[data-theme="light"] .fx-scroll-arrow::before,
-[data-theme="light"] .fx-scroll-arrow::after {
+[data-theme="light"] .fx-scroll-chevron::before,
+[data-theme="light"] .fx-scroll-chevron::after {
   border-right: 2.5px solid #6366F1;
   border-bottom: 2.5px solid #6366F1;
 }
 
-.fx-scroll-arrow::before {
+.fx-scroll-chevron::before {
   left: 0;
   transform: translateY(-30%) rotate(45deg);
 }
 
-.fx-scroll-arrow::after {
+.fx-scroll-chevron::after {
   right: 0;
   transform: translateY(-30%) rotate(45deg);
 }
@@ -120,8 +145,6 @@
 
 .fx-float-up-1 { animation-delay: 0s; }
 .fx-float-up-2 { animation-delay: 0.35s; }
-.fx-float-up-3 { animation-delay: 0.7s; }
-.fx-float-up-4 { animation-delay: 1.05s; }
 
 @keyframes fxFloatUp {
   0% {
@@ -146,10 +169,6 @@
 .fx-bounce-in-2 { animation-delay: 0.12s; }
 .fx-bounce-in-3 { animation-delay: 0.24s; }
 .fx-bounce-in-4 { animation-delay: 0.36s; }
-.fx-bounce-in-5 { animation-delay: 0.48s; }
-.fx-bounce-in-6 { animation-delay: 0.60s; }
-.fx-bounce-in-7 { animation-delay: 0.72s; }
-.fx-bounce-in-8 { animation-delay: 0.84s; }
 
 @keyframes fxBounceIn {
   0% {
@@ -166,30 +185,6 @@
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
-  }
-}
-
-/* 文章页专用：从右侧弹入的变体 */
-.fx-bounce-in-right {
-  opacity: 0;
-  animation: fxBounceInRight 0.65s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-}
-
-@keyframes fxBounceInRight {
-  0% {
-    opacity: 0;
-    transform: translateX(40px);
-  }
-  60% {
-    opacity: 1;
-    transform: translateX(-6px);
-  }
-  80% {
-    transform: translateX(2px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
   }
 }
 
@@ -248,21 +243,7 @@
   border-bottom-color: var(--navbar-border-scrolled);
 }
 
-/* ---------- 8. 辅助：页面淡入 ---------- */
-.fx-page-enter {
-  animation: fxPageEnter 0.5s ease-out;
-}
-
-@keyframes fxPageEnter {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* ---------- 9. 导航链接样式（双模式） ---------- */
+/* ---------- 8. 导航链接样式（双模式） ---------- */
 .fx-nav-link {
   position: relative;
   text-decoration: none;
@@ -320,7 +301,7 @@
   width: 100%;
 }
 
-/* ---------- 10. 响应式 ---------- */
+/* ---------- 9. 响应式 ---------- */
 @media (max-width: 768px) {
   .fx-hero {
     height: 80vh;
