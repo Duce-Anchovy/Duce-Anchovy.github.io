@@ -7,7 +7,7 @@ read_time: 8
 ---
 
 <div class="mb-8 p-5 rounded-xl" style="background: rgba(97,175,239,0.05); border: 1px solid rgba(97,175,239,0.12); border-left: 3px solid #61afef;" data-aos="fade-up">
-  <p class="text-[14px] leading-relaxed italic" style="color: rgba(171,178,191,0.8);">
+  <p class="text-[14px] leading-relaxed italic" style="color: var(--fg-subtle);">
     GitHub Pages 是 GitHub 提供的免费静态网站托管服务，你可以用它来搭建个人博客、项目文档等。只需要一个仓库，几行代码，就能让你的网站上线。
   </p>
 </div>
@@ -51,7 +51,7 @@ read_time: 8
   <i data-lucide="lightbulb" class="w-5 h-5 shrink-0 mt-0.5" style="color: #e5c07b;"></i>
   <div>
     <p class="text-[13px] font-semibold mb-1" style="color: #e5c07b;">小贴士</p>
-    <p class="text-[13px] leading-relaxed" style="color: rgba(171,178,191,0.8);">
+    <p class="text-[13px] leading-relaxed" style="color: var(--fg-subtle);">
       仓库名必须严格遵循 <code class="px-1 rounded text-[12px] font-mono" style="background: rgba(0,0,0,0.2); color: #d19a66;">username.github.io</code> 的格式，否则 GitHub Pages 不会自动启用。
     </p>
   </div>

@@ -7,7 +7,7 @@ read_time: 6
 ---
 
 <div class="mb-8 p-5 rounded-xl" style="background: rgba(198,120,221,0.05); border: 1px solid rgba(198,120,221,0.12); border-left: 3px solid #c678dd;" data-aos="fade-up">
-  <p class="text-[14px] leading-relaxed italic" style="color: rgba(171,178,191,0.8);">
+  <p class="text-[14px] leading-relaxed italic" style="color: var(--fg-subtle);">
     Markdown 是一种轻量级标记语言，它允许你使用易读易写的纯文本格式编写文档，然后转换成结构化的 HTML 页面。无论是写博客、记笔记还是编写项目文档，Markdown 都是程序员的必备技能。
   </p>
 </div>
@@ -27,7 +27,7 @@ read_time: 6
   <i data-lucide="lightbulb" class="w-5 h-5 shrink-0 mt-0.5" style="color: #56b6c2;"></i>
   <div>
     <p class="text-[13px] font-semibold mb-1" style="color: #56b6c2;">Markdown 的哲学</p>
-    <p class="text-[13px] leading-relaxed" style="color: rgba(171,178,191,0.8);">Markdown 的设计哲学是"易读易写"。一份 Markdown 格式的文档应该可以直接以纯文本形式发布，看起来就像没有经过标记一样，这也是它相比 HTML 和 RTF 的最大优势。</p>
+    <p class="text-[13px] leading-relaxed" style="color: var(--fg-subtle);">Markdown 的设计哲学是"易读易写"。一份 Markdown 格式的文档应该可以直接以纯文本形式发布，看起来就像没有经过标记一样，这也是它相比 HTML 和 RTF 的最大优势。</p>
   </div>
 </div>
 

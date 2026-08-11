@@ -7,7 +7,7 @@ read_time: 10
 ---
 
 <div class="mb-8 p-5 rounded-xl" style="background: rgba(209,154,102,0.05); border: 1px solid rgba(209,154,102,0.12); border-left: 3px solid #d19a66;" data-aos="fade-up">
-  <p class="text-[14px] leading-relaxed italic" style="color: rgba(171,178,191,0.8);">
+  <p class="text-[14px] leading-relaxed italic" style="color: var(--fg-subtle);">
     Web 开发是一个广阔而迷人的领域。从静态网页到复杂的单页应用，从前端到后端，学习中充满了创造与探索的乐趣。本文整理了一条适合初学者的 Web 开发学习路线，带你从零开始，一步步成为一名前端开发者。
   </p>
 </div>
@@ -207,7 +207,7 @@ read_time: 10
   <i data-lucide="lightbulb" class="w-5 h-5 shrink-0 mt-0.5" style="color: #e5c07b;"></i>
   <div>
     <p class="text-[13px] font-semibold mb-1" style="color: #e5c07b;">小贴士：动手实践是最好的老师</p>
-    <p class="text-[13px] leading-relaxed" style="color: rgba(171,178,191,0.8);">学习编程最重要的是动手实践。不要只看教程不写代码，每学完一个知识点，就动手做一个小项目。遇到 bug 不要怕，调试的过程就是成长的过程。可以从制作个人主页、Todo 应用、天气查询等小项目开始，逐步积累经验。</p>
+    <p class="text-[13px] leading-relaxed" style="color: var(--fg-subtle);">学习编程最重要的是动手实践。不要只看教程不写代码，每学完一个知识点，就动手做一个小项目。遇到 bug 不要怕，调试的过程就是成长的过程。可以从制作个人主页、Todo 应用、天气查询等小项目开始，逐步积累经验。</p>
   </div>
 </div>
 

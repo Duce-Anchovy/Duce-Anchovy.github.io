@@ -7,7 +7,7 @@ read_time: 5
 ---
 
 <div class="mb-8 p-5 rounded-xl" style="background: rgba(97,175,239,0.05); border: 1px solid rgba(97,175,239,0.12); border-left: 3px solid #61afef;" data-aos="fade-up">
-  <p class="text-[14px] leading-relaxed italic" style="color: rgba(171,178,191,0.8);">
+  <p class="text-[14px] leading-relaxed italic" style="color: var(--fg-subtle);">
     本站已迁移至 Jekyll 模板系统，新增文章只需编写 Markdown 内容，无需重复搭建页面结构。本文是一份手把手的操作指南。
   </p>
 </div>
@@ -54,7 +54,7 @@ read_time: 5
   <i data-lucide="lightbulb" class="w-5 h-5 shrink-0 mt-0.5" style="color: #e5c07b;"></i>
   <div>
     <p class="text-[13px] font-semibold mb-1" style="color: #e5c07b;">命名规则</p>
-    <p class="text-[13px] leading-relaxed" style="color: rgba(171,178,191,0.8);">
+    <p class="text-[13px] leading-relaxed" style="color: var(--fg-subtle);">
       <code class="px-1 rounded text-[12px] font-mono" style="background: rgba(0,0,0,0.2); color: #d19a66;">YYYY-MM-DD-英文短标题.md</code><br/>
       例如：<code class="px-1 rounded text-[12px] font-mono" style="background: rgba(0,0,0,0.2); color: #d19a66;">2026-08-15-my-ai-workflow.md</code>
     </p>
@@ -134,7 +134,7 @@ read_time: 5
 <span style="color: #5c6370;">            border-left: 3px solid #61afef;"</span>
 <span style="color: #5c6370;">     data-aos="fade-up"&gt;</span>
 <span style="color: #5c6370;">  &lt;p class="text-[14px] leading-relaxed italic"</span>
-<span style="color: #5c6370;">     style="color: rgba(171,178,191,0.8);"&gt;</span>
+<span style="color: #5c6370;">     style="color: var(--fg-subtle);"&gt;</span>
 <span style="color: #5c6370;">    一段引人入胜的开场白，概括文章主题。</span>
 <span style="color: #5c6370;">  &lt;/p&gt;</span>
 <span style="color: #5c6370;">&lt;/div&gt;</span>
@@ -232,7 +232,7 @@ read_time: 5
   <i data-lucide="lightbulb" class="w-5 h-5 shrink-0 mt-0.5" style="color: #56b6c2;"></i>
   <div>
     <p class="text-[13px] font-semibold mb-1" style="color: #56b6c2;">常用标签颜色速查</p>
-    <p class="text-[13px] leading-relaxed" style="color: rgba(171,178,191,0.8);">
+    <p class="text-[13px] leading-relaxed" style="color: var(--fg-subtle);">
       绿色 <code class="px-1 rounded text-[12px] font-mono" style="background: rgba(0,0,0,0.2); color: #d19a66;">green</code>（技术教程） ·
       紫色 <code class="px-1 rounded text-[12px] font-mono" style="background: rgba(0,0,0,0.2); color: #d19a66;">purple</code>（写作方法） ·
       蓝色 <code class="px-1 rounded text-[12px] font-mono" style="background: rgba(0,0,0,0.2); color: #d19a66;">blue</code>（AI 应用 / 站点维护） ·
