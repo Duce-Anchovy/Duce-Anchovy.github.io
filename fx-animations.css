@@ -98,13 +98,13 @@
 /* ---------- 4. 标题浮现动画（从下方浮出，慢速） ---------- */
 .fx-float-up {
   opacity: 0;
-  animation: fxFloatUp 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation: fxFloatUp 1.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
 }
 
 .fx-float-up-1 { animation-delay: 0s; }
-.fx-float-up-2 { animation-delay: 0.2s; }
-.fx-float-up-3 { animation-delay: 0.4s; }
-.fx-float-up-4 { animation-delay: 0.6s; }
+.fx-float-up-2 { animation-delay: 0.35s; }
+.fx-float-up-3 { animation-delay: 0.7s; }
+.fx-float-up-4 { animation-delay: 1.05s; }
 
 @keyframes fxFloatUp {
   0% {
