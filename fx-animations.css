@@ -26,12 +26,11 @@
   justify-content: flex-start;
   padding-top: 18vh;
   text-align: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
-.fx-hero.visible {
-  opacity: 1;
+/* 仅在 #posts 跳转时隐藏 hero，由 <head> 内联脚本控制 */
+html.skip-hero .fx-hero {
+  opacity: 0;
 }
 
 /* ---------- 3. 首屏滚动指示箭头 ---------- */
