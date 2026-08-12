@@ -309,31 +309,6 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
         background-color: currentColor;
       }
     </style>
-    <style>
-      /* 主页标题区主题切换：禁用元素自身过渡，由扫过遮罩主导 */
-      html[data-page="home"].theme-transitioning .fx-hero,
-      html[data-page="home"].theme-transitioning .fx-hero *,
-      html[data-page="home"].theme-transitioning .fx-hero *::before,
-      html[data-page="home"].theme-transitioning .fx-hero *::after {
-        transition: none !important;
-      }
-      /* 从右往左扫过，未扫区域保持旧主题 */
-      html.theme-transitioning .fx-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 9999;
-        pointer-events: none;
-        background: linear-gradient(to left, var(--sweep-old-bg) 0%, var(--sweep-old-bg) 92%, transparent 100%);
-        animation: fxSweepRL 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-      }
-      @keyframes fxSweepRL {
-        0%   { width: 100%; }
-        100% { width: 0%; }
-      }
-    </style>
 </head>
 <body class="min-h-screen font-sans antialiased">
     <main class="min-h-screen relative font-sans">
@@ -554,9 +529,11 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
     <script src="fx-animations.js?v=20260812"></script>
     <script src="particles.js?v=20260812"></script>
     <script>
-      /* 主页主题切换：保存旧背景色，扫过时未扫区域保持旧主题 */
+      /* 主页主题切换：按水平位置设置 transition-delay，从右往左扫过 */
       (function() {
         var html = document.documentElement;
+        if (html.getAttribute('data-page') !== 'home') return;
+
         var toggleBtn = document.getElementById('theme-toggle');
         var iconSun = document.getElementById('theme-icon-sun');
         var iconMoon = document.getElementById('theme-icon-moon');
@@ -574,21 +551,38 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
           }
         }
 
-        // 替换按钮以移除 fx-animations.js 绑定的旧事件
         var newBtn = toggleBtn.cloneNode(true);
         toggleBtn.parentNode.replaceChild(newBtn, toggleBtn);
 
         newBtn.addEventListener('click', function () {
           var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-          var oldBg = getComputedStyle(html).getPropertyValue('--bg').trim();
-          html.style.setProperty('--sweep-old-bg', oldBg);
+          var hero = document.querySelector('.fx-hero');
+
+          if (hero) {
+            var heroRect = hero.getBoundingClientRect();
+            var maxDelay = 0.4;
+            var els = hero.querySelectorAll('*');
+            els.forEach(function (el) {
+              var rect = el.getBoundingClientRect();
+              var centerX = rect.left + rect.width / 2;
+              var ratio = 1 - (centerX - heroRect.left) / heroRect.width;
+              ratio = Math.max(0, Math.min(1, ratio));
+              el.style.setProperty('transition-delay', (ratio * maxDelay) + 's', 'important');
+            });
+          }
+
           html.classList.add('theme-transitioning');
           html.setAttribute('data-theme', next);
           localStorage.setItem('theme', next);
           updateIcons(next);
+
           setTimeout(function () {
             html.classList.remove('theme-transitioning');
-            html.style.removeProperty('--sweep-old-bg');
+            if (hero) {
+              hero.querySelectorAll('*').forEach(function (el) {
+                el.style.removeProperty('transition-delay');
+              });
+            }
           }, 900);
         });
       })();
