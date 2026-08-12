@@ -226,6 +226,11 @@ html { scroll-behavior: smooth; }
         background-color: currentColor;
       }
     </style>
+    <style>
+      /* 文章页：覆盖首页动态背景，使用简洁纯色 */
+      [data-theme="dark"] body { background: #282c34; animation: none; }
+      [data-theme="light"] body { background: #f0f2f5; animation: none; }
+    </style>
 </head>
 <body class="min-h-screen font-sans antialiased">
     <main class="min-h-screen relative overflow-hidden font-sans">
@@ -237,7 +242,7 @@ html { scroll-behavior: smooth; }
   <nav class="fx-navbar relative">
     <div class="max-w-[700px] mx-auto px-6 h-16 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2.5 font-bold text-[16px] tracking-tight text-[var(--fg-white)]">
-        <img src="https://github.com/Duce-Anchovy.png" alt="avatar" class="w-8 h-8 rounded-lg" style="box-shadow: var(--avatar-glow);">
+        <img src="img/avatar.png" alt="avatar" class="w-8 h-8 rounded-lg" style="box-shadow: var(--avatar-glow);">
         <span>duce-anchovy</span>
       </a>
       <a href="/" class="text-[13px] font-medium transition-colors hover:text-[var(--fg-white)] inline-flex items-center gap-1.5" style="color: var(--muted);">
@@ -312,11 +317,8 @@ html { scroll-behavior: smooth; }
     </footer>
   </div>
 </main>
-    <div id="fx-dot-pattern"></div>
-    <canvas id="fx-particles"></canvas>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="/fx-animations.js"></script>
-    <script src="/particles.js"></script>
     <script>lucide.createIcons();</script>
 </body>
 </html>
