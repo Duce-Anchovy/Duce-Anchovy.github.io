@@ -24,9 +24,13 @@
     if (toggleBtn) {
       toggleBtn.addEventListener('click', function () {
         var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.classList.add('theme-transitioning');
         html.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
         updateThemeIcons(next);
+        setTimeout(function () {
+          html.classList.remove('theme-transitioning');
+        }, 500);
       });
     }
 

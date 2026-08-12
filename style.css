@@ -1,4 +1,15 @@
 /* ========================================
+   主题切换过渡动画
+   仅在切换时启用，避免影响其他交互
+   ======================================== */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease !important;
+}
+
+/* ========================================
    CSS 动态背景
    品牌色：蓝(#60a5fa)、紫(#a78bfa)、青(#22d3ee)
    深色调（暗色）/ 浅色调（亮色）双模式
