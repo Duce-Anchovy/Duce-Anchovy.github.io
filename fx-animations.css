@@ -28,8 +28,8 @@
   text-align: center;
   opacity: 1;
 }
-/* #posts 跳转时由 <head> 内联脚本隐藏 hero */
-html[data-hide-hero] .fx-hero {
+/* #posts 跳转时隐藏 hero（纯 CSS 方案，无需 JS） */
+main:has(#posts:target) .fx-hero {
   opacity: 0;
 }
 
