@@ -26,6 +26,12 @@
   justify-content: flex-start;
   padding-top: 18vh;
   text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fx-hero.visible {
+  opacity: 1;
 }
 
 /* ---------- 3. 首屏滚动指示箭头 ---------- */

@@ -240,6 +240,7 @@
      8. Hash 锚点即时跳转（跳过 hero 区）
      ======================================== */
   function initHashScroll() {
+    var hero = document.querySelector('.fx-hero');
     if (window.location.hash === '#posts') {
       // 阻止浏览器默认的 hash 滚动
       var hash = window.location.hash;
@@ -256,6 +257,11 @@
           history.replaceState(null, null, hash);
         });
       });
+    } else {
+      // 正常首页加载，显示 hero 区
+      if (hero) {
+        hero.classList.add('visible');
+      }
     }
   }
 
