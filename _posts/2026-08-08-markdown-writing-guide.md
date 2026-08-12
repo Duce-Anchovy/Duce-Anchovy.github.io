@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Markdown 写作入门指南
 date: 2026-08-08
 category: 写作方法

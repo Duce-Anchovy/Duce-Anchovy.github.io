@@ -1,4 +1,5 @@
 ---
+layout: post
 title: 视频伪装文件：把压缩包藏进视频里的原理与制作方法
 date: 2026-08-12
 category: 技术教程
