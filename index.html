@@ -8,15 +8,11 @@
     <meta http-equiv="Expires" content="0">
     <title>Duce-Anchovy's Web</title>
     <link rel="icon" type="image/png" href="img/avatar.png">
-    <style>
-      /* #posts 锚点跳转时隐藏 hero 区域，避免闪烁 */
-      html.hide-hero .fx-hero { opacity: 0; }
-    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-    <link rel="stylesheet" href="fx-animations.css?v=20260812">
+    <link rel="stylesheet" href="fx-animations.css?v=20260812b">
     <link rel="stylesheet" href="style.css">
     <style id="theme-vars">
 /* ========================================
@@ -315,12 +311,6 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
     </style>
 </head>
 <body class="min-h-screen font-sans antialiased">
-    <script>
-      // 在 body 解析前隐藏 hero，避免 #posts 跳转时的闪烁
-      if (window.location.hash === '#posts') {
-        document.documentElement.classList.add('hide-hero');
-      }
-    </script>
     <main class="min-h-screen relative font-sans">
   <!-- 背景弥散光团 -->
   <div class="fixed inset-0 pointer-events-none" style="z-index:0;">
