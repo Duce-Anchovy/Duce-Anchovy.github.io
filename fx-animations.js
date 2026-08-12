@@ -241,12 +241,21 @@
      ======================================== */
   function initHashScroll() {
     if (window.location.hash === '#posts') {
-      var el = document.getElementById('posts');
-      if (el) {
-        document.documentElement.style.scrollBehavior = 'auto';
-        el.scrollIntoView();
-        document.documentElement.style.scrollBehavior = '';
-      }
+      // 阻止浏览器默认的 hash 滚动
+      var hash = window.location.hash;
+      history.replaceState(null, null, ' ');
+      // 禁用平滑滚动，等布局完成后瞬间跳转
+      document.documentElement.style.scrollBehavior = 'auto';
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          var el = document.getElementById('posts');
+          if (el) {
+            window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset);
+          }
+          document.documentElement.style.scrollBehavior = '';
+          history.replaceState(null, null, hash);
+        });
+      });
     }
   }
 
