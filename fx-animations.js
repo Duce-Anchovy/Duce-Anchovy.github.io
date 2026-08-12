@@ -30,7 +30,7 @@
         updateThemeIcons(next);
         setTimeout(function () {
           html.classList.remove('theme-transitioning');
-        }, 500);
+        }, 900);
       });
     }
 
@@ -237,9 +237,24 @@
   }
 
   /* ========================================
-     8. 启动
+     8. Hash 锚点即时跳转（跳过 hero 区）
+     ======================================== */
+  function initHashScroll() {
+    if (window.location.hash === '#posts') {
+      var el = document.getElementById('posts');
+      if (el) {
+        document.documentElement.style.scrollBehavior = 'auto';
+        el.scrollIntoView();
+        document.documentElement.style.scrollBehavior = '';
+      }
+    }
+  }
+
+  /* ========================================
+     9. 启动
      ======================================== */
   document.addEventListener('DOMContentLoaded', function () {
+    initHashScroll();
     initTheme();
     init3DCards();
     initNavbar();
