@@ -309,6 +309,22 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
         background-color: currentColor;
       }
     </style>
+    <style>
+      /* 主页主题切换：从右往左扫过 */
+      html.theme-transitioning::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        background: var(--bg);
+        animation: fxSweepRL 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      @keyframes fxSweepRL {
+        0%   { clip-path: inset(0 0 0 100%); }
+        100% { clip-path: inset(0 0 0 0); }
+      }
+    </style>
 </head>
 <body class="min-h-screen font-sans antialiased">
     <main class="min-h-screen relative font-sans">
