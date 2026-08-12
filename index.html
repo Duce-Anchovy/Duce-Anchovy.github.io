@@ -310,10 +310,10 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
       }
     </style>
     <style>
-      /* 主页主题切换：从右往左扫过 */
-      html.theme-transitioning::before {
+      /* 主页标题区主题切换：从右往左扫过 */
+      html.theme-transitioning .fx-hero::before {
         content: '';
-        position: fixed;
+        position: absolute;
         inset: 0;
         z-index: 9999;
         pointer-events: none;
