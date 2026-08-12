@@ -240,7 +240,7 @@ html { scroll-behavior: smooth; }
         <img src="/img/avatar.png" alt="avatar" class="w-8 h-8 rounded-lg" style="box-shadow: var(--avatar-glow);">
         <span>duce-anchovy</span>
       </a>
-      <a href="/" class="text-[13px] font-medium transition-colors hover:text-[var(--fg-white)] inline-flex items-center gap-1.5" style="color: var(--muted);">
+      <a href="/" class="text-[14px] font-medium transition-colors hover:text-[var(--fg-white)] inline-flex items-center gap-1.5" style="color: var(--fg-subtle);">
         <i data-lucide="arrow-left" class="w-4 h-4"></i> 返回首页
       </a>
     </div>
@@ -253,14 +253,14 @@ html { scroll-behavior: smooth; }
   <div class="relative z-10">
     <article class="max-w-[700px] mx-auto px-6 py-12">
       <header class="mb-10 pb-8" style="border-bottom: 1px solid var(--border-soft);">
-        <a href="javascript:history.back()" class="fx-bounce-in fx-bounce-in-1 inline-flex items-center gap-1 text-[12px] mb-5 transition-colors" style="color: var(--muted);">
+        <a href="javascript:history.back()" class="fx-bounce-in fx-bounce-in-1 inline-flex items-center gap-1 text-[13px] mb-5 transition-colors hover:text-[var(--fg-white)]" style="color: var(--fg-subtle);">
           <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> 返回上一步
         </a>
         <h1 class="fx-bounce-in fx-bounce-in-2 text-[32px] md:text-[40px] font-bold leading-[1.2] mb-5" style="color: var(--fg-bright); letter-spacing: -0.01em;">
           {{ page.title }}
         </h1>
         <div class="fx-bounce-in fx-bounce-in-3 flex items-center gap-3 flex-wrap text-[12px]">
-          <time class="inline-flex items-center gap-1.5" style="color: var(--muted);">
+          <time class="inline-flex items-center gap-1.5" style="color: var(--fg-subtle);">
             <i data-lucide="calendar" class="w-3.5 h-3.5"></i> {{ page.date | date: "%Y年%-m月%-d日" }}
           </time>
           <span style="color: var(--border);">·</span>
@@ -268,7 +268,7 @@ html { scroll-behavior: smooth; }
             <span class="w-1.5 h-1.5 rounded-full" style="background: var(--{{ page.accent_color }});"></span> {{ page.category }}
           </span>
           <span style="color: var(--border);">·</span>
-          <span class="inline-flex items-center gap-1.5" style="color: var(--muted);">
+          <span class="inline-flex items-center gap-1.5" style="color: var(--fg-subtle);">
             <i data-lucide="clock" class="w-3.5 h-3.5"></i> 约 {{ page.read_time }} 分钟读完
           </span>
         </div>
@@ -283,7 +283,7 @@ html { scroll-behavior: smooth; }
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3" data-aos="fade-up">
         {% if page.previous %}
         <a href="{{ page.previous.url }}" class="block p-5 rounded-xl transition-all hover:translate-y-[-2px] group" style="background: var(--card-solid); border: 1px solid var(--border-soft);">
-          <div class="flex items-center gap-1 text-[10px] mb-2 font-semibold uppercase tracking-[0.1em]" style="color: var(--muted);">
+          <div class="flex items-center gap-1 text-[11px] mb-2 font-semibold uppercase tracking-[0.1em]" style="color: var(--fg-subtle);">
             <i data-lucide="arrow-left" class="w-3 h-3"></i> 上一篇
           </div>
           <p class="text-[14px] group-hover:text-[var(--fg-white)] transition-colors" style="color: var(--fg);">{{ page.previous.title }}</p>
@@ -291,7 +291,7 @@ html { scroll-behavior: smooth; }
         {% endif %}
         {% if page.next %}
         <a href="{{ page.next.url }}" class="block p-5 rounded-xl transition-all hover:translate-y-[-2px] group text-right{% unless page.previous %} md:col-start-2{% endunless %}" style="background: var(--card-solid); border: 1px solid var(--border-soft);">
-          <div class="flex items-center justify-end gap-1 text-[10px] mb-2 font-semibold uppercase tracking-[0.1em]" style="color: var(--muted);">
+          <div class="flex items-center justify-end gap-1 text-[11px] mb-2 font-semibold uppercase tracking-[0.1em]" style="color: var(--fg-subtle);">
             下一篇 <i data-lucide="arrow-right" class="w-3 h-3"></i>
           </div>
           <p class="text-[14px] group-hover:text-[var(--fg-white)] transition-colors" style="color: var(--fg);">{{ page.next.title }}</p>
@@ -299,7 +299,7 @@ html { scroll-behavior: smooth; }
         {% endif %}
       </div>
       <div class="mt-6 text-center" data-aos="fade-up">
-        <a href="/" class="inline-flex items-center gap-1.5 text-[12px] transition-colors" style="color: var(--muted);">
+        <a href="/" class="inline-flex items-center gap-1.5 text-[13px] transition-colors hover:text-[var(--fg-white)]" style="color: var(--fg-subtle);">
           <i data-lucide="home" class="w-3.5 h-3.5"></i> 回到首页
         </a>
       </div>
