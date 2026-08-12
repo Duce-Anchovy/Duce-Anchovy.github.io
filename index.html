@@ -310,19 +310,21 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
       }
     </style>
     <style>
-      /* 主页标题区主题切换：从右往左扫过 */
+      /* 主页标题区主题切换：从右往左渐变扫过，保留底层色彩过渡 */
       html.theme-transitioning .fx-hero::before {
         content: '';
         position: absolute;
-        inset: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
         z-index: 9999;
         pointer-events: none;
-        background: var(--bg);
+        background: linear-gradient(to left, var(--bg) 0%, transparent 80%);
         animation: fxSweepRL 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
       }
       @keyframes fxSweepRL {
-        0%   { clip-path: inset(0 0 0 100%); }
-        100% { clip-path: inset(0 0 0 0); }
+        0%   { width: 100%; }
+        100% { width: 0%; }
       }
     </style>
 </head>
