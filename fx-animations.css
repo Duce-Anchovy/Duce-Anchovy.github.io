@@ -29,7 +29,7 @@
   opacity: 1;
 }
 /* #posts 跳转时由 <head> 内联脚本隐藏 hero */
-html.hide-hero .fx-hero {
+html[data-hide-hero] .fx-hero {
   opacity: 0;
 }
 
