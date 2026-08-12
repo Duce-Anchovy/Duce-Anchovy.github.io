@@ -129,7 +129,6 @@
   padding-top: 48px;
   min-height: 100vh;
   box-shadow: var(--content-shadow);
-  scroll-margin-top: calc(100vh - 64px);
 }
 
 /* 内容区顶部发光边线 */
