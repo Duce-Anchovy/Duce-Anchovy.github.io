@@ -7,7 +7,7 @@
     <script>
       // 在渲染前立即隐藏 hero，避免 #posts 跳转时的闪烁
       if (window.location.hash === '#posts') {
-        document.documentElement.classList.add('skip-hero');
+        document.documentElement.style.setProperty('--fx-hero-opacity', '0');
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
