@@ -237,17 +237,31 @@
   }
 
   /* ========================================
-     8. Hash 锚点跳转（hero 显隐由 <body> 开头脚本控制）
+     8. Hash 锚点跳转（hero 显隐由 <body> 开头脚本控制初始状态，
+        此处处理点击导航链接时的 hash 变化）
      ======================================== */
   function initHashScroll() {
-    if (window.location.hash === '#posts') {
-      var el = document.getElementById('posts');
-      if (el) {
-        requestAnimationFrame(function () {
-          window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset);
-        });
+    var html = document.documentElement;
+
+    function handleHash() {
+      if (window.location.hash === '#posts') {
+        html.classList.add('hide-hero');
+        var el = document.getElementById('posts');
+        if (el) {
+          requestAnimationFrame(function () {
+            window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset);
+          });
+        }
+      } else {
+        html.classList.remove('hide-hero');
       }
     }
+
+    // 初始加载
+    handleHash();
+
+    // 点击导航链接时
+    window.addEventListener('hashchange', handleHash);
   }
 
   /* ========================================
