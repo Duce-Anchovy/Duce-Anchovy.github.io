@@ -560,10 +560,10 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
           });
         }
 
-        // 捕获阶段设置 delay，在 fx-animations.js 切换主题之前生效
-        toggleBtn.addEventListener('click', setDelays, true);
+        // mousedown 在 click 之前触发，确保 delay 在主题切换前设置好
+        toggleBtn.addEventListener('mousedown', setDelays);
 
-        // 监听 theme-transitioning 类移除，清理 delay
+        // 监听 theme-transitioning 移除，清理 delay
         var observer = new MutationObserver(function (mutations) {
           mutations.forEach(function (m) {
             if (m.type === 'attributes' && m.attributeName === 'class') {
