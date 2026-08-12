@@ -6,7 +6,7 @@
     <title>Duce-Anchovy's Web</title>
     <style>
       /* #posts 锚点跳转时隐藏 hero 区域，避免闪烁 */
-      main:has(#posts:target) .fx-hero { opacity: 0; }
+      html.hide-hero .fx-hero { opacity: 0; }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -311,6 +311,12 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
     </style>
 </head>
 <body class="min-h-screen font-sans antialiased">
+    <script>
+      // 在 body 解析前隐藏 hero，避免 #posts 跳转时的闪烁
+      if (window.location.hash === '#posts') {
+        document.documentElement.classList.add('hide-hero');
+      }
+    </script>
     <main class="min-h-screen relative font-sans">
   <!-- 背景弥散光团 -->
   <div class="fixed inset-0 pointer-events-none" style="z-index:0;">

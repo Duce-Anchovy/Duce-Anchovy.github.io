@@ -237,24 +237,16 @@
   }
 
   /* ========================================
-     8. Hash 锚点即时跳转（跳过 hero 区）
-     hero 的显隐由 <head> 内联脚本控制，此处只处理滚动
+     8. Hash 锚点跳转（hero 显隐由 <body> 开头脚本控制）
      ======================================== */
   function initHashScroll() {
     if (window.location.hash === '#posts') {
-      var hash = window.location.hash;
-      history.replaceState(null, null, ' ');
-      document.documentElement.style.scrollBehavior = 'auto';
-      requestAnimationFrame(function () {
+      var el = document.getElementById('posts');
+      if (el) {
         requestAnimationFrame(function () {
-          var el = document.getElementById('posts');
-          if (el) {
-            window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset);
-          }
-          document.documentElement.style.scrollBehavior = '';
-          history.replaceState(null, null, hash);
+          window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset);
         });
-      });
+      }
     }
   }
 
