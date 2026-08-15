@@ -39,15 +39,14 @@
                 var centerX = rect.left + rect.width / 2;
                 var ratio = 1 - (centerX - containerRect.left) / containerRect.width;
                 ratio = Math.max(0, Math.min(1, ratio));
-                var delay = (ratio * 0.6).toFixed(3) + 's';
-                el.style.setProperty('transition-delay', delay, 'important');
+                el.style.transitionDelay = (ratio * 0.6).toFixed(3) + 's';
               });
             }
           }
-          // DEBUG: 硬编码 2s 延迟到副标题，验证 inline transition-delay 是否生效
+          // DEBUG: 硬编码 2s 延迟（无 !important），验证问题是否出在 !important 标志
           var testEl = document.querySelector('.fx-hero .fx-float-up-2');
           if (testEl) {
-            testEl.style.setProperty('transition-delay', '2s', 'important');
+            testEl.style.transitionDelay = '2s';
             testEl.style.outline = '2px solid lime';
             setTimeout(function () { testEl.style.outline = ''; }, 3000);
           }
