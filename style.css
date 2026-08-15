@@ -6,7 +6,14 @@
 .theme-transitioning *,
 .theme-transitioning *::before,
 .theme-transitioning *::after {
-  transition: background-color 0.8s ease, color 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease, opacity 0.8s ease !important;
+  transition-property: background-color, color, border-color, box-shadow, opacity;
+  transition-duration: 0.8s;
+  transition-timing-function: ease;
+}
+
+/* DEBUG: 测试 transition-delay 对 hero 元素是否生效 */
+.theme-transitioning .fx-hero .fx-float-up-2 {
+  transition-delay: 1s !important;
 }
 
 /* ========================================

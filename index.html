@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <link rel="stylesheet" href="fx-animations.css?v=20260812b">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20260812g">
     <style id="theme-vars">
 /* ========================================
    Theme System - 暗色 / 白天 双主题
@@ -526,56 +526,8 @@ a.group:hover h3 { background: var(--hover-gradient); -webkit-background-clip: t
     <div id="fx-dot-pattern"></div>
     <canvas id="fx-particles"></canvas>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="fx-animations.js?v=20260812"></script>
+    <script src="fx-animations.js?v=20260812h"></script>
     <script src="particles.js?v=20260812"></script>
-    <script>
-      /* 主页主题切换：按水平位置设置 transition-delay，从右往左扫过 */
-      (function() {
-        var html = document.documentElement;
-        if (html.getAttribute('data-page') !== 'home') return;
-
-        var toggleBtn = document.getElementById('theme-toggle');
-        if (!toggleBtn) return;
-
-        function setDelays() {
-          var hero = document.querySelector('.fx-hero');
-          if (!hero) return;
-          var heroRect = hero.getBoundingClientRect();
-          var maxDelay = 0.4;
-          var els = hero.querySelectorAll('*');
-          els.forEach(function (el) {
-            var rect = el.getBoundingClientRect();
-            var centerX = rect.left + rect.width / 2;
-            var ratio = 1 - (centerX - heroRect.left) / heroRect.width;
-            ratio = Math.max(0, Math.min(1, ratio));
-            el.style.setProperty('transition-delay', (ratio * maxDelay) + 's', 'important');
-          });
-        }
-
-        function clearDelays() {
-          var hero = document.querySelector('.fx-hero');
-          if (!hero) return;
-          hero.querySelectorAll('*').forEach(function (el) {
-            el.style.removeProperty('transition-delay');
-          });
-        }
-
-        // mousedown 在 click 之前触发，确保 delay 在主题切换前设置好
-        toggleBtn.addEventListener('mousedown', setDelays);
-
-        // 监听 theme-transitioning 移除，清理 delay
-        var observer = new MutationObserver(function (mutations) {
-          mutations.forEach(function (m) {
-            if (m.type === 'attributes' && m.attributeName === 'class') {
-              if (!html.classList.contains('theme-transitioning')) {
-                clearDelays();
-              }
-            }
-          });
-        });
-        observer.observe(html, { attributes: true, attributeFilter: ['class'] });
-      })();
-    </script>
     <script>lucide.createIcons();</script>
 </body>
 </html>
