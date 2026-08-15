@@ -23,13 +23,9 @@
 
     if (toggleBtn) {
       toggleBtn.addEventListener('click', function () {
-        // DEBUG: 按钮变红，确认 click 处理器执行
-        toggleBtn.style.outline = '3px solid red';
-        setTimeout(function () { toggleBtn.style.outline = ''; }, 2000);
-
         var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
 
-        // 主页：在切换主题前，直接设 transition 简写 inline style（含 delay），从右往左扫过
+        // 主页：在切换主题前，按水平位置设 transition-delay，从右往左扫过
         var heroEls;
         if (html.getAttribute('data-page') === 'home') {
           var hero = document.querySelector('.fx-hero');
@@ -44,13 +40,7 @@
                 var ratio = 1 - (centerX - containerRect.left) / containerRect.width;
                 ratio = Math.max(0, Math.min(1, ratio));
                 var delay = (ratio * 0.6).toFixed(3) + 's';
-                el.style.setProperty('transition',
-                  'background-color 0.8s ease ' + delay + ', ' +
-                  'color 0.8s ease ' + delay + ', ' +
-                  'border-color 0.8s ease ' + delay + ', ' +
-                  'box-shadow 0.8s ease ' + delay + ', ' +
-                  'opacity 0.8s ease ' + delay,
-                  'important');
+                el.style.setProperty('transition-delay', delay, 'important');
               });
             }
           }
@@ -64,7 +54,7 @@
           html.classList.remove('theme-transitioning');
           if (heroEls) {
             heroEls.forEach(function (el) {
-              el.style.removeProperty('transition');
+              el.style.removeProperty('transition-delay');
             });
           }
         }, 1500);

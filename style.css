@@ -11,11 +11,6 @@
   transition-timing-function: ease;
 }
 
-/* DEBUG: 测试 transition-delay 对 hero 元素是否生效 */
-.theme-transitioning .fx-hero .fx-float-up-2 {
-  transition-delay: 1s !important;
-}
-
 /* ========================================
    CSS 动态背景
    品牌色：蓝(#60a5fa)、紫(#a78bfa)、青(#22d3ee)
