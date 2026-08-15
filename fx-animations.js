@@ -25,7 +25,7 @@
       toggleBtn.addEventListener('click', function () {
         var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
 
-        // 主页：在切换主题前，按水平位置设 transition-delay，从右往左扫过
+        // 主页：设完整 transition 简写 inline，含 delay，从右往左扫过
         var heroEls;
         if (html.getAttribute('data-page') === 'home') {
           var hero = document.querySelector('.fx-hero');
@@ -39,16 +39,10 @@
                 var centerX = rect.left + rect.width / 2;
                 var ratio = 1 - (centerX - containerRect.left) / containerRect.width;
                 ratio = Math.max(0, Math.min(1, ratio));
-                el.style.transitionDelay = (ratio * 0.6).toFixed(3) + 's';
+                var d = (ratio * 0.6).toFixed(3) + 's';
+                el.style.transition = 'background-color 0.8s ease ' + d + ',color 0.8s ease ' + d + ',border-color 0.8s ease ' + d + ',box-shadow 0.8s ease ' + d + ',opacity 0.8s ease ' + d;
               });
             }
-          }
-          // DEBUG: 硬编码 2s 延迟（无 !important），验证问题是否出在 !important 标志
-          var testEl = document.querySelector('.fx-hero .fx-float-up-2');
-          if (testEl) {
-            testEl.style.transitionDelay = '2s';
-            testEl.style.outline = '2px solid lime';
-            setTimeout(function () { testEl.style.outline = ''; }, 3000);
           }
         }
 
@@ -60,11 +54,9 @@
           html.classList.remove('theme-transitioning');
           if (heroEls) {
             heroEls.forEach(function (el) {
-              el.style.removeProperty('transition-delay');
+              el.style.removeProperty('transition');
             });
           }
-          var testEl = document.querySelector('.fx-hero .fx-float-up-2');
-          if (testEl) testEl.style.removeProperty('transition-delay');
         }, 1500);
       });
     }
