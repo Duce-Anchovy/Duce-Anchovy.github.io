@@ -44,6 +44,13 @@
               });
             }
           }
+          // DEBUG: 硬编码 2s 延迟到副标题，验证 inline transition-delay 是否生效
+          var testEl = document.querySelector('.fx-hero .fx-float-up-2');
+          if (testEl) {
+            testEl.style.setProperty('transition-delay', '2s', 'important');
+            testEl.style.outline = '2px solid lime';
+            setTimeout(function () { testEl.style.outline = ''; }, 3000);
+          }
         }
 
         html.classList.add('theme-transitioning');
@@ -57,6 +64,8 @@
               el.style.removeProperty('transition-delay');
             });
           }
+          var testEl = document.querySelector('.fx-hero .fx-float-up-2');
+          if (testEl) testEl.style.removeProperty('transition-delay');
         }, 1500);
       });
     }
