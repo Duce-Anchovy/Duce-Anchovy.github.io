@@ -13,27 +13,28 @@
 }
 
 /* ---------- 0. 主题切换背景扫过层（从右往左，柔和边界） ---------- */
+/* 盖住全屏的旧背景层，向左滑出露出下面的新背景 */
 .fx-sweep-overlay {
   position: fixed;
   top: 0;
   bottom: 0;
   width: 100%;
-  left: 100%;
+  left: 0;
   z-index: 0;
   pointer-events: none;
-  /* 左边缘（扫过边界）用渐变柔化，形成平滑过渡带 */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%);
-  mask-image: linear-gradient(to right, transparent 0%, black 12%);
+  /* 右边缘（扫过边界）用渐变柔化，形成平滑过渡带 */
+  -webkit-mask-image: linear-gradient(to left, transparent 0%, black 12%);
+  mask-image: linear-gradient(to left, transparent 0%, black 12%);
 }
 
-/* 激活动画：overlay 从屏幕右侧外滑入占据全屏，即从右往左扫过 */
+/* 激活动画：旧背景层向左滑出屏幕，露出从右往左出现的新背景 */
 .fx-sweep-overlay.sweep-active {
   animation: fxThemeSweep 0.8s ease forwards;
 }
 
 @keyframes fxThemeSweep {
-  from { left: 100%; }
-  to   { left: 0%; }
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
 }
 
 /* 新主题背景：与 body 对应主题的渐变保持一致，保留光效 */

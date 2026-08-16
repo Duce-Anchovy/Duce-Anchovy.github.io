@@ -21,9 +21,7 @@
     html.setAttribute('data-theme', current);
     updateThemeIcons(current);
 
-    // 主页：主题切换时用 clip-path 遮罩扫过背景（从右往左）
-    // 扫过期间 body 保持旧主题，overlay 从右往左并入新背景，
-    // 扫过完成后再切换 data-theme，形成以遮罩边界为分界的效果
+    // 立即切换主题：前景颜色通过 .theme-transitioning 平滑过渡
     function applyTheme(next) {
       html.classList.add('theme-transitioning');
       html.setAttribute('data-theme', next);
@@ -34,17 +32,20 @@
       }, 1200);
     }
 
-    function sweepBackground(next, onDone) {
-      var done = false;
+    // 返回指定主题的 body 背景渐变（与 style.css 保持一致）
+    function bgFor(theme) {
+      if (theme === 'dark') {
+        return 'linear-gradient(135deg, rgba(15,25,45,1) 0%, rgba(25,18,40,1) 30%, rgba(10,15,24,1) 50%, rgba(12,28,36,1) 75%, rgba(15,25,45,1) 100%)';
+      }
+      return 'radial-gradient(at 15% 25%, rgba(219,234,254,0.45) 0%, transparent 55%), radial-gradient(at 80% 15%, rgba(237,233,254,0.45) 0%, transparent 55%), radial-gradient(at 45% 70%, rgba(207,250,254,0.40) 0%, transparent 55%), radial-gradient(at 75% 80%, rgba(219,234,254,0.35) 0%, transparent 55%), #f0f2f5';
+    }
+
+    // 主页：overlay 盖住"旧背景"，向左滑出露出新背景，从右往左扫过
+    function sweepOldBackground(oldTheme) {
       var overlay = document.createElement('div');
       overlay.className = 'fx-sweep-overlay';
-      // 直接用内联样式设置目标主题背景，确保扫过区域显示新背景（不依赖 CSS 类）
-      if (next === 'dark') {
-        overlay.style.background = 'linear-gradient(135deg, rgba(15,25,45,1) 0%, rgba(25,18,40,1) 30%, rgba(10,15,24,1) 50%, rgba(12,28,36,1) 75%, rgba(15,25,45,1) 100%)';
-        overlay.style.backgroundSize = '400% 400%';
-      } else {
-        overlay.style.background = 'radial-gradient(at 15% 25%, rgba(219,234,254,0.45) 0%, transparent 55%), radial-gradient(at 80% 15%, rgba(237,233,254,0.45) 0%, transparent 55%), radial-gradient(at 45% 70%, rgba(207,250,254,0.40) 0%, transparent 55%), radial-gradient(at 75% 80%, rgba(219,234,254,0.35) 0%, transparent 55%), #f0f2f5';
-      }
+      overlay.style.background = bgFor(oldTheme);
+      overlay.style.backgroundSize = oldTheme === 'dark' ? '400% 400%' : '200% 200%';
       // 插入到粒子 canvas 之前，让粒子光效浮在扫过层之上
       var particles = document.getElementById('fx-particles');
       if (particles && particles.parentNode) {
@@ -52,29 +53,29 @@
       } else {
         document.body.appendChild(overlay);
       }
-      function finish() {
-        if (done) return;
-        done = true;
-        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-        if (onDone) onDone();
-      }
-      // 等一帧确保 overlay 已渲染，再触发动画
       requestAnimationFrame(function () {
         overlay.classList.add('sweep-active');
       });
-      overlay.addEventListener('animationend', finish);
-      // 兜底：动画未触发时也结束
-      setTimeout(finish, 1100);
+      var removed = false;
+      function removeOverlay() {
+        if (removed) return;
+        removed = true;
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      }
+      overlay.addEventListener('animationend', removeOverlay);
+      setTimeout(removeOverlay, 1100);
     }
 
     if (toggleBtn) {
       toggleBtn.addEventListener('click', function () {
-        var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        var current = html.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
         var isHome = html.getAttribute('data-page') === 'home';
 
         if (isHome) {
-          // 主页：先扫过背景，扫完再切换主题
-          sweepBackground(next, function () { applyTheme(next); });
+          // 先盖旧背景层，再立即切换主题（前景平滑过渡），旧背景层向左滑出露出新背景
+          sweepOldBackground(current);
+          applyTheme(next);
         } else {
           applyTheme(next);
         }
