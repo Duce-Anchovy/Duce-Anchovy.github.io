@@ -10,10 +10,8 @@
      0. 主题切换系统
      ======================================== */
   function initTheme() {
-    console.log('[theme-sweep] initTheme 开始执行');
     var html = document.documentElement;
     var toggleBtn = document.getElementById('theme-toggle');
-    console.log('[theme-sweep] toggleBtn 存在:', !!toggleBtn);
     var iconSun = document.getElementById('theme-icon-sun');
     var iconMoon = document.getElementById('theme-icon-moon');
 
@@ -23,47 +21,45 @@
     html.setAttribute('data-theme', current);
     updateThemeIcons(current);
 
+    // 主页：主题切换时用 clip-path 遮罩扫过背景（从右往左）
+    // 叠加一层"新主题渐变背景"，右侧先露出、向左裁剪推进，扫完移除
+    function sweepBackground(next) {
+      var overlay = document.createElement('div');
+      overlay.className = 'fx-sweep-overlay ' + (next === 'dark' ? 'sweep-dark' : 'sweep-light');
+      // 插入到粒子 canvas 之前，让粒子光效浮在扫过层之上
+      var particles = document.getElementById('fx-particles');
+      if (particles && particles.parentNode) {
+        particles.parentNode.insertBefore(overlay, particles);
+      } else {
+        document.body.appendChild(overlay);
+      }
+      // 等一帧确保 overlay 已渲染，再触发动画
+      requestAnimationFrame(function () {
+        overlay.classList.add('sweep-active');
+      });
+      // 动画结束后移除 overlay
+      setTimeout(function () {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      }, 900);
+    }
+
     if (toggleBtn) {
       toggleBtn.addEventListener('click', function () {
-        console.log('[theme-sweep] 点击切换按钮, data-page:', html.getAttribute('data-page'));
         var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-
-        // 主页：设完整 transition 简写 inline，含 delay，从右往左扫过
-        var heroEls;
-        if (html.getAttribute('data-page') === 'home') {
-          var hero = document.querySelector('.fx-hero');
-          if (hero) {
-            var container = hero.querySelector('div');
-            if (container) {
-              var containerRect = container.getBoundingClientRect();
-              heroEls = hero.querySelectorAll('*');
-              heroEls.forEach(function (el) {
-                var rect = el.getBoundingClientRect();
-                var centerX = rect.left + rect.width / 2;
-                var ratio = 1 - (centerX - containerRect.left) / containerRect.width;
-                ratio = Math.max(0, Math.min(1, ratio));
-                var d = (ratio * 0.6).toFixed(3) + 's';
-                el.style.setProperty('transition', 'background-color 0.8s ease ' + d + ',color 0.8s ease ' + d + ',border-color 0.8s ease ' + d + ',box-shadow 0.8s ease ' + d + ',opacity 0.8s ease ' + d, 'important');
-              });
-              // DEBUG: 验证第一个元素
-              var firstEl = heroEls[0];
-              console.log('[theme-sweep] heroEls count:', heroEls.length);
-              console.log('[theme-sweep] firstEl tag:', firstEl.tagName, 'transition:', firstEl.style.transition);
-            }
-          }
-        }
+        var isHome = html.getAttribute('data-page') === 'home';
 
         html.classList.add('theme-transitioning');
         html.setAttribute('data-theme', next);
         localStorage.setItem('theme', next);
         updateThemeIcons(next);
+
+        // 主页：叠加背景扫过层
+        if (isHome) {
+          sweepBackground(next);
+        }
+
         setTimeout(function () {
           html.classList.remove('theme-transitioning');
-          if (heroEls) {
-            heroEls.forEach(function (el) {
-              el.style.removeProperty('transition');
-            });
-          }
         }, 1500);
       });
     }

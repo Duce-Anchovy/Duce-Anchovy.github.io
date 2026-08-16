@@ -12,6 +12,46 @@
   pointer-events: none;
 }
 
+/* ---------- 0. 主题切换背景扫过层（从右往左） ---------- */
+.fx-sweep-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* 默认完全裁剪（不显示），clip-path 左裁100% */
+  clip-path: inset(0 0 0 100%);
+}
+
+/* 激活动画：左侧裁掉部分从 100% 缩到 0，右侧先露出、向左推进 */
+.fx-sweep-overlay.sweep-active {
+  animation: fxThemeSweep 0.8s ease forwards;
+}
+
+@keyframes fxThemeSweep {
+  from { clip-path: inset(0 0 0 100%); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* 新主题背景：与 body 对应主题的渐变保持一致，保留光效 */
+.fx-sweep-overlay.sweep-dark {
+  background: linear-gradient(135deg,
+    rgba(15, 25, 45, 1) 0%,
+    rgba(25, 18, 40, 1) 30%,
+    rgba(10, 15, 24, 1) 50%,
+    rgba(12, 28, 36, 1) 75%,
+    rgba(15, 25, 45, 1) 100%);
+  background-size: 400% 400%;
+}
+
+.fx-sweep-overlay.sweep-light {
+  background:
+    radial-gradient(at 15% 25%, rgba(219, 234, 254, 0.45) 0%, transparent 55%),
+    radial-gradient(at 80% 15%, rgba(237, 233, 254, 0.45) 0%, transparent 55%),
+    radial-gradient(at 45% 70%, rgba(207, 250, 254, 0.40) 0%, transparent 55%),
+    radial-gradient(at 75% 80%, rgba(219, 234, 254, 0.35) 0%, transparent 55%),
+    #f0f2f5;
+}
+
 /* ---------- 2. 首屏 Hero 区 ---------- */
 .fx-hero {
   position: fixed;
