@@ -22,8 +22,20 @@
     updateThemeIcons(current);
 
     // 主页：主题切换时用 clip-path 遮罩扫过背景（从右往左）
-    // 叠加一层"新主题渐变背景"，右侧先露出、向左裁剪推进，扫完移除
-    function sweepBackground(next) {
+    // 扫过期间 body 保持旧主题，overlay 从右往左并入新背景，
+    // 扫过完成后再切换 data-theme，形成以遮罩边界为分界的效果
+    function applyTheme(next) {
+      html.classList.add('theme-transitioning');
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeIcons(next);
+      setTimeout(function () {
+        html.classList.remove('theme-transitioning');
+      }, 1200);
+    }
+
+    function sweepBackground(next, onDone) {
+      var done = false;
       var overlay = document.createElement('div');
       overlay.className = 'fx-sweep-overlay ' + (next === 'dark' ? 'sweep-dark' : 'sweep-light');
       // 插入到粒子 canvas 之前，让粒子光效浮在扫过层之上
@@ -33,14 +45,19 @@
       } else {
         document.body.appendChild(overlay);
       }
+      function finish() {
+        if (done) return;
+        done = true;
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        if (onDone) onDone();
+      }
       // 等一帧确保 overlay 已渲染，再触发动画
       requestAnimationFrame(function () {
         overlay.classList.add('sweep-active');
       });
-      // 动画结束后移除 overlay
-      setTimeout(function () {
-        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-      }, 900);
+      overlay.addEventListener('animationend', finish);
+      // 兜底：动画未触发时也结束
+      setTimeout(finish, 1100);
     }
 
     if (toggleBtn) {
@@ -48,19 +65,12 @@
         var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         var isHome = html.getAttribute('data-page') === 'home';
 
-        html.classList.add('theme-transitioning');
-        html.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        updateThemeIcons(next);
-
-        // 主页：叠加背景扫过层
         if (isHome) {
-          sweepBackground(next);
+          // 主页：先扫过背景，扫完再切换主题
+          sweepBackground(next, function () { applyTheme(next); });
+        } else {
+          applyTheme(next);
         }
-
-        setTimeout(function () {
-          html.classList.remove('theme-transitioning');
-        }, 1500);
       });
     }
 
