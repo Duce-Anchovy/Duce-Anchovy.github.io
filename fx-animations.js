@@ -25,8 +25,7 @@
       toggleBtn.addEventListener('click', function () {
         var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
 
-        // 主页：只设 transition-delay inline，从右往左扫过
-        // CSS .theme-transitioning * 已提供 property/duration/timing
+        // 主页：设完整 transition 简写 inline，含 delay，从右往左扫过
         var heroEls;
         if (html.getAttribute('data-page') === 'home') {
           var hero = document.querySelector('.fx-hero');
@@ -41,8 +40,12 @@
                 var ratio = 1 - (centerX - containerRect.left) / containerRect.width;
                 ratio = Math.max(0, Math.min(1, ratio));
                 var d = (ratio * 0.6).toFixed(3) + 's';
-                el.style.setProperty('transition-delay', d, 'important');
+                el.style.setProperty('transition', 'background-color 0.8s ease ' + d + ',color 0.8s ease ' + d + ',border-color 0.8s ease ' + d + ',box-shadow 0.8s ease ' + d + ',opacity 0.8s ease ' + d, 'important');
               });
+              // DEBUG: 验证第一个元素
+              var firstEl = heroEls[0];
+              console.log('[theme-sweep] heroEls count:', heroEls.length);
+              console.log('[theme-sweep] firstEl tag:', firstEl.tagName, 'transition:', firstEl.style.transition);
             }
           }
         }
@@ -55,7 +58,7 @@
           html.classList.remove('theme-transitioning');
           if (heroEls) {
             heroEls.forEach(function (el) {
-              el.style.removeProperty('transition-delay');
+              el.style.removeProperty('transition');
             });
           }
         }, 1500);
