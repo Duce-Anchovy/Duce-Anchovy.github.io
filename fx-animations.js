@@ -37,7 +37,14 @@
     function sweepBackground(next, onDone) {
       var done = false;
       var overlay = document.createElement('div');
-      overlay.className = 'fx-sweep-overlay ' + (next === 'dark' ? 'sweep-dark' : 'sweep-light');
+      overlay.className = 'fx-sweep-overlay';
+      // 直接用内联样式设置目标主题背景，确保扫过区域显示新背景（不依赖 CSS 类）
+      if (next === 'dark') {
+        overlay.style.background = 'linear-gradient(135deg, rgba(15,25,45,1) 0%, rgba(25,18,40,1) 30%, rgba(10,15,24,1) 50%, rgba(12,28,36,1) 75%, rgba(15,25,45,1) 100%)';
+        overlay.style.backgroundSize = '400% 400%';
+      } else {
+        overlay.style.background = 'radial-gradient(at 15% 25%, rgba(219,234,254,0.45) 0%, transparent 55%), radial-gradient(at 80% 15%, rgba(237,233,254,0.45) 0%, transparent 55%), radial-gradient(at 45% 70%, rgba(207,250,254,0.40) 0%, transparent 55%), radial-gradient(at 75% 80%, rgba(219,234,254,0.35) 0%, transparent 55%), #f0f2f5';
+      }
       // 插入到粒子 canvas 之前，让粒子光效浮在扫过层之上
       var particles = document.getElementById('fx-particles');
       if (particles && particles.parentNode) {
