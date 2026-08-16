@@ -8,7 +8,7 @@
 #fx-particles {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 60;
   pointer-events: none;
 }
 
@@ -20,7 +20,7 @@
   bottom: 0;
   width: 100%;
   left: 0;
-  z-index: 0;
+  z-index: 50;
   pointer-events: none;
   /* 右边缘（扫过边界）用渐变柔化，形成平滑过渡带 */
   -webkit-mask-image: linear-gradient(to left, transparent 0%, black 12%);
