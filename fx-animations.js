@@ -10,8 +10,10 @@
      0. 主题切换系统
      ======================================== */
   function initTheme() {
+    console.log('[theme-sweep] initTheme 开始执行');
     var html = document.documentElement;
     var toggleBtn = document.getElementById('theme-toggle');
+    console.log('[theme-sweep] toggleBtn 存在:', !!toggleBtn);
     var iconSun = document.getElementById('theme-icon-sun');
     var iconMoon = document.getElementById('theme-icon-moon');
 
@@ -23,6 +25,7 @@
 
     if (toggleBtn) {
       toggleBtn.addEventListener('click', function () {
+        console.log('[theme-sweep] 点击切换按钮, data-page:', html.getAttribute('data-page'));
         var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
 
         // 主页：设完整 transition 简写 inline，含 delay，从右往左扫过
