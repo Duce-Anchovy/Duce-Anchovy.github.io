@@ -285,6 +285,31 @@
   }
 
   /* ========================================
+     7.5 文章分类筛选（首页）
+     依赖：文章卡片带 data-category，Tabs 带 data-filter
+     ======================================== */
+  function initCategoryFilter() {
+    var tabs = document.querySelectorAll('[data-filter]');
+    if (!tabs.length) return;
+    var cards = document.querySelectorAll('#posts .space-y-1 > a');
+    if (!cards.length) return;
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var f = t.getAttribute('data-filter');
+        tabs.forEach(function (x) {
+          x.classList.toggle('is-active', x === t);
+        });
+        cards.forEach(function (c) {
+          var cat = c.getAttribute('data-category') || 'all';
+          c.style.display = (f === 'all' || cat === f) ? '' : 'none';
+        });
+        if (typeof AOS !== 'undefined' && AOS.refresh) AOS.refresh();
+      });
+    });
+  }
+
+  /* ========================================
      8. 启动
      ======================================== */
   document.addEventListener('DOMContentLoaded', function () {
@@ -296,5 +321,6 @@
     initScrollArrow();
     initDotParallax();
     initAOS();
+    initCategoryFilter();
   });
 })();
