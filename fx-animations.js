@@ -296,14 +296,25 @@
     var closeBtn = document.getElementById('tag-modal-close');
     var applyBtn = document.getElementById('tag-apply');
     var tagOptions = document.querySelectorAll('.fx-tag-option');
+    var orderOptions = document.querySelectorAll('.fx-order-option');
     var cards = document.querySelectorAll('#posts .space-y-1 > a');
     if (!cards.length) return;
 
     var activeTags = [];
+    var sortOrder = null; // null = 自动：无搜索按时间顺序，有搜索按相关性
+
+    function hasQuery() {
+      return !!(searchInput && searchInput.value.trim());
+    }
+    function effectiveOrder() {
+      if (sortOrder) return sortOrder;
+      return hasQuery() ? 'relevance' : 'newest';
+    }
 
     function applyFilter() {
       var q = (searchInput ? searchInput.value : '').trim().toLowerCase();
       var container = cards[0].parentNode;
+      var order = effectiveOrder();
       var visible = [];
       cards.forEach(function (c) {
         var cat = c.getAttribute('data-category') || 'all';
@@ -312,38 +323,38 @@
           c.style.display = 'none';
           return;
         }
-        if (!q) {
-          // 无搜索词：恢复显示 + 原时间顺序
-          c.style.display = '';
-          visible.push({ el: c, score: -1 });
-          return;
-        }
-        var text = (c.textContent || '').toLowerCase();
-        var titleEl = c.querySelector('h3');
-        var title = titleEl ? (titleEl.textContent || '').toLowerCase() : '';
-        var hitCount = 0;
-        var titleHits = 0;
-        var i, ch;
-        for (i = 0; i < q.length; i++) {
-          ch = q.charAt(i);
-          if (ch === ' ' || ch === '　') continue;
-          if (text.indexOf(ch) !== -1) hitCount++;
-          if (title.indexOf(ch) !== -1) titleHits++;
-        }
-        if (hitCount === 0) {
-          // 无单字命中：隐藏
-          c.style.display = 'none';
-          return;
-        }
         var score = 0;
-        if (text.indexOf(q) !== -1) score += 1000; // 完整连续片段命中：相似度最高
-        score += hitCount * 20;                     // 命中单字越多越靠前
-        score += titleHits * 10;                    // 标题命中加成
+        if (q) {
+          var text = (c.textContent || '').toLowerCase();
+          var titleEl = c.querySelector('h3');
+          var title = titleEl ? (titleEl.textContent || '').toLowerCase() : '';
+          var hitCount = 0;
+          var titleHits = 0;
+          var i, ch;
+          for (i = 0; i < q.length; i++) {
+            ch = q.charAt(i);
+            if (ch === ' ' || ch === '　') continue;
+            if (text.indexOf(ch) !== -1) hitCount++;
+            if (title.indexOf(ch) !== -1) titleHits++;
+          }
+          if (hitCount === 0) {
+            // 无单字命中：隐藏
+            c.style.display = 'none';
+            return;
+          }
+          if (text.indexOf(q) !== -1) score += 1000; // 完整连续片段命中：相似度最高
+          score += hitCount * 20;                     // 命中单字越多越靠前
+          score += titleHits * 10;                    // 标题命中加成
+        }
         c.style.display = '';
         visible.push({ el: c, score: score });
       });
-      // 有搜索词时按相似度降序，否则保持原时间顺序
-      visible.sort(function (a, b) { return b.score - a.score; });
+      if (order === 'oldest') {
+        visible.reverse();
+      } else if (order === 'relevance' && q) {
+        visible.sort(function (a, b) { return b.score - a.score; });
+      }
+      // newest（或相关性且无搜索词时）保持原时间顺序
       visible.forEach(function (item) { container.appendChild(item.el); });
       if (filterBtn) {
         filterBtn.classList.toggle('is-active', activeTags.length > 0);
@@ -355,6 +366,10 @@
       tagOptions.forEach(function (o) {
         var tag = o.getAttribute('data-tag');
         o.classList.toggle('is-active', activeTags.indexOf(tag) !== -1);
+      });
+      var cur = effectiveOrder();
+      orderOptions.forEach(function (o) {
+        o.classList.toggle('is-active', o.getAttribute('data-order') === cur);
       });
       if (modal) modal.hidden = false;
     }
@@ -371,6 +386,12 @@
       tagOptions.forEach(function (o) {
         if (o.classList.contains('is-active')) {
           activeTags.push(o.getAttribute('data-tag'));
+        }
+      });
+      sortOrder = null;
+      orderOptions.forEach(function (o) {
+        if (o.classList.contains('is-active')) {
+          sortOrder = o.getAttribute('data-order');
         }
       });
       closeModal();
@@ -396,6 +417,13 @@
             if (x.getAttribute('data-tag') === 'all') x.classList.remove('is-active');
           });
         }
+      });
+    });
+    orderOptions.forEach(function (o) {
+      o.addEventListener('click', function () {
+        orderOptions.forEach(function (x) {
+          x.classList.toggle('is-active', x === o);
+        });
       });
     });
     applyFilter();
