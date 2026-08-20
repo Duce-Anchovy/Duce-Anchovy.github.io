@@ -303,12 +303,47 @@
 
     function applyFilter() {
       var q = (searchInput ? searchInput.value : '').trim().toLowerCase();
+      var container = cards[0].parentNode;
+      var visible = [];
       cards.forEach(function (c) {
         var cat = c.getAttribute('data-category') || 'all';
         var tagOk = activeTags.length === 0 || activeTags.indexOf('all') !== -1 || activeTags.indexOf(cat) !== -1;
-        var textOk = !q || (c.textContent || '').toLowerCase().indexOf(q) !== -1;
-        c.style.display = (tagOk && textOk) ? '' : 'none';
+        if (!tagOk) {
+          c.style.display = 'none';
+          return;
+        }
+        if (!q) {
+          // 无搜索词：恢复原时间顺序
+          visible.push({ el: c, score: -1 });
+          return;
+        }
+        var text = (c.textContent || '').toLowerCase();
+        var titleEl = c.querySelector('h3');
+        var title = titleEl ? (titleEl.textContent || '').toLowerCase() : '';
+        var hitCount = 0;
+        var titleHits = 0;
+        var i, ch;
+        for (i = 0; i < q.length; i++) {
+          ch = q.charAt(i);
+          if (ch === ' ' || ch === '　') continue;
+          if (text.indexOf(ch) !== -1) hitCount++;
+          if (title.indexOf(ch) !== -1) titleHits++;
+        }
+        if (hitCount === 0) {
+          // 无单字命中：隐藏
+          c.style.display = 'none';
+          return;
+        }
+        var score = 0;
+        if (text.indexOf(q) !== -1) score += 1000; // 完整连续片段命中：相似度最高
+        score += hitCount * 20;                     // 命中单字越多越靠前
+        score += titleHits * 10;                    // 标题命中加成
+        c.style.display = '';
+        visible.push({ el: c, score: score });
       });
+      // 有搜索词时按相似度降序，否则保持原时间顺序
+      visible.sort(function (a, b) { return b.score - a.score; });
+      visible.forEach(function (item) { container.appendChild(item.el); });
       if (filterBtn) {
         filterBtn.classList.toggle('is-active', activeTags.length > 0);
       }
