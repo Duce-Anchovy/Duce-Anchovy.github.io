@@ -313,7 +313,8 @@
           return;
         }
         if (!q) {
-          // 无搜索词：恢复原时间顺序
+          // 无搜索词：恢复显示 + 原时间顺序
+          c.style.display = '';
           visible.push({ el: c, score: -1 });
           return;
         }
