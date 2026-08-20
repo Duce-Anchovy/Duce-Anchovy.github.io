@@ -299,25 +299,26 @@
     var cards = document.querySelectorAll('#posts .space-y-1 > a');
     if (!cards.length) return;
 
-    var activeTag = 'all';
+    var activeTags = [];
 
     function applyFilter() {
       var q = (searchInput ? searchInput.value : '').trim().toLowerCase();
       cards.forEach(function (c) {
         var cat = c.getAttribute('data-category') || 'all';
-        var tagOk = activeTag === 'all' || cat === activeTag;
+        var tagOk = activeTags.length === 0 || activeTags.indexOf(cat) !== -1;
         var textOk = !q || (c.textContent || '').toLowerCase().indexOf(q) !== -1;
         c.style.display = (tagOk && textOk) ? '' : 'none';
       });
       if (filterBtn) {
-        filterBtn.classList.toggle('is-active', activeTag !== 'all');
+        filterBtn.classList.toggle('is-active', activeTags.length > 0);
       }
       if (typeof AOS !== 'undefined' && AOS.refresh) AOS.refresh();
     }
 
     function openModal() {
       tagOptions.forEach(function (o) {
-        o.classList.toggle('is-active', o.getAttribute('data-tag') === activeTag);
+        var tag = o.getAttribute('data-tag');
+        o.classList.toggle('is-active', activeTags.indexOf(tag) !== -1);
       });
       if (modal) modal.hidden = false;
     }
@@ -330,16 +331,18 @@
     if (mask) mask.addEventListener('click', closeModal);
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     if (applyBtn) applyBtn.addEventListener('click', function () {
-      var sel = document.querySelector('.fx-tag-option.is-active');
-      activeTag = sel ? sel.getAttribute('data-tag') : 'all';
+      activeTags = [];
+      tagOptions.forEach(function (o) {
+        if (o.classList.contains('is-active')) {
+          activeTags.push(o.getAttribute('data-tag'));
+        }
+      });
       closeModal();
       applyFilter();
     });
     tagOptions.forEach(function (o) {
       o.addEventListener('click', function () {
-        tagOptions.forEach(function (x) {
-          x.classList.toggle('is-active', x === o);
-        });
+        o.classList.toggle('is-active');
       });
     });
     applyFilter();
