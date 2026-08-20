@@ -305,7 +305,7 @@
       var q = (searchInput ? searchInput.value : '').trim().toLowerCase();
       cards.forEach(function (c) {
         var cat = c.getAttribute('data-category') || 'all';
-        var tagOk = activeTags.length === 0 || activeTags.indexOf(cat) !== -1;
+        var tagOk = activeTags.length === 0 || activeTags.indexOf('all') !== -1 || activeTags.indexOf(cat) !== -1;
         var textOk = !q || (c.textContent || '').toLowerCase().indexOf(q) !== -1;
         c.style.display = (tagOk && textOk) ? '' : 'none';
       });
@@ -342,7 +342,24 @@
     });
     tagOptions.forEach(function (o) {
       o.addEventListener('click', function () {
-        o.classList.toggle('is-active');
+        var tag = o.getAttribute('data-tag');
+        if (tag === 'all') {
+          // 全部与其它选项互斥：选中全部时取消其它所有
+          if (o.classList.contains('is-active')) {
+            o.classList.remove('is-active'); // 再次点击全部 = 取消筛选
+          } else {
+            o.classList.add('is-active');
+            tagOptions.forEach(function (x) {
+              if (x.getAttribute('data-tag') !== 'all') x.classList.remove('is-active');
+            });
+          }
+        } else {
+          // 选中其它选项时取消"全部"
+          o.classList.toggle('is-active');
+          tagOptions.forEach(function (x) {
+            if (x.getAttribute('data-tag') === 'all') x.classList.remove('is-active');
+          });
+        }
       });
     });
     applyFilter();
