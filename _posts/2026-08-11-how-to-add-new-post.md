@@ -2,7 +2,7 @@
 layout: post
 title: 如何为本站新增一篇文章
 date: 2026-08-11
-category: 站点维护
+category: 网站相关
 accent_color: blue
 read_time: 5
 ---

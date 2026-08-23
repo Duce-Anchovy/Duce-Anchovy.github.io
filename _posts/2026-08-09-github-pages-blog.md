@@ -2,7 +2,7 @@
 layout: post
 title: 使用 GitHub Pages 搭建免费个人博客
 date: 2026-08-09
-category: 技术教程
+category: 网站相关
 accent_color: green
 read_time: 8
 ---
