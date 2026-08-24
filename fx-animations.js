@@ -442,5 +442,6 @@
     initDotParallax();
     initAOS();
     initCategoryFilter();
+    initCardDates();
   });
 })();
