@@ -469,7 +469,7 @@
     });
     if (!cards.length) return null;
 
-    var perPage = 1; // 测试阶段：每页 1 篇
+    var perPage = 10; // 每页显示篇数
     var currentPage = 1;
     var visibleCards = cards; // 当前筛选后的文章列表
 
