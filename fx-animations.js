@@ -430,6 +430,25 @@
   }
 
   /* ========================================
+     7.6 首页卡片日期：今年只显示月日，非今年显示年份
+     ======================================== */
+  function initCardDates() {
+    var currentYear = new Date().getFullYear();
+    var times = document.querySelectorAll('time[datetime]');
+    times.forEach(function (t) {
+      var full = t.getAttribute('datetime') || '';
+      var parts = full.split('-');
+      if (parts.length < 3) return;
+      var year = parseInt(parts[0], 10);
+      var month = parseInt(parts[1], 10);
+      var day = parseInt(parts[2], 10);
+      if (year !== currentYear) {
+        t.textContent = year + '年' + month + '月' + day + '日';
+      }
+    });
+  }
+
+  /* ========================================
      8. 启动
      ======================================== */
   document.addEventListener('DOMContentLoaded', function () {
