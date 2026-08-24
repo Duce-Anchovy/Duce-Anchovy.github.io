@@ -288,7 +288,7 @@
      7.5 文章分类筛选（首页）
      依赖：文章卡片带 data-category，Tabs 带 data-filter
      ======================================== */
-  function initCategoryFilter() {
+  function initCategoryFilter(pagination) {
     var searchInput = document.getElementById('post-search');
     var filterBtn = document.getElementById('filter-btn');
     var modal = document.getElementById('tag-modal');
@@ -358,6 +358,15 @@
       visible.forEach(function (item) { container.appendChild(item.el); });
       if (filterBtn) {
         filterBtn.classList.toggle('is-active', activeTags.length > 0);
+      }
+      // 收集当前匹配（非隐藏）的文章，交给分页（回到第 1 页）
+      if (pagination && pagination.setVisible) {
+        var matching = [];
+        var kids = container.children;
+        for (var k = 0; k < kids.length; k++) {
+          if (kids[k].style.display !== 'none') matching.push(kids[k]);
+        }
+        pagination.setVisible(matching);
       }
       if (typeof AOS !== 'undefined' && AOS.refresh) AOS.refresh();
     }
@@ -449,6 +458,106 @@
   }
 
   /* ========================================
+     7.7 首页分页：第一页 / 上一页 / 页码输入 / 下一页 / 最后一页
+     依赖：文章卡片容器 #posts .space-y-1，分页控件 .fx-pagination
+     ======================================== */
+  function initPagination() {
+    var container = document.querySelector('#posts .space-y-1');
+    if (!container) return null;
+    var cards = Array.prototype.slice.call(container.children).filter(function (el) {
+      return el.tagName === 'A';
+    });
+    if (!cards.length) return null;
+
+    var perPage = 1; // 测试阶段：每页 1 篇
+    var currentPage = 1;
+    var visibleCards = cards; // 当前筛选后的文章列表
+
+    var pageEls = Array.prototype.slice.call(document.querySelectorAll('.fx-pagination'));
+
+    function totalPages() {
+      return Math.max(1, Math.ceil(visibleCards.length / perPage));
+    }
+
+    function render() {
+      var tp = totalPages();
+      if (currentPage > tp) currentPage = tp;
+      if (currentPage < 1) currentPage = 1;
+
+      var start = (currentPage - 1) * perPage;
+      var end = Math.min(start + perPage, visibleCards.length);
+
+      // 先全部隐藏，再显示当前页切片
+      cards.forEach(function (c) { c.style.display = 'none'; });
+      for (var i = start; i < end; i++) {
+        visibleCards[i].style.display = '';
+      }
+
+      pageEls.forEach(function (el) {
+        var input = el.querySelector('.fx-page-input');
+        var total = el.querySelector('.fx-page-total');
+        var first = el.querySelector('.fx-page-first');
+        var prev = el.querySelector('.fx-page-prev');
+        var next = el.querySelector('.fx-page-next');
+        var last = el.querySelector('.fx-page-last');
+        if (input) { input.value = currentPage; input.max = tp; }
+        if (total) total.textContent = '/ ' + tp;
+        if (first) first.disabled = currentPage === 1;
+        if (prev) prev.disabled = currentPage === 1;
+        if (next) next.disabled = currentPage === tp;
+        if (last) last.disabled = currentPage === tp;
+      });
+    }
+
+    function go(page) {
+      var tp = totalPages();
+      if (page < 1) page = 1;
+      if (page > tp) page = tp;
+      if (page === currentPage) { render(); return; }
+      currentPage = page;
+      render();
+    }
+
+    pageEls.forEach(function (el) {
+      var input = el.querySelector('.fx-page-input');
+      var first = el.querySelector('.fx-page-first');
+      var prev = el.querySelector('.fx-page-prev');
+      var next = el.querySelector('.fx-page-next');
+      var last = el.querySelector('.fx-page-last');
+      if (first) first.addEventListener('click', function () { go(1); });
+      if (prev) prev.addEventListener('click', function () { go(currentPage - 1); });
+      if (next) next.addEventListener('click', function () { go(currentPage + 1); });
+      if (last) last.addEventListener('click', function () { go(totalPages()); });
+      if (input) {
+        // 回车或失焦提交页码
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            input.blur();
+            var v = parseInt(input.value, 10);
+            if (!isNaN(v)) go(v);
+            else render();
+          }
+        });
+        input.addEventListener('change', function () {
+          var v = parseInt(input.value, 10);
+          if (!isNaN(v)) go(v);
+          else render();
+        });
+      }
+    });
+
+    // 与筛选联动：更新可见列表并回到第 1 页
+    function setVisible(list) {
+      visibleCards = list || [];
+      currentPage = 1;
+      render();
+    }
+
+    render();
+    return { setVisible: setVisible };
+  }
+
+  /* ========================================
      8. 启动
      ======================================== */
   document.addEventListener('DOMContentLoaded', function () {
@@ -460,7 +569,8 @@
     initScrollArrow();
     initDotParallax();
     initAOS();
-    initCategoryFilter();
+    var pagination = initPagination();
+    initCategoryFilter(pagination);
     initCardDates();
   });
 })();

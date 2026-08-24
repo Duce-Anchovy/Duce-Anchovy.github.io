@@ -90,6 +90,66 @@
   box-shadow: 0 0 14px rgba(97, 175, 239, 0.3);
 }
 
+/* ---------- 分页 ---------- */
+.fx-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 8px 0 20px;
+}
+.fx-page-btn {
+  cursor: pointer;
+  border: 1px solid var(--border-soft);
+  background: transparent;
+  color: var(--fg-subtle);
+  font-size: 13px;
+  line-height: 1;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.fx-page-btn:hover:not(:disabled) {
+  border-color: var(--ring);
+  color: var(--fg-white);
+  box-shadow: 0 0 12px rgba(97, 175, 239, 0.18);
+}
+.fx-page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.fx-page-input-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  border-radius: 9999px;
+  padding: 5px 14px;
+}
+.fx-page-input {
+  width: 44px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--fg);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.fx-page-input::-webkit-outer-spin-button,
+.fx-page-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.fx-page-total {
+  color: var(--faint);
+  font-size: 13px;
+}
+
 /* ---------- 标签筛选弹窗 ---------- */
 .fx-modal {
   position: fixed;
