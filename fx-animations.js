@@ -311,6 +311,11 @@
       return hasQuery() ? 'relevance' : 'newest';
     }
 
+    function cardDate(c) {
+      var t = c.querySelector('time[datetime]');
+      return t ? (t.getAttribute('datetime') || '') : '';
+    }
+
     function applyFilter() {
       var q = (searchInput ? searchInput.value : '').trim().toLowerCase();
       var container = cards[0].parentNode;
@@ -347,14 +352,17 @@
           score += titleHits * 10;                    // 标题命中加成
         }
         c.style.display = '';
-        visible.push({ el: c, score: score });
+        visible.push({ el: c, score: score, date: cardDate(c) });
       });
-      if (order === 'oldest') {
-        visible.reverse();
-      } else if (order === 'relevance' && q) {
+      if (order === 'relevance' && q) {
         visible.sort(function (a, b) { return b.score - a.score; });
+      } else if (order === 'oldest') {
+        // 时间逆序：按日期正序（旧在前）
+        visible.sort(function (a, b) { return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
+      } else {
+        // 时间顺序（默认）及相关性无搜索词：按日期倒序，最新在前
+        visible.sort(function (a, b) { return a.date > b.date ? -1 : (a.date < b.date ? 1 : 0); });
       }
-      // newest（或相关性且无搜索词时）保持原时间顺序
       visible.forEach(function (item) { container.appendChild(item.el); });
       if (filterBtn) {
         filterBtn.classList.toggle('is-active', activeTags.length > 0);
