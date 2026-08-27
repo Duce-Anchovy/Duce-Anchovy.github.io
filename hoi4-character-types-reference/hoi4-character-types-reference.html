@@ -107,6 +107,11 @@
     max-width: 800px;
     margin: 0 0 28px;
   }
+  .hero .hero-date {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin: -16px 0 26px;
+  }
   .hero-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -394,6 +399,7 @@
   <p class="kicker">Hearts of Iron IV · Character System Reference · Source-Verified</p>
   <h1>HOI4 角色类型参考手册 <span style="color:var(--accent)">· 源码研读版</span></h1>
   <p class="sub">HOI4 的角色系统（1.11 引入）允许一个角色同时担任国家元首、顾问、将领等多种身份。本手册逐一介绍每种角色类型的<strong>代码写法</strong>与<strong>可以调用的能力</strong>——其中的关键示例均已写入 对照游戏安装目录 <code class="inline">common/</code> 下的真实源码提炼而成，每个章节都会标注「源码依据」与具体文件路径。</p>
+  <p class="hero-date">发布于 2026年8月17日 · 更新于 2026年8月27日</p>
   <div class="hero-stats">
     <div class="stat-card"><div class="num">4</div><div class="label">真扮演身份</div></div>
     <div class="stat-card"><div class="num">6</div><div class="label">顾问槽位（脚本枚举）</div></div>
