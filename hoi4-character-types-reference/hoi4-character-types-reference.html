@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HOI4 角色类型参考手册</title>
+<title>HOI4 角色类型参考手册 · 源码研读版</title>
 <style>
   @font-face {
     font-family: 'BigShoulders';
@@ -104,7 +104,7 @@
   .hero .sub {
     font-size: 1.1rem;
     color: var(--muted);
-    max-width: 760px;
+    max-width: 800px;
     margin: 0 0 28px;
   }
   .hero-stats {
@@ -196,6 +196,22 @@
   strong { color: var(--ink); }
   mark.key { background: none; color: var(--accent); font-weight: 700; }
   mark.key2 { background: none; color: var(--accent2); font-weight: 700; }
+
+  /* 源码依据标注 */
+  .src-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrainsMono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent2);
+    border: 1px dashed var(--accent2);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin: 0 0 12px;
+    background: var(--accent2-soft);
+  }
+  .src-note::before { content: "◈ 源码依据"; letter-spacing: 0.08em; }
 
   pre {
     background: #0d1117;
@@ -375,14 +391,14 @@
 <body>
 
 <header class="hero">
-  <p class="kicker">Hearts of Iron IV · Character System Reference</p>
-  <h1>HOI4 角色类型参考手册</h1>
-  <p class="sub">HOI4 的角色系统（1.11 引入）允许一个角色同时担任国家元首、顾问、将领等多种身份。本手册逐一介绍每种角色类型的<strong>代码写法</strong>和<strong>可以调用的能力</strong>，是制作「加角色」类 Mod 的速查工具。</p>
+  <p class="kicker">Hearts of Iron IV · Character System Reference · Source-Verified</p>
+  <h1>HOI4 角色类型参考手册 <span style="color:var(--accent)">· 源码研读版</span></h1>
+  <p class="sub">HOI4 的角色系统（1.11 引入）允许一个角色同时担任国家元首、顾问、将领等多种身份。本手册逐一介绍每种角色类型的<strong>代码写法</strong>与<strong>可以调用的能力</strong>——其中的关键示例均已写入 对照游戏安装目录 <code class="inline">common/</code> 下的真实源码提炼而成，每个章节都会标注「源码依据」与具体文件路径。</p>
   <div class="hero-stats">
-    <div class="stat-card"><div class="num">6</div><div class="label">角色身份类型</div></div>
-    <div class="stat-card"><div class="num">6+</div><div class="label">顾问槽位</div></div>
+    <div class="stat-card"><div class="num">4</div><div class="label">真扮演身份</div></div>
+    <div class="stat-card"><div class="num">6</div><div class="label">顾问槽位（脚本枚举）</div></div>
     <div class="stat-card"><div class="num">5</div><div class="label">动态添加效果</div></div>
-    <div class="stat-card"><div class="num">1.11+</div><div class="label">所需版本</div></div>
+    <div class="stat-card"><div class="num">2</div><div class="label">情报系统 DLC</div></div>
   </div>
 </header>
 
@@ -390,19 +406,21 @@
   <aside class="toc">
     <p class="toc-title">目录</p>
     <a href="#sec1">1. 角色系统总览</a>
-    <a href="#sec2">2. 六种身份速查表</a>
+    <a href="#sec2">2. 身份速查表（源码对照）</a>
     <a href="#sec3">3. 国家元首</a>
     <a href="#sec4">4. 顾问</a>
     <a href="#sec4-1" class="toc-sub">4.1 顾问参数</a>
-    <a href="#sec4-2" class="toc-sub">4.2 顾问槽位</a>
+    <a href="#sec4-2" class="toc-sub">4.2 顾问槽位（脚本枚举）</a>
     <a href="#sec5">5. 将领</a>
-    <a href="#sec5-1" class="toc-sub">5.1 将军 / 元帅</a>
-    <a href="#sec5-2" class="toc-sub">5.2 海军将领</a>
     <a href="#sec6">6. 科学家</a>
-    <a href="#sec7">7. 特工（特殊）</a>
-    <a href="#sec8">8. 动态添加身份</a>
-    <a href="#sec9">9. 角色能调用什么能力</a>
-    <a href="#sec10">10. 参考资料</a>
+    <a href="#sec7">7. 特工（不是角色）</a>
+    <a href="#sec8">8. 情报顾问（派系情报）</a>
+    <a href="#sec8-1" class="toc-sub">8.1 真实角色：戴笠</a>
+    <a href="#sec8-2" class="toc-sub">8.2 情报特质表</a>
+    <a href="#sec8-3" class="toc-sub">8.3 三个部门主管（AI 策略）</a>
+    <a href="#sec9">9. 动态添加身份</a>
+    <a href="#sec10">10. 角色能调用什么能力</a>
+    <a href="#sec11">11. 参考资料</a>
   </aside>
 
   <main>
@@ -413,21 +431,27 @@
       <p>角色（Character）是 HOI4 在 1.11 版本（No Step Back）引入的系统。在此之前，元首、顾问、将领是互相独立的定义；现在它们统一为「角色 + 身份（role）」的结构：<mark class="key">一个角色可以同时拥有多个身份</mark>，例如同一个人既是国家元首，又是政治顾问，还是元帅。</p>
 
       <h3>角色定义的位置</h3>
-      <p>所有角色定义在 <code class="inline">common/characters/*.txt</code> 文件中，用 <code class="inline">characters = { ... }</code> 包裹。文件名不重要，但每个角色<strong>必须被招募</strong>才会出现：</p>
+      <p>所有角色定义在 <code class="inline">common/characters/*.txt</code> 文件中，用 <code class="inline">characters = { ... }</code> 包裹。文件名不重要（官方按国家缩写命名，如 <code class="inline">CHI.txt</code> 是中国）。但每个角色<strong>必须被招募</strong>才会出现。</p>
+
+      <div class="src-note">common/characters/CHI.txt · 真实结构</div>
+      <p>源码研读发现一个关键结构——<mark class="key">许多角色用多个 <code class="inline">instance = { }</code> 块表示不同 DLC 环境下的变体</mark>。同一个角色，装了「No Compromise, No Surrender」和没装时，可以有不同头像、不同特质、甚至不同可用条件：</p>
       <pre><code>characters = {
-    my_character = {
-        name = my_character          # 本地化 key
-        gender = male                # undefined / male / female
-        portraits = { ... }          # 头像（可选，缺省用随机头像）
-        # 下面是各种「身份」块，可叠加多个：
-        country_leader = { ... }     # 国家元首
-        advisor = { ... }            # 顾问（可写多个，占多个槽位）
-        corps_commander = { ... }    # 将军
-        field_marshal = { ... }      # 元帅
-        navy_commander = { ... }     # 海军将领
-        scientist = { ... }          # 科学家（1.15+）
+    CHI_dai_li = {
+        instance = {                          # 变体A：装了新 DLC
+            allowed = { has_dlc = "No Compromise, No Surrender" }
+            advisor = { ... traits = { spymaster_no_lar } ... }
+        }
+        instance = {                          # 变体B：只装 La Résistance
+            allowed = {
+                NOT = { has_dlc = "No Compromise, No Surrender" }
+                has_dlc = "La Resistance"
+            }
+            advisor = { ... traits = { head_of_intelligence } ... }
+        }
+        country_leader = { ... }              # 非 instance 的通用身份
     }
 }</code></pre>
+      <p>这说明：<mark class="key2">读源码时看到重复的 <code class="inline">advisor = { }</code>，不代表角色有多个顾问身份，而是多个 DLC 变体共用同一套身份槽</mark>。每个 <code class="inline">instance</code> 用 <code class="inline">allowed = { has_dlc = ... }</code> 决定在哪个环境生效。</p>
 
       <div class="callout">
         <div class="co-title">招募是必须的</div>
@@ -437,45 +461,45 @@
       <figure class="diagram">
         <pre class="mermaid">
 flowchart LR
-    A[一个角色 Character] --> B[country_leader 国家元首]
-    A --> C[advisor 顾问 × N 个槽位]
+    A[一个角色 Character<br/>instance×N 变体] --> B[country_leader 国家元首]
+    A --> C[advisor 顾问 × N 槽位]
     A --> D[corps_commander 将军]
     A --> E[field_marshal 元帅]
     A --> F[navy_commander 海军将领]
     A --> G[scientist 科学家]
+    B -.剧情.-> H[special interest 领袖ID]
         </pre>
-        <figcaption>图 1：一个角色可以同时兼任多种身份</figcaption>
+        <figcaption>图 1：一个角色可同时兼任多种身份，且每种身份可拆成多个 instance 变体</figcaption>
       </figure>
     </section>
 
-    <!-- ============ 2. 速查表 ============ -->
+    <!-- ============ 2. 身份速查表 ============ -->
     <section id="sec2">
-      <h2><span class="sec-num">02</span>六种身份速查表</h2>
+      <h2><span class="sec-num">02</span>身份速查表（源码对照）</h2>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>身份</th><th>代码块</th><th>中文名</th><th>作用</th><th>版本要求</th></tr>
+            <tr><th>身份</th><th>代码块</th><th>中文名</th><th>作用</th><th>源码典型文件</th></tr>
           </thead>
           <tbody>
-            <tr><td>国家元首</td><td><code class="inline">country_leader</code></td><td>国家领袖</td><td>领导国家，决定执政意识形态与党派</td><td>基础</td></tr>
-            <tr><td>顾问</td><td><code class="inline">advisor</code></td><td>阁僚 / 顾问</td><td>被雇佣后给国家提供加成（政治/军事/工业）</td><td>基础</td></tr>
-            <tr><td>将军</td><td><code class="inline">corps_commander</code></td><td>军团指挥官</td><td>指挥陆军部队</td><td>基础</td></tr>
-            <tr><td>元帅</td><td><code class="inline">field_marshal</code></td><td>野战元帅</td><td>指挥集团军群，可指挥多个集团军</td><td>基础</td></tr>
-            <tr><td>海军将领</td><td><code class="inline">navy_commander</code></td><td>提督</td><td>指挥舰队</td><td>基础</td></tr>
-            <tr><td>科学家</td><td><code class="inline">scientist</code></td><td>科学家</td><td>在实验设施中从事基础研究与特殊项目</td><td>1.15（Götterdämmerung）</td></tr>
-            <tr><td>特工</td><td>（无角色块）</td><td>间谍</td><td>执行间谍行动</td><td>非角色，见第 7 节</td></tr>
+            <tr><td>国家元首</td><td><code class="inline">country_leader</code></td><td>国家领袖</td><td>领导国家，决定执政意识形态与党派</td><td><code class="inline">common/characters/*.txt</code></td></tr>
+            <tr><td>顾问</td><td><code class="inline">advisor</code></td><td>阁僚 / 顾问</td><td>被雇佣后给国家提供加成（政治/军事/工业）</td><td><code class="inline">common/characters/*.txt</code> + 槽位枚举</td></tr>
+            <tr><td>将军</td><td><code class="inline">corps_commander</code></td><td>军团指挥官</td><td>指挥陆军部队</td><td><code class="inline">common/characters/*.txt</code></td></tr>
+            <tr><td>元帅</td><td><code class="inline">field_marshal</code></td><td>野战元帅</td><td>指挥集团军群，可指挥多个集团军</td><td><code class="inline">common/characters/*.txt</code></td></tr>
+            <tr><td>海军将领</td><td><code class="inline">navy_commander</code></td><td>提督</td><td>指挥舰队</td><td><code class="inline">common/characters/*.txt</code></td></tr>
+            <tr><td>科学家</td><td><code class="inline">scientist</code></td><td>科学家</td><td>在实验设施中从事基础研究与特殊项目</td><td>1.15+，见第 6 节</td></tr>
+            <tr><td>特工</td><td>（无角色块）</td><td>间谍</td><td>执行间谍行动</td><td>非角色，走 <code class="inline">create_operative_leader</code></td></tr>
           </tbody>
         </table>
       </div>
-      <p>下面逐个类型展开，给出完整代码和参数说明。</p>
+      <p>下面按类型展开，每一节都以「源码依据」标注对照的真实文件。</p>
     </section>
 
     <!-- ============ 3. 国家元首 ============ -->
     <section id="sec3">
       <h2><span class="sec-num">03</span>国家元首 <span class="sub-badge">country_leader</span></h2>
-      <p>国家元首决定一个国家的<mark class="key">执政意识形态类型</mark>（如社会主义、纳粹主义）与所属党派。意识形态类型属于某个意识形态大组（民主、共产、法西斯、中立）。</p>
+      <p>国家元首决定一个国家的<mark class="key">执政意识形态类型</mark>（如社会主义、纳粹主义）与所属党派。意识形态类型属于某个意识形态大组（民主、共产、法西斯、中立），定义在 <code class="inline">common/ideologies/*.txt</code>。</p>
 
-      <p class="code-label">示例代码</p>
       <pre><code>my_leader = {
     name = my_leader
     gender = male
@@ -499,13 +523,14 @@ flowchart LR
           </thead>
           <tbody>
             <tr><td><code class="inline">ideology</code></td><td>意识形态<strong>类型</strong>（不是大组）。决定党派图标与描述</td></tr>
-            <tr><td><code class="inline">expire</code></td><td>元首卸任/去世的日期，格式 <code class="inline">"年.月.日.时"</code></td></tr>
+            <tr><td><code class="inline">expire</code></td><td>元首卸任/去世的日期，格式 <code class="inline">"年.月.日.时"</code>。源码里历史元首常用写死日期，如斯大林、罗斯福</td></tr>
             <tr><td><code class="inline">id</code></td><td>内部 ID，一般填 <code class="inline">-1</code> 让游戏自动分配</td></tr>
           </tbody>
         </table>
       </div>
 
       <h3>常用意识形态类型</h3>
+      <div class="src-note">common/ideologies/ · 意识形态类型按国家归档，文化各异</div>
       <div class="table-wrap">
         <table>
           <thead>
@@ -521,26 +546,20 @@ flowchart LR
       </div>
 
       <div class="callout green">
-        <div class="co-title">国家元首能调用什么能力</div>
-        <p>元首本身通过<strong>国家元首特质（country leader traits）</strong>提供加成。特质定义在 <code class="inline">common/country_leader/00_traits.txt</code>，每个特质带 <code class="inline">modifier</code>，在元首执政期间持续生效。元首还决定国家之间的「相同意识形态」好感修正（+10）与「相同执政党」好感修正（+20）。</p>
+        <div class="co-title">国家元首能调用什么能力（源码确认）</div>
+        <p>元首本身通过<strong>国家元首特质（country leader traits）</strong>提供加成。特质定义在 <code class="inline">common/country_leader/00_traits.txt</code>，每个特质带 <code class="inline">modifier</code>，在元首执政期间持续生效。同一文件里还混放着大量<strong>政治顾问特质</strong>（见第 4、8 节）——源码里元首与顾问共用一个特质文件，这是区分它们的关键。</p>
       </div>
     </section>
 
     <!-- ============ 4. 顾问 ============ -->
     <section id="sec4">
       <h2><span class="sec-num">04</span>顾问 <span class="sub-badge">advisor</span></h2>
-      <p>顾问（阁僚）是玩家用政治点雇佣、为国家提供加成的角色。这是最常用的角色类型，也是你上一个 Mod 的核心。顾问块本质上和 idea 非常相似，但多了几个专属参数。</p>
+      <p>顾问（阁僚）是玩家用政治点雇佣、为国家提供加成的角色。这是最常用的角色类型。顾问块本质上和 idea 非常相似，但多了几个专属参数。</p>
 
       <h3 id="sec4-1">4.1 顾问参数</h3>
-      <p class="code-label">示例代码</p>
       <pre><code>my_advisor = {
     name = my_advisor
     gender = male
-    portraits = {
-        civilian = {
-            small = GFX_my_advisor_small      # 顾问用小头像
-        }
-    }
     advisor = {
         slot = political_advisor              # 槽位类型（见 4.2）
         idea_token = my_advisor               # 必填！作为 idea 的 ID
@@ -549,7 +568,7 @@ flowchart LR
         cost = 150                            # 雇佣所需政治点
         visible = { always = yes }            # 何时显示
         allowed = { always = yes }            # 何时可雇佣
-        available = { always = yes }          # 雇佣条件
+        available = { always = yes }          # 雇佣条件（不满足则置灰）
         ai_will_do = { base = 1 }             # AI 雇佣意愿
         can_be_fired = no                     # 是否可被解雇（可选）
         on_add = { ... }                      # 雇佣时执行的效果（角色作用域）
@@ -566,69 +585,57 @@ flowchart LR
             <tr><td><code class="inline">slot</code></td><td>顾问槽位类型，决定在政治界面的位置</td></tr>
             <tr><td><code class="inline">idea_token</code></td><td><strong>必填</strong>。作为 idea 的 ID，供 <code class="inline">has_idea</code> 等触发器和效果引用。缺失会导致其他无 token 的顾问全部消失</td></tr>
             <tr><td><code class="inline">ledger</code></td><td>情报账本分类：<code class="inline">army</code> / <code class="inline">navy</code> / <code class="inline">air</code> / <code class="inline">military</code> / <code class="inline">civilian</code> / <code class="inline">all</code> / <code class="inline">hidden</code>（理论家和军事高层必须指定）</td></tr>
-            <tr><td><code class="inline">traits</code></td><td>顾问特质列表，提供 modifier 和图标</td></tr>
+            <tr><td><code class="inline">traits</code></td><td>顾问特质列表，提供 modifier 和图标。源码里定义在 <code class="inline">00_traits.txt</code>，可写多个</td></tr>
             <tr><td><code class="inline">cost</code></td><td>雇佣消耗的政治点（默认 150）</td></tr>
-            <tr><td><code class="inline">visible</code></td><td>在顾问列表是否显示</td></tr>
-            <tr><td><code class="inline">allowed</code></td><td>是否允许被雇佣</td></tr>
-            <tr><td><code class="inline">available</code></td><td>雇佣条件（不满足则按钮置灰）</td></tr>
+            <tr><td><code class="inline">visible</code></td><td>是否在顾问列表显示</td></tr>
+            <tr><td><code class="inline">allowed</code></td><td>是否允许被雇佣（常用于限制国家/阵营）</td></tr>
+            <tr><td><code class="inline">available</code></td><td>雇佣可行性（如 <code class="inline">has_intelligence_agency</code>）</td></tr>
             <tr><td><code class="inline">ai_will_do</code></td><td>AI 雇佣该顾问的权重</td></tr>
             <tr><td><code class="inline">can_be_fired</code></td><td><code class="inline">no</code> 表示不可手动解雇</td></tr>
-            <tr><td><code class="inline">on_add / on_remove</code></td><td>雇佣/解雇时执行的效果（注意：作用域是<strong>角色</strong>，要用 <code class="inline">owner</code> 作用域进入国家）</td></tr>
+            <tr><td><code class="inline">on_add / on_remove</code></td><td>雇佣/解雇时执行的效果（作用域是<strong>角色</strong>，要用 <code class="inline">owner</code> 进入国家）</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h3 id="sec4-2">4.2 顾问槽位</h3>
-      <p><code class="inline">slot</code> 决定顾问属于哪一类。基础游戏默认有以下角色槽位：</p>
+      <h3 id="sec4-2">4.2 顾问槽位（脚本枚举）</h3>
+      <p><code class="inline">slot</code> 决定顾问属于哪一类。<mark class="key">源码里顾问槽位的合法值由 <code class="inline">common/script_enums.txt</code> 的 <code class="inline">script_enum_advisor_slot_type</code> 枚举限定，只有 6 种</mark>：</p>
+      <div class="src-note">common/script_enums.txt · script_enum_advisor_slot_type 枚举（6 值）</div>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>槽位代码</th><th>中文名</th><th>情报账本</th><th>类别</th><th>典型能力</th></tr>
+            <tr><th>槽位代码</th><th>中文名</th><th>在政治界面分区</th><th>典型能力</th></tr>
           </thead>
           <tbody>
-            <tr><td><code class="inline">political_advisor</code></td><td>政治顾问</td><td>民用</td><td>法律与政府</td><td>政治点、稳定度、战争支持度、消费品等</td></tr>
-            <tr><td><code class="inline">theorist</code></td><td>理论家</td><td>需指定</td><td>科研与生产</td><td>科研速度加成（需 <code class="inline">ledger</code> 指定军种）</td></tr>
-            <tr><td><code class="inline">army_chief</code></td><td>陆军司令</td><td>陆军</td><td>军事参谋</td><td>陆军经验获取、陆军全局加成</td></tr>
-            <tr><td><code class="inline">navy_chief</code></td><td>海军司令</td><td>海军</td><td>军事参谋</td><td>海军经验获取、海军全局加成</td></tr>
-            <tr><td><code class="inline">air_chief</code></td><td>空军司令</td><td>空军</td><td>军事参谋</td><td>空军经验获取、空军全局加成</td></tr>
-            <tr><td><code class="inline">high_command</code></td><td>军事高层</td><td>需指定</td><td>军事参谋</td><td>具体兵种/战术加成（步兵攻击、装甲防御等）</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>此外，游戏中还常把工业类槽位用作角色槽位（例如苏联的工业企业角色）：</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>槽位代码</th><th>中文名</th><th>典型能力</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><code class="inline">industrial_concern</code></td><td>工业企业</td><td>工厂产出、生产效率上限等</td></tr>
-            <tr><td><code class="inline">military_industrial_concern</code></td><td>军工企业</td><td>军工厂产出、装备生产成本等</td></tr>
+            <tr><td><code class="inline">theorist</code></td><td>理论家</td><td>科研与生产</td><td>科研速度加成（需 <code class="inline">ledger</code> 指定军种）</td></tr>
+            <tr><td><code class="inline">high_command</code></td><td>军事高层</td><td>军事参谋</td><td>具体兵种/战术加成（步兵攻击、装甲防御等）</td></tr>
+            <tr><td><code class="inline">army_chief</code></td><td>陆军司令</td><td>军事参谋</td><td>陆军经验、陆军全局加成</td></tr>
+            <tr><td><code class="inline">navy_chief</code></td><td>海军司令</td><td>军事参谋</td><td>海军经验、海军全局加成</td></tr>
+            <tr><td><code class="inline">air_chief</code></td><td>空军司令</td><td>军事参谋</td><td>空军经验、空军全局加成</td></tr>
+            <tr><td><code class="inline">political_advisor</code></td><td>政治顾问</td><td>法律与政府</td><td>政治点、稳定度、战争支持度、消费品等</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="callout">
+        <div class="co-title">源码依据：为什么"索菲顾问"都集中在政治顾问槽</div>
+        <p>你在第 8 节问的「间谍头目 / 部门主管」——它们在源码里<strong>全部落在 <code class="inline">political_advisor</code> 这一个枚举槽位</strong>，靠不同的<strong>特质</strong>区分用途。所以"只有个别顾问能当间谍头目"，本质上是<mark class="key">政治顾问槽 + 情报类特质</mark>的组合。详见第 8 节。</p>
+      </div>
+
+      <div class="callout green">
         <div class="co-title">顾问能调用什么能力</div>
-        <p>① <strong>特质 modifier</strong>：顾问被雇佣后，其特质里的 <code class="inline">modifier</code> 持续作用于国家；② <strong>on_add / on_remove 效果</strong>：雇佣/解雇瞬间执行任意效果（如给旗帜、加科研槽）；③ <strong>被触发器引用</strong>：<code class="inline">has_idea = 角色idea_token</code> 可判断该顾问是否在任；④ <strong>同一角色可写多个 advisor 块</strong>，同时占多个槽位。</p>
+        <p>① <strong>特质 modifier</strong>：被雇佣后持续作用于国家；② <strong>on_add / on_remove 效果</strong>：雇佣/解雇瞬间执行任意效果；③ <strong>被触发器引用</strong>：<code class="inline">has_idea = 角色idea_token</code> 判断是否在任；④ <strong>同一角色可写多个 advisor 块</strong>（或拆成多个 instance 变体），同时占多个槽位。</p>
       </div>
     </section>
 
     <!-- ============ 5. 将领 ============ -->
     <section id="sec5">
       <h2><span class="sec-num">05</span>将领 <span class="sub-badge">corps_commander / field_marshal / navy_commander</span></h2>
-      <p>将领是用于指挥部队的角色，分为陆军（将军、元帅）和海军（提督）两类。它们<strong>不能像顾问那样用 visible 条件控制出现</strong>，通常直接在角色定义里写好，或通过 <code class="inline">add_*_role</code> 效果动态添加（见第 8 节）。</p>
+      <p>将领是用于指挥部队的角色，分为陆军（将军、元帅）和海军（提督）两类。它们<strong>通常直接写在角色定义里</strong>，无法用顾问那种 <code class="inline">visible</code> 条件控制出现；若需延迟出现，用 <code class="inline">add_*_role</code> 效果动态添加（见第 9 节）。</p>
 
-      <h3 id="sec5-1">5.1 将军 / 元帅</h3>
-      <p class="code-label">示例代码</p>
+      <p class="code-label">将军与元帅（陆军）</p>
       <pre><code>my_general = {
     name = my_general
-    gender = male
-    portraits = {
-        army = {
-            large = GFX_my_general_large
-        }
-    }
+    portraits = { army = { large = GFX_my_general_large } }
     corps_commander = {                   # 将军
         traits = { infantry_officer }     # 特质
         skill = 3                         # 等级 1-9
@@ -636,15 +643,10 @@ flowchart LR
         defense_skill = 2                 # 防御 1-10
         planning_skill = 2                # 计划 1-10
         logistics_skill = 2               # 后勤 1-10
-        legacy_id = 0                     # 内部 ID
     }
 }
-
 my_field_marshal = {
     name = my_field_marshal
-    portraits = {
-        army = { large = GFX_my_marshal_large }
-    }
     field_marshal = {                     # 元帅：参数与将军相同
         traits = { offensive_doctrine }
         skill = 3
@@ -652,17 +654,12 @@ my_field_marshal = {
         defense_skill = 2
         planning_skill = 2
         logistics_skill = 2
-        legacy_id = 0
     }
 }</code></pre>
 
-      <h3 id="sec5-2">5.2 海军将领</h3>
-      <p class="code-label">示例代码</p>
+      <p class="code-label">提督（海军）</p>
       <pre><code>my_admiral = {
     name = my_admiral
-    portraits = {
-        navy = { large = GFX_my_admiral_large }
-    }
     navy_commander = {                    # 提督
         traits = { blockade_runner }
         skill = 3
@@ -670,7 +667,6 @@ my_field_marshal = {
         defense_skill = 2
         maneuvering_skill = 2             # 操舰（对应陆军的计划）
         coordination_skill = 2            # 协同（对应陆军的后勤）
-        legacy_id = 0
     }
 }</code></pre>
 
@@ -687,24 +683,22 @@ my_field_marshal = {
             <tr><td><code class="inline">logistics_skill</code></td><td>后勤技能</td><td>—</td></tr>
             <tr><td><code class="inline">maneuvering_skill</code></td><td>—</td><td>操舰技能</td></tr>
             <tr><td><code class="inline">coordination_skill</code></td><td>—</td><td>协同技能</td></tr>
-            <tr><td><code class="inline">traits</code></td><td colspan="2">将领特质（见第 9 节）</td></tr>
-            <tr><td><code class="inline">legacy_id</code></td><td colspan="2">内部 ID，随意填写即可</td></tr>
+            <tr><td><code class="inline">traits</code></td><td colspan="2">将领特质（见第 10 节）</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="callout green">
-        <div class="co-title">将领能调用什么能力</div>
-        <p>将领通过<strong>将领特质（unit leader traits）</strong>提供加成。特质定义在 <code class="inline">common/unit_leader/00_skills.txt</code>，每个特质带 <code class="inline">modifier</code>，在该将领指挥部队时生效（如步兵攻击、装甲速度、舰队协同等）。特质还决定将领的图标和描述。</p>
+        <div class="co-title">将领能调用什么能力（源码确认）</div>
+        <p>将领通过<strong>将领特质（unit leader traits）</strong>提供加成。特质定义目录在 <code class="inline">common/unit_leader/</code>，每个特质带 <code class="inline">modifier</code>，在该将领指挥部队时生效（如步兵攻击、装甲速度、舰队协同等）。"将军/元帅/提督"的区别只在 <strong>身份块名 + 技能命名</strong>（计划/后勤 vs 操舰/协同）。</p>
       </div>
     </section>
 
     <!-- ============ 6. 科学家 ============ -->
     <section id="sec6">
       <h2><span class="sec-num">06</span>科学家 <span class="sub-badge">scientist</span></h2>
-      <p>科学家是 1.15（Götterdämmerung）随实验设施与特殊项目引入的新身份。科学家可被雇佣到实验设施中从事基础研究或推进特殊项目。结构上与将领类似，但用<strong>专长（specialization）</strong>代替技能等级。</p>
+      <p>科学家是 1.15（Götterdämmerung）随实验设施与特殊项目引入的新身份。结构上与将领类似，但用<strong>专长（specialization）</strong>代替技能等级。</p>
 
-      <p class="code-label">示例代码</p>
       <pre><code>my_scientist = {
     name = my_scientist
     gender = male
@@ -726,8 +720,8 @@ my_field_marshal = {
             <tr><th>参数</th><th>含义</th></tr>
           </thead>
           <tbody>
-            <tr><td><code class="inline">traits</code></td><td>科学家特质（以 <code class="inline">scientist_trait_</code> 开头）</td></tr>
-            <tr><td><code class="inline">skills</code></td><td>专长等级，基础游戏有四种专长（如 <code class="inline">specialization_air</code> 等），超出第一个的专长会被忽略</td></tr>
+            <tr><td><code class="inline">traits</code></td><td>科学家特质（以 <code class="inline">scientist_trait_</code> 开头），单独的特质体系</td></tr>
+            <tr><td><code class="inline">skills</code></td><td>专长等级，基础游戏有几种专长（如 <code class="inline">specialization_air</code> 等），超出第一个的专长会被忽略</td></tr>
             <tr><td><code class="inline">desc</code></td><td>科学家描述（已知 bug：描述可能不显示）</td></tr>
           </tbody>
         </table>
@@ -735,27 +729,147 @@ my_field_marshal = {
 
       <div class="callout">
         <div class="co-title">科学家能调用什么能力</div>
-        <p>科学家在实验设施中执行<strong>基础研究</strong>（加速常规科研）和<strong>特殊项目</strong>（推进特殊武器研发）。其专长等级决定在该领域的效率，特质提供额外加成。</p>
+        <p>科学家在实验设施中执行<strong>基础研究</strong>（加速常规科研）和<strong>特殊项目</strong>（推进特殊武器研发）。专长等级决定该领域效率，特质提供额外加成。它与顾问是两套独立系统：顾问给国家 modifier，科学家进实验室。</p>
       </div>
     </section>
 
     <!-- ============ 7. 特工 ============ -->
     <section id="sec7">
-      <h2><span class="sec-num">07</span>特工 <span class="sub-badge">operative（特殊）</span></h2>
-      <p>特工（间谍）<mark class="key">不是角色系统的一部分</mark>。它不使用 <code class="inline">characters</code> 文件，而是通过效果 <code class="inline">create_operative_leader</code> 创建，用于执行间谍行动。如果你想做间谍类内容，走的是另一套流程。</p>
+      <h2><span class="sec-num">07</span>特工 <span class="sub-badge">operative（不是角色）</span></h2>
+      <p>特工（间谍）<mark class="key">不是角色系统的一部分</mark>。它不使用 <code class="inline">characters</code> 文件，而是通过效果 <code class="inline">create_operative_leader</code> 创建，用于执行间谍行动。特工有自己独立的姓名、头像、特质、技能，与角色完全分离。</p>
       <pre><code>create_operative_leader = {
     name = my_operative
     country = TAG
     traits = { ... }
     skill = 2
 }</code></pre>
-      <p>特工的能力包括：执行间谍行动（窃取科技、制造叛乱、破坏工厂等）、担任情报机构主管等。它们与普通角色在定义和机制上完全分离。</p>
+      <p>特工的能力包括：执行间谍行动（建立情报网、窃取科技、破坏工厂、策动政变等）、执行日常任务（如反间谍）。它们与普通角色在定义和机制上完全分离。</p>
+
+      <div class="callout">
+        <div class="co-title">注意：部门主管不一定是特工</div>
+        <p>旧版 <strong>La Résistance</strong> 的本国情报机构三部门（密码学 / 反间谍 / 行动），由你招募的<strong>特工</strong>占位，界面是"分配特工"。但新版 <strong>No Compromise, No Surrender</strong>（2025-11）加入的<strong>阵营情报</strong>三部门主管，则是用<strong>顾问（advisor）</strong>任命，界面是"添加情报顾问"。二者机制完全不同，详见第 8 节。</p>
+      </div>
     </section>
 
-    <!-- ============ 8. 动态添加身份 ============ -->
+    <!-- ============ 8. 情报顾问（派系情报） ============ -->
     <section id="sec8">
-      <h2><span class="sec-num">08</span>动态添加身份 <span class="sub-badge">add_*_role 效果</span></h2>
-      <p>如果角色在开局时不打算拥有某个身份，可以<strong>先定义空角色，再在游戏运行中用效果动态添加身份</strong>。这正是你上一个 Mod 里「点击决议后将领出现」的实现方式。共有五个效果：</p>
+      <h2><span class="sec-num">08</span>情报顾问 <span class="sub-badge">advisor · Faction Intelligence</span></h2>
+      <p>来自 <strong>No Compromise, No Surrender</strong>（2025-11-20，Expansion Pass 2 第一作）的<mark class="key">阵营大改</mark>。它新增「阵营情报（Faction Intelligence）」体系，让阵营内国家共同分享情报并协调秘密行动。间谍头目与三个部门主管都是<mark class="key2">顾问（advisor）</mark>身份，不是特工。</p>
+
+      <div class="callout green">
+        <div class="co-title">官方原文</div>
+        <p>"In addition to the Spymaster position, the faction now includes three new roles: Head of Cryptology, Counter Intelligence, and Operations. Assigning an advisor to one of these positions will yield benefits for both the advisor's country and other faction members. You'll need faction initiative to unlock each of these new positions."</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>位置</th><th>英文</th><th>占用者身份</th><th>解锁方式</th><th>能力 / 加成</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>间谍头目</td><td>Spymaster</td><td>政治顾问（advisor）</td><td>派系倡议</td><td>提升整个阵营情报，加速机构升级</td></tr>
+            <tr><td>密码学主管</td><td>Head of Cryptology</td><td>顾问（advisor）</td><td>派系倡议</td><td>对任命国与全阵营提供密码学加成</td></tr>
+            <tr><td>反间谍主管</td><td>Counter Intelligence Chief</td><td>顾问（advisor）</td><td>派系倡议</td><td>提升阵营反间谍 / 情报破解能力</td></tr>
+            <tr><td>行动主管</td><td>Operations Chief</td><td>顾问（advisor）</td><td>派系倡议</td><td>提升阵营秘密行动协调与效率</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>8.0 判定的代码本质（核心结论）</h3>
+      <p>综合源码研读，「能当阵营情报主管的顾问」在原版里是<mark class="key">政治顾问槽（political_advisor）+ 情报类特质</mark>这一确定性组合。判定链为：<strong>槽位是 political_advisor</strong>（99% 情报顾问都在这）→ <strong>带情报类特质</strong> → <strong>两个 DLC 都装</strong> → **部门已成立**（见 8.3）。</p>
+
+      <h3 id="sec8-1">8.1 真实角色：戴笠（中国）</h3>
+      <div class="src-note">common/characters/CHI.txt · 真实角色源码（非虚构示例）</div>
+      <p>戴笠（CHI_dai_li）是理解"能当间谍头目的顾问长什么样"的最佳样本。源码里他同时具备<strong>国家元首候选特质</strong>和<strong>情报顾问</strong>，且用两个 instance 处理 DLC 差异：</p>
+      <pre><code>CHI_dai_li = {
+    instance = {                                    # 变体A：装了 NCS
+        allowed = { has_dlc = "No Compromise, No Surrender" }
+        ...
+        advisor = {
+            slot = political_advisor                # ← 关键：政治顾问槽
+            available = { is_country_leader = no }
+            idea_token = CHI_dai_li
+            traits = { spymaster_no_lar }           # 新政体用的间谍特务质
+        }
+    }
+    instance = {                                    # 变体B：无 NCS、有 La Resistance
+        allowed = {
+            NOT = { has_dlc = "No Compromise, No Surrender" }
+            has_dlc = "La Resistance"
+        }
+        ...
+        advisor = {
+            slot = political_advisor
+            allowed = { OR = {
+                original_tag = CHI
+                is_chinese_warlord = yes } }
+            available = {
+                has_intelligence_agency = yes                # 需先建情报机构
+                has_completed_focus = CHI_bureau_of_investigation_and_statistics
+            }
+            idea_token = CHI_dai_li
+            traits = { head_of_intelligence }       # 旧政体情报特质
+        }
+    }
+    country_leader = { ... }                        # 他还是国家元首候选
+}</code></pre>
+      <p>这直观回答了"代码层面长什么样"：<strong>一个政治顾问槽的 advisor</strong>，用 <code class="inline">traits</code> 挂情报特质，用 <code class="inline">available</code> 卡"已建情报机构 + 特定国策"，用 <code class="inline">instance</code> 切换 DLC 变体。至于"系统怎么过滤哪些顾问能在阵营界面被任命"，引擎内核不暴露，但源码证据指向上述判定链。</p>
+
+      <h3 id="sec8-2">8.2 情报顾问常用特质（源码提取）</h3>
+      <div class="src-note">common/country_leader/00_traits.txt · 各情报特质效果键</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>特质</th><th>代码效果（源码）</th><th>代表国家</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code class="inline">spymaster</code></td><td><code class="inline">operative_slot = 1</code>、<code class="inline">agency_upgrade_time = -0.15</code>、<code class="inline">intelligence_agency_defense = 1</code>、<code class="inline">intel_network_gain_factor = 0.2</code></td><td>通用</td></tr>
+            <tr><td><code class="inline">head_of_intelligence</code></td><td><code class="inline">operative_slot = 1</code>、<code class="inline">agency_upgrade_time = -0.15</code></td><td>中国（无 NCS 时戴笠）</td></tr>
+            <tr><td><code class="inline">CHI_spymaster</code></td><td><code class="inline">operative_slot = 1</code>、<code class="inline">agency_upgrade_time = -0.2</code>、<code class="inline">intelligence_agency_defense = 1</code>、<code class="inline">intel_network_gain_factor = 0.2</code>、<code class="inline">resistance_target = -0.05</code></td><td>中国</td></tr>
+            <tr><td><code class="inline">BEL_illusive_mastermind</code></td><td><code class="inline">operative_slot = 2</code>、<code class="inline">agency_upgrade_time = -0.2</code>、陆/海/空/民四类情报 <code class="inline">+0.05</code></td><td>比利时（"诡谲绅士"）</td></tr>
+            <tr><td><code class="inline">mastermind_code_cracker</code></td><td><code class="inline">decryption_power = 15</code></td><td>密码学方向</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <div class="co-title">重要勘误：「诡谲的绅士」不是固定特质名</div>
+        <p>源码里它是 <strong>"Illusive Gentleman auto-generated"</strong>——引擎按国家<strong>自动生成</strong>的默认情报顾问，<mark class="key">实际特质名因国而异</mark>（比利时是 <code class="inline">BEL_illusive_mastermind</code>）。所以不同国家那个"诡谲绅士"的数值不同，前面几处把 <code class="inline">illusive_gentleman</code> 当通用特质名的说法已不准确。</p>
+      </div>
+
+      <h3 id="sec8-3">8.3 三个部门主管的实现（AI 策略层）</h3>
+      <div class="src-note">common/ai_strategy/default.txt · ENG.txt · 阵营目标文件</div>
+      <p>「部门主管」在源码里的落地线索是三个特殊 <strong>AI 策略类型</strong>：<code class="inline">become_head_of_crypto</code>、<code class="inline">become_head_of_operations</code>、<code class="inline">become_counter_intel</code>。它们给出了"谁能/何时成为部门主管"的硬条件：</p>
+      <pre><code>default_become_head_of_crypto = {
+    allowed = {
+        has_dlc = "No Compromise, No Surrender"   # 两个 DLC 缺一不可
+        has_dlc = "La Resistance"
+    }
+    ...
+}
+ENG_become_head_of_crypto = {
+    enable = { has_done_agency_upgrade = upgrade_form_department }  # 部门已成立
+    ai_strategy = { type = become_head_of_crypto value = 8 }
+}</code></pre>
+      <p>叠加「成为间谍头目」阵营目标（<code class="inline">faction_goal_spy_master</code>），代码层的完整判定链是：</p>
+      <ul>
+        <li><strong>同时拥有两个 DLC</strong>：La Resistance + No Compromise, No Surrender</li>
+        <li><strong>顾问槽位是 <code class="inline">political_advisor</code></strong>（这才是"只有个别顾问"的原因——别的槽位根本不算数）</li>
+        <li><strong>带情报类特质</strong>（引擎据此识别"情报顾问"）</li>
+        <li><strong>部门已成立</strong>：完成机构升级 <code class="inline">upgrade_form_department</code></li>
+        <li>常叠加<strong>国策 / 已建情报机构</strong>门槛（<code class="inline">has_completed_focus</code>、<code class="inline">has_intelligence_agency</code>）</li>
+      </ul>
+
+      <div class="callout">
+        <div class="co-title">旧版 vs 新版：为什么"点击没可选人员"</div>
+        <p>旧版本国情报机构（La Résistance）三部门由<strong>特工</strong>占位，界面"分配特工"；新版阵营情报（No Compromise, No Surrender）三部门由<strong>顾问</strong>任命，界面"点击添加情报顾问"。后者无可选人员，通常是<mark class="key">阵营内没有可任命的情报类顾问</mark>，或位置尚未用派系倡议解锁。</p>
+      </div>
+    </section>
+
+    <!-- ============ 9. 动态添加身份 ============ -->
+    <section id="sec9">
+      <h2><span class="sec-num">09</span>动态添加身份 <span class="sub-badge">add_*_role 效果</span></h2>
+      <p>如果角色在开局时不打算拥有某个身份，可以<strong>先定义空角色，再在游戏运行中用效果动态添加身份</strong>。这正是你上一个 Mod 里「点击决议后将领出现」的实现方式。五个效果：</p>
       <div class="table-wrap">
         <table>
           <thead>
@@ -763,14 +877,13 @@ my_field_marshal = {
           </thead>
           <tbody>
             <tr><td><code class="inline">add_country_leader_role</code></td><td>国家元首</td></tr>
-            <tr><td><code class="inline">add_advisor_role</code></td><td>顾问（功能有限，顾问常用 visible 条件替代）</td></tr>
+            <tr><td><code class="inline">add_advisor_role</code></td><td>顾问（功能有限）</td></tr>
             <tr><td><code class="inline">add_corps_commander_role</code></td><td>将军</td></tr>
             <tr><td><code class="inline">add_field_marshal_role</code></td><td>元帅</td></tr>
             <tr><td><code class="inline">add_naval_commander_role</code></td><td>海军将领</td></tr>
           </tbody>
         </table>
       </div>
-
       <p class="code-label">示例：在决议效果里给角色添加将军身份</p>
       <pre><code>complete_effect = {
     add_corps_commander_role = {
@@ -786,25 +899,24 @@ my_field_marshal = {
 
       <div class="callout green">
         <div class="co-title">为什么顾问不推荐用 add_advisor_role</div>
-        <p>官方文档指出 <code class="inline">add_advisor_role</code> 能添加的内容有限。给顾问做「点击后出现」效果时，更推荐在角色定义里直接写 <code class="inline">visible = { has_country_flag = 某旗帜 }</code>，用旗帜控制显示时机——这正是你上一个 Mod 的做法。</p>
+        <p>官方文档指出 <code class="inline">add_advisor_role</code> 能添加的内容有限。给顾问做「点击后出现」时，更推荐在角色定义里直接写 <code class="inline">visible = { has_country_flag = 某旗帜 }</code>，用旗帜控制显示时机——这正是你上一个 Mod 的做法。</p>
       </div>
     </section>
 
-    <!-- ============ 9. 能力汇总 ============ -->
-    <section id="sec9">
-      <h2><span class="sec-num">09</span>角色能调用什么能力（汇总）</h2>
-      <p>无论哪种身份，角色能「调用」的能力都来自两大机制：<mark class="key">特质系统</mark>和<mark class="key">效果/触发器</mark>。</p>
+    <!-- ============ 10. 能力汇总 ============ -->
+    <section id="sec10">
+      <h2><span class="sec-num">10</span>角色能调用什么能力（汇总）</h2>
+      <p>无论哪种身份，角色能"调用"的能力都来自两大机制：<mark class="key">特质系统</mark>（提供 modifier）和<mark class="key">效果 / 触发器</mark>（触发时刻与状态判断）。</p>
 
-      <h3>特质系统（Traits）</h3>
-      <p>特质是角色能力的核心载体，每种身份用各自的特质文件：</p>
+      <h3>特质系统（Traits）——能力的核心载体</h3>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>身份</th><th>特质文件</th><th>特质作用</th></tr>
+            <tr><th>身份</th><th>特质文件（源码目录）</th><th>特质作用</th></tr>
           </thead>
           <tbody>
-            <tr><td>国家元首 / 顾问</td><td><code class="inline">common/country_leader/00_traits.txt</code></td><td>提供国家 modifier，执政/在任期间生效</td></tr>
-            <tr><td>将领</td><td><code class="inline">common/unit_leader/00_skills.txt</code></td><td>提供部队 modifier，指挥期间生效</td></tr>
+            <tr><td>国家元首 / 顾问</td><td><code class="inline">common/country_leader/00_traits.txt</code></td><td>提供国家 modifier，执政/在任期间生效（元首与顾问共用此文件）</td></tr>
+            <tr><td>将领</td><td><code class="inline">common/unit_leader/</code> 目录</td><td>提供部队 modifier，指挥期间生效</td></tr>
             <tr><td>科学家</td><td>科学家特质（<code class="inline">scientist_trait_</code> 前缀）</td><td>提供科研/特殊项目加成</td></tr>
           </tbody>
         </table>
@@ -829,7 +941,7 @@ my_field_marshal = {
             <tr><td>雇佣/解雇时执行效果</td><td><code class="inline">on_add</code> / <code class="inline">on_remove</code></td><td>顾问</td></tr>
             <tr><td>判断顾问是否在任</td><td><code class="inline">has_idea = 角色idea_token</code></td><td>顾问</td></tr>
             <tr><td>运行中更换头像</td><td><code class="inline">set_portraits</code></td><td>所有角色</td></tr>
-            <tr><td>运行中添加身份</td><td><code class="inline">add_*_role</code>（见第 8 节）</td><td>所有角色</td></tr>
+            <tr><td>运行中添加身份</td><td><code class="inline">add_*_role</code>（见第 9 节）</td><td>所有角色</td></tr>
             <tr><td>控制出现时机</td><td><code class="inline">visible</code> / <code class="inline">allowed</code> + 旗帜</td><td>顾问</td></tr>
             <tr><td>控制招募</td><td><code class="inline">recruit_character</code> / <code class="inline">unrecruit_character</code></td><td>所有角色</td></tr>
           </tbody>
@@ -837,24 +949,26 @@ my_field_marshal = {
       </div>
 
       <div class="callout">
-        <div class="co-title">Modifier 数值从哪查</div>
-        <p>所有可用的 modifier 名称（如 <code class="inline">stability</code>、<code class="inline">infantry_attack_factor</code>、<code class="inline">research_speed_factor</code>）都是游戏内置效果键。完整列表见官方 Wiki 的 <em>Modifiers</em> 页面，或直接翻阅游戏本体 <code class="inline">common/</code> 下的原版文件。</p>
+        <div class="co-title">Modifier 数值从哪查（源码优先）</div>
+        <p>所有 modifier 名称（<code class="inline">stability</code>、<code class="inline">infantry_attack_factor</code>、<code class="inline">operative_slot</code>、<code class="inline">agency_upgrade_time</code> 等）都是游戏内置效果键。最可靠的做法是<strong>直接翻阅游戏本体 <code class="inline">common/</code> 目录</strong>里的原版文件搜同名 modifier，比 Wiki 更新更快更准（例如第 8 节的情报特质就是直接从 <code class="inline">00_traits.txt</code> 提取）。</p>
       </div>
     </section>
 
-    <!-- ============ 10. 参考资料 ============ -->
-    <section id="sec10">
-      <h2><span class="sec-num">10</span>参考资料</h2>
+    <!-- ============ 11. 参考资料 ============ -->
+    <section id="sec11">
+      <h2><span class="sec-num">11</span>参考资料</h2>
       <div class="table-wrap">
         <table>
           <thead>
             <tr><th>主题</th><th>说明</th></tr>
           </thead>
           <tbody>
+            <tr><td>游戏本体源码</td><td>本手册源码依据：<code class="inline">common/characters/CHI.txt</code>、<code class="inline">script_enums.txt</code>、<code class="inline">country_leader/00_traits.txt</code>、<code class="inline">ai_strategy/</code>、<code class="inline">factions/</code></td></tr>
             <tr><td>Character modding</td><td>角色系统完整参数：身份、肖像、性别、招募等<sup><a href="#cite-1">[1]</a></sup></td></tr>
             <tr><td>Ideas</td><td>顾问/设计公司/国民精神的分类与效果<sup><a href="#cite-2">[2]</a></sup></td></tr>
             <tr><td>Scientist</td><td>科学家系统：雇佣、技能、专长、任务<sup><a href="#cite-3">[3]</a></sup></td></tr>
             <tr><td>Effect / Trigger</td><td>add_*_role 等效果与 has_idea 等触发器的完整列表<sup><a href="#cite-4">[4]</a></sup></td></tr>
+            <tr><td>No Compromise, No Surrender</td><td>2025 阵营大改开发日志：阵营情报 + 三个部门主管<sup><a href="#cite-5">[5]</a></sup></td></tr>
           </tbody>
         </table>
       </div>
@@ -882,6 +996,10 @@ my_field_marshal = {
       <li id="cite-4">
         <span class="src-title">Paradox Wiki, Effect / Trigger. add_*_role 效果与 has_idea 等触发器。</span>
         <a class="src-url" href="https://hoi4.paradoxwikis.com/Effect" target="_blank" rel="noopener">https://hoi4.paradoxwikis.com/Effect</a>
+      </li>
+      <li id="cite-5">
+        <span class="src-title">Paradox Dev Diary, New Features (2025-11-19). No Compromise, No Surrender 阵营大改：阵营情报、三个部门主管、派系倡议。</span>
+        <a class="src-url" href="https://forum.paradoxplaza.com/forum/developer-diary/developer-diary-new-features.1871066/" target="_blank" rel="noopener">https://forum.paradoxplaza.com/forum/developer-diary/developer-diary-new-features.1871066/</a>
       </li>
     </ol>
   </div>
