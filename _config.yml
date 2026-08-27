@@ -3,3 +3,7 @@ description: AI Work, AI Code, AI Design
 baseurl: ""
 url: "https://duce-anchovy.github.io"
 permalink: /posts/:title/
+
+# 自动生成「更新于」：由 jekyll-last-modified-at 读取该文件在 git 中的最后提交时间
+plugins:
+  - jekyll-last-modified-at

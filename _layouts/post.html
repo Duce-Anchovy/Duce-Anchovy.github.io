@@ -267,6 +267,12 @@ html { scroll-behavior: smooth; }
           <time class="inline-flex items-center gap-1.5" style="color: var(--fg-subtle);">
             <i data-lucide="calendar" class="w-3.5 h-3.5"></i> {{ page.date | date: "%Y年%-m月%-d日" }}
           </time>
+          {% if page.last_modified_at > page.date %}
+          <span style="color: var(--border);">·</span>
+          <time class="inline-flex items-center gap-1.5" style="color: var(--fg-subtle);">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> 更新于 {{ page.last_modified_at | date: "%Y年%-m月%-d日" }}
+          </time>
+          {% endif %}
           <span style="color: var(--border);">·</span>
           <span class="inline-flex items-center gap-1.5" style="color: var(--{{ page.accent_color }});">
             <span class="w-1.5 h-1.5 rounded-full" style="background: var(--{{ page.accent_color }});"></span> {{ page.category }}
