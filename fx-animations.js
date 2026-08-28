@@ -322,8 +322,10 @@
       var order = effectiveOrder();
       var visible = [];
       cards.forEach(function (c) {
-        var cat = c.getAttribute('data-category') || 'all';
-        var tagOk = activeTags.length === 0 || activeTags.indexOf('all') !== -1 || activeTags.indexOf(cat) !== -1;
+        // 支持空格分隔的多分类：data-category="standalone ai" 可在两个筛选项下均被命中
+        var cats = (c.getAttribute('data-category') || 'all').split(/\s+/);
+        var tagOk = activeTags.length === 0 || activeTags.indexOf('all') !== -1 ||
+          cats.some(function (x) { return activeTags.indexOf(x) !== -1; });
         if (!tagOk) {
           c.style.display = 'none';
           return;
